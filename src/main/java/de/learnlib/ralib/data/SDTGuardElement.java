@@ -1,8 +1,9 @@
 package de.learnlib.ralib.data;
 
-import java.math.BigDecimal;
-
 import gov.nasa.jpf.constraints.api.Expression;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.TypedValue;
 
 public interface SDTGuardElement extends TypedValue {
 
@@ -15,13 +16,13 @@ public interface SDTGuardElement extends TypedValue {
     }
 
     static boolean isSuffixValue(SDTGuardElement e) {
-        return e.getClass().equals(SymbolicDataValue.SuffixValue.class);
+        return e.getClass().equals(SuffixValue.class);
     }
 
     static boolean isRegister(SDTGuardElement e) {
     	return e.getClass().equals(SymbolicDataValue.Register.class);
     }
 
-    Expression<BigDecimal> asExpression();
+    Expression<?> asExpression();
 
 }

@@ -29,8 +29,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.learnlib.ralib.data.*;
-import de.learnlib.ralib.data.SymbolicDataValue.Constant;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.oracles.mto.MultiTheoryTreeOracle;
 import de.learnlib.ralib.theory.EquivalenceClassFilter;
@@ -47,6 +45,11 @@ import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.api.Valuation;
 import gov.nasa.jpf.constraints.api.Variable;
 import gov.nasa.jpf.constraints.solvers.nativez3.NativeZ3Solver;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Constant;
 import net.automatalib.word.Word;
 
 /**
@@ -54,7 +57,7 @@ import net.automatalib.word.Word;
  * @author Sofia Cassel
  * @author Fredrik Tåquist
  */
-public abstract class InequalityTheoryWithEq implements Theory {
+public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
 
     boolean useSuffixOpt = false;
 
@@ -95,7 +98,7 @@ public abstract class InequalityTheoryWithEq implements Theory {
         Valuation vals = new Valuation();
         for (Map.Entry<DataValue, SDTGuardElement> pot : potValuation.entrySet()) {
             SDTGuardElement r = pot.getValue();
-            DataValue dv = pot.getKey();
+            DataValue<BigDecimal> dv = pot.getKey();
             // TODO: fix unchecked invocation
 	    if (!(r instanceof DataValue)) {
 		vals.setValue((Variable<BigDecimal>) r, dv.getValue());
@@ -174,14 +177,13 @@ public abstract class InequalityTheoryWithEq implements Theory {
 		return ret;
     }
 
-	private List<DataValue> sort(Collection<DataValue> list) {
-		List<DataValue> sorted = new ArrayList<>();
-		sorted.addAll(list);
+	private List<DataValue<BigDecimal>> sort(Collection<DataValue<BigDecimal>> list) {
+        List<DataValue<BigDecimal>> sorted = new ArrayList<>(list);
 		sorted.sort(getComparator());
 		return sorted;
 	}
 
-	protected abstract Comparator<DataValue> getComparator();
+	protected abstract Comparator<DataValue<BigDecimal>> getComparator();
 
 	/**
 	 * Merge SDT guards corresponding to data values representing equivalence classes from left (corresponding
@@ -197,7 +199,7 @@ public abstract class InequalityTheoryWithEq implements Theory {
 	 * @return a mapping from merged SDT guards to their respective sub-trees
 	 */
 	protected Map<SDTGuard, SDT> mergeGuards(Map<SDTGuard, SDT> sdts,
-			Map<DataValue, SDTGuard> equivClasses,
+			Map<DataValue<BigDecimal>, SDTGuard> equivClasses,
 			Collection<DataValue> filteredOut) {
 		Map<SDTGuard, SDT> merged = new LinkedHashMap<>();
 
@@ -475,9 +477,9 @@ public abstract class InequalityTheoryWithEq implements Theory {
     		}
     	}
 
-    	for (Map.Entry<Constant, DataValue> e : consts.entrySet()) {
-    		Constant c = e.getKey();
-    		DataValue dv = safeCast(e.getValue());
+    	for (Map.Entry<Constant<?>, DataValue<?>> e : consts.entrySet()) {
+    		Constant<?> c = e.getKey();
+    		DataValue<?> dv = safeCast(e.getValue());
     		if (dv != null) {
     			pot.put(dv, c);
     		}
@@ -488,7 +490,7 @@ public abstract class InequalityTheoryWithEq implements Theory {
 
     protected abstract DataValue safeCast(DataValue val);
 
-    public abstract List<DataValue> getPotential(List<DataValue> vals);
+    public abstract List<DataValue<BigDecimal>> getPotential(List<DataValue<BigDecimal>> vals);
 
     public abstract NativeZ3Solver getSolver();
 
@@ -538,17 +540,17 @@ public abstract class InequalityTheoryWithEq implements Theory {
         } else if (guard instanceof SDTGuard.SDTTrueGuard || guard instanceof SDTGuard.DisequalityGuard) {
 
             Collection<DataValue> potSet = DataWords.joinValsToSet(
-                    constants.values(type),
+                    constants.values(type.getType()),
                     DataWords.valSet(prefix, type),
-                    pval.values(type));
+                    pval.values(type.getType()));
 
             returnThis = this.getFreshValue(new ArrayList<>(potSet));
         } else {
             Collection<DataValue> alreadyUsedValues
                     = DataWords.joinValsToSet(
-                            constants.values(type),
+                            constants.values(type.getType()),
                             DataWords.valSet(prefix, type),
-                            pval.values(type));
+                            pval.values(type.getType()));
             Valuation val = new Valuation();
             if (guard instanceof SDTGuard.IntervalGuard) {
                 SDTGuard.IntervalGuard iGuard = (SDTGuard.IntervalGuard) guard;
@@ -628,7 +630,7 @@ public abstract class InequalityTheoryWithEq implements Theory {
     	System.arraycopy(suffixVals, 0, priorVals, prefixVals.length + constVals.length, suffixValue.getId() - 1);
 
     	// is suffix value greater than all prior or smaller than all prior?
-    	Comparator<DataValue> comparator = getComparator();
+    	Comparator<DataValue<BigDecimal>> comparator = getComparator();
     	boolean greater = false;
     	boolean lesser = false;
     	boolean foundFirst = false;

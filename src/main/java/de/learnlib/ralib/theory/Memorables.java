@@ -3,19 +3,19 @@ package de.learnlib.ralib.theory;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
 import de.learnlib.ralib.data.RegisterAssignment;
 import de.learnlib.ralib.data.SDTRelabeling;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValueGenerator;
 
 public class Memorables {
 
     public static Set<DataValue> relabel(Set<DataValue> values, SDTRelabeling relabeling) {
         Set<DataValue> result = values.stream()
-                .map(relabeling::get)
-                .map( d -> (DataValue) d)
-                .collect(Collectors.toSet());
+                                      .map(relabeling::get)
+                                      .map( d -> (DataValue) d)
+                                      .collect(Collectors.toSet());
 
         assert result.size() == values.size();
         return result;

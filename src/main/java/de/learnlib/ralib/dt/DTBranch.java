@@ -1,8 +1,8 @@
 package de.learnlib.ralib.dt;
 
 import de.learnlib.ralib.data.Bijection;
-import de.learnlib.ralib.data.DataValue;
 import de.learnlib.ralib.data.util.RemappingIterator;
+import net.automatalib.data.DataValue;
 
 public class DTBranch {
 

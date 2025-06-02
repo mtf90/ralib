@@ -22,19 +22,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import de.learnlib.ralib.automata.Assignment;
 import de.learnlib.ralib.automata.RALocation;
 import de.learnlib.ralib.automata.Transition;
 import de.learnlib.ralib.automata.output.OutputMapping;
 import de.learnlib.ralib.automata.output.OutputTransition;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.Constant;
-import de.learnlib.ralib.data.SymbolicDataValue.Parameter;
-import de.learnlib.ralib.data.VarMapping;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.ParameterGenerator;
 import de.learnlib.ralib.dt.DT;
 import de.learnlib.ralib.words.OutputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
@@ -44,6 +35,15 @@ import gov.nasa.jpf.constraints.expressions.NumericBooleanExpression;
 import gov.nasa.jpf.constraints.expressions.NumericComparator;
 import gov.nasa.jpf.constraints.expressions.PropositionalCompound;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.automaton.ra.Assignment;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Constant;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValueGenerator.ParameterGenerator;
+import net.automatalib.data.VarMapping;
 import net.automatalib.word.Word;
 
 /**
@@ -59,7 +59,7 @@ public class IOAutomatonBuilder extends AutomatonBuilder {
         super(components, consts);
 
         this.reverseConsts = new LinkedHashMap<>();
-        for (Entry<Constant, DataValue> c : consts) {
+        for (Entry<Constant<?>, DataValue<?>> c : consts) {
             reverseConsts.put(c.getValue().getValue(), c.getKey());
         }
     }
@@ -69,7 +69,7 @@ public class IOAutomatonBuilder extends AutomatonBuilder {
     	super(components, consts, dt);
 
         this.reverseConsts = new LinkedHashMap<>();
-        for (Entry<Constant, DataValue> c : consts) {
+        for (Entry<Constant<?>, DataValue<?>> c : consts) {
             reverseConsts.put(c.getValue().getValue(), c.getKey());
         }
     }
@@ -90,10 +90,10 @@ public class IOAutomatonBuilder extends AutomatonBuilder {
         //IfGuard _guard = (IfGuard) guard;
         Expression<Boolean> expr = guard;
 
-        VarMapping<Parameter, SymbolicDataValue> outmap = new VarMapping<>();
+        VarMapping<Parameter<?>, SymbolicDataValue<?>> outmap = new VarMapping<>();
         analyzeExpression(expr, outmap);
 
-        Set<Parameter> fresh = new LinkedHashSet<>();
+        Set<Parameter<?>> fresh = new LinkedHashSet<>();
         ParameterGenerator pgen = new ParameterGenerator();
         for (DataType t : action.getPtypes()) {
             Parameter p = pgen.next(t);
@@ -109,7 +109,7 @@ public class IOAutomatonBuilder extends AutomatonBuilder {
     }
 
     private void analyzeExpression(Expression<Boolean> expr,
-            VarMapping<Parameter, SymbolicDataValue> outmap) {
+            VarMapping<Parameter<?>, SymbolicDataValue<?>> outmap) {
 
         if (expr instanceof PropositionalCompound pc) {
             analyzeExpression(pc.getLeft(), outmap);

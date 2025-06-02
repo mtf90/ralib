@@ -21,6 +21,10 @@ package de.learnlib.ralib.tools.theories;
 import java.math.BigDecimal;
 import java.util.*;
 
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,12 +50,12 @@ import gov.nasa.jpf.constraints.util.ExpressionUtil;
  *
  * @author falk
  */
-public class DoubleInequalityTheory extends InequalityTheoryWithEq implements TypedTheory {
+public class DoubleInequalityTheory extends InequalityTheoryWithEq implements TypedTheory<BigDecimal> {
 
-    private static final class Cpr implements Comparator<DataValue> {
+    private static final class Cpr implements Comparator<DataValue<BigDecimal>> {
 
         @Override
-        public int compare(DataValue one, DataValue other) {
+        public int compare(DataValue<BigDecimal> one, DataValue<BigDecimal> other) {
             return one.getValue().compareTo(other.getValue());
         }
     }
@@ -60,7 +64,7 @@ public class DoubleInequalityTheory extends InequalityTheoryWithEq implements Ty
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DoubleInequalityTheory.class);
 
-    private DataType type = null;
+    private DataType<BigDecimal> type = null;
 
     public DoubleInequalityTheory() {
     }
@@ -74,10 +78,10 @@ public class DoubleInequalityTheory extends InequalityTheoryWithEq implements Ty
     }
 
     @Override
-    public List<DataValue> getPotential(List<DataValue> dvs) {
+    public List<DataValue<BigDecimal>> getPotential(List<DataValue<BigDecimal>> dvs) {
         //assume we can just sort the list and get the values
-        List<DataValue> sortedList = new ArrayList<>();
-        for (DataValue d : dvs) {
+        List<DataValue<BigDecimal>> sortedList = new ArrayList<>();
+        for (DataValue<BigDecimal> d : dvs) {
 //                    if (d.getId() instanceof Integer) {
 //                        sortedList.add(new DataValue(d.getType(), ((Integer) d.getId()).doubleValue()));
 //                    } else if (d.getId() instanceof Double) {
@@ -143,7 +147,7 @@ public class DoubleInequalityTheory extends InequalityTheoryWithEq implements Ty
     @Override
     public DataValue instantiate(SDTGuard g, Valuation val, Constants c, Collection<DataValue> alreadyUsedValues) {
         //System.out.println("INSTANTIATING: " + g.toString());
-        SymbolicDataValue.SuffixValue sp = g.getParameter();
+        SuffixValue sp = g.getParameter();
         Valuation newVal = new Valuation();
         newVal.putAll(val);
         Expression<Boolean> x = SDTGuard.toExpr(g);
@@ -200,17 +204,17 @@ public class DoubleInequalityTheory extends InequalityTheoryWithEq implements Ty
     }
 
     @Override
-    public DataValue getFreshValue(List<DataValue> vals) {
+    public DataValue<BigDecimal> getFreshValue(List<DataValue<BigDecimal>> vals) {
         if (vals.isEmpty()) {
-            return new DataValue(type, BigDecimal.ONE);
+            return new DataValue<>(type, BigDecimal.ONE);
         }
-        List<DataValue> potential = getPotential(vals);
+        List<DataValue<BigDecimal>> potential = getPotential(vals);
         if (potential.isEmpty()) {
-            return new DataValue(type, BigDecimal.ONE);
+            return new DataValue<>(type, BigDecimal.ONE);
         }
         //LOGGER.trace("smallest index of " + newDv.toString() + " in " + ifValues.toString() + " is " + smallest);
-        DataValue biggestDv = Collections.max(potential, new Cpr());
-        return new DataValue(type, biggestDv.getValue().add(BigDecimal.ONE));
+        DataValue<BigDecimal> biggestDv = Collections.max(potential, new Cpr());
+        return new DataValue<>(type, biggestDv.getValue().add(BigDecimal.ONE));
     }
 
     @Override
@@ -233,37 +237,32 @@ public class DoubleInequalityTheory extends InequalityTheoryWithEq implements Ty
     }
 
     @Override
-    public Collection<DataValue> getAllNextValues(
-            List<DataValue> vals) {
-        Set<DataValue> nextValues = new LinkedHashSet<>();
+    public Collection<DataValue<BigDecimal>> getAllNextValues(
+            List<DataValue<BigDecimal>> vals) {
+        Set<DataValue<BigDecimal>> nextValues = new LinkedHashSet<>();
         nextValues.addAll(vals);
         if (vals.isEmpty()) {
-            nextValues.add(new DataValue(type, BigDecimal.ONE));
+            nextValues.add(new DataValue<>(type, BigDecimal.ONE));
         } else {
             Collections.sort(vals, new Cpr());
             if (vals.size() > 1) {
                 for (int i = 0; i < (vals.size() - 1); i++) {
                     BigDecimal d1 = vals.get(i).getValue();
                     BigDecimal d2 = vals.get(i + 1).getValue();
-                    nextValues.add(new DataValue(type,
+                    nextValues.add(new DataValue<>(type,
                             d2.subtract(d1).divide(BigDecimal.valueOf(2.0)).add(d1)));
                             //(d1 + ((d2 - d1) / 2))));
                 }
             }
-            nextValues.add(new DataValue(type, (Collections.min(vals, new Cpr()).getValue().subtract(BigDecimal.ONE))));
-            nextValues.add(new DataValue(type, (Collections.max(vals, new Cpr()).getValue().add(BigDecimal.ONE))));
+            nextValues.add(new DataValue<>(type, (Collections.min(vals, new Cpr()).getValue().subtract(BigDecimal.ONE))));
+            nextValues.add(new DataValue<>(type, (Collections.max(vals, new Cpr()).getValue().add(BigDecimal.ONE))));
         }
         return nextValues;
     }
 
 	@Override
-	protected Comparator<DataValue> getComparator() {
-		return new Comparator<DataValue>() {
-			@Override
-			public int compare(DataValue d1, DataValue d2) {
-				return d1.getValue().compareTo(d2.getValue());
-			}
-		};
+	protected Comparator<DataValue<BigDecimal>> getComparator() {
+		return Comparator.comparing(DataValue::getValue);
 	}
 
 	@Override

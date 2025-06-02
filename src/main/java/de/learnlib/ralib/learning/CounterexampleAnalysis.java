@@ -19,12 +19,12 @@ package de.learnlib.ralib.learning;
 import java.util.Map;
 import java.util.Set;
 
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.Mapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.Mapping;
 import de.learnlib.ralib.learning.rastar.CEAnalysisResult;
 import de.learnlib.ralib.oracles.Branching;
 import de.learnlib.ralib.oracles.SDTLogicOracle;

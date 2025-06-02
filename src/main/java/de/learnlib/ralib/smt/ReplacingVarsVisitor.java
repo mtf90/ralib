@@ -1,10 +1,10 @@
 package de.learnlib.ralib.smt;
 
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.VarMapping;
 import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.api.Variable;
 import gov.nasa.jpf.constraints.util.DuplicatingVisitor;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.VarMapping;
 
 public class ReplacingVarsVisitor extends
         DuplicatingVisitor<VarMapping<? extends SymbolicDataValue, ? extends SymbolicDataValue>> {

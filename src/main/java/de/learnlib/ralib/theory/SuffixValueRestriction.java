@@ -5,11 +5,14 @@ import java.util.Objects;
 import java.util.Set;
 
 import de.learnlib.ralib.data.*;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
 import de.learnlib.ralib.theory.equality.EqualRestriction;
 import de.learnlib.ralib.words.DataWords;
 import de.learnlib.ralib.words.PSymbolInstance;
 import gov.nasa.jpf.constraints.api.Expression;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValue;
 import net.automatalib.word.Word;
 
 public abstract class SuffixValueRestriction {
@@ -33,7 +36,7 @@ public abstract class SuffixValueRestriction {
 
 	public abstract SuffixValueRestriction shift(int shiftStep);
 
-	public abstract Expression<Boolean> toGuardExpression(Set<SymbolicDataValue> vals);
+	public abstract Expression<Boolean> toGuardExpression(Set<SymbolicDataValue<?>> vals);
 
 	public abstract SuffixValueRestriction merge(SuffixValueRestriction other, Map<SuffixValue, SuffixValueRestriction> prior);
 

@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.Sets;
 
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -16,8 +18,6 @@ import de.learnlib.ralib.RaLibTestSuite;
 import de.learnlib.ralib.TestUtil;
 import de.learnlib.ralib.automata.RegisterAutomaton;
 import de.learnlib.ralib.automata.xml.RegisterAutomatonImporter;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.oracles.SimulatorOracle;
 import de.learnlib.ralib.oracles.TreeOracleFactory;

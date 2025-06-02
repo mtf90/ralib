@@ -24,15 +24,15 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.learnlib.logging.Category;
 import de.learnlib.query.DefaultQuery;
 import de.learnlib.ralib.automata.RegisterAutomaton;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
 import de.learnlib.ralib.learning.Hypothesis;
 import de.learnlib.ralib.sul.DataWordSUL;
 import de.learnlib.ralib.theory.Theory;
@@ -197,7 +197,7 @@ public class IORandomWalk implements IOEquivalenceOracle {
                 teacher.getAllNextValues(old));
 
             // TODO: add constants in teacher?
-            newSet.addAll(constants.values(t));
+            newSet.addAll(constants.values(t.getType()));
 
             newSet.removeAll(old);
             ArrayList<DataValue> newList = new ArrayList<>(newSet);

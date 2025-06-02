@@ -22,11 +22,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import net.automatalib.data.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.learnlib.logging.Category;
-import de.learnlib.ralib.data.Constants;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.oracles.TreeOracle;
 import de.learnlib.ralib.oracles.mto.SymbolicSuffixRestrictionBuilder;

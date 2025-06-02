@@ -12,13 +12,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import de.learnlib.ralib.data.SuffixValue;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
 import org.apache.commons.lang3.tuple.Pair;
 
 import de.learnlib.ralib.data.Bijection;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.SuffixValueGenerator;
+import de.learnlib.ralib.data.util.SuffixValueGenerator;
 import de.learnlib.ralib.learning.LocationComponent;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.learning.ralambda.DiscriminationTree;

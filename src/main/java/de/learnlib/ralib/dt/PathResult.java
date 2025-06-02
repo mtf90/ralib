@@ -5,7 +5,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import de.learnlib.ralib.data.*;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.learning.rastar.RaStar;
 import de.learnlib.ralib.oracles.TreeOracle;
@@ -13,6 +12,8 @@ import de.learnlib.ralib.theory.Memorables;
 import de.learnlib.ralib.theory.SDT;
 import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.OutputSymbol;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValueGenerator;
 
 /**
  * this is a copy of the functionality of row

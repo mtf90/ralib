@@ -16,17 +16,17 @@
  */
 package de.learnlib.ralib.tools.classanalyzer;
 
-import de.learnlib.ralib.data.DataType;
 import de.learnlib.ralib.oracles.io.IOOracle;
 import de.learnlib.ralib.theory.Theory;
+import net.automatalib.data.DataType;
 
 /**
  *
  * @author falk
  */
-public interface TypedTheory extends Theory {
+public interface TypedTheory<T> extends Theory<T> {
 
-    void setType(DataType type);
+    void setType(DataType<T> type);
 
     void setUseSuffixOpt(boolean useit);
 

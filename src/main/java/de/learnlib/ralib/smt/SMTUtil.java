@@ -3,11 +3,7 @@ package de.learnlib.ralib.smt;
 import java.util.*;
 
 import de.learnlib.ralib.data.Bijection;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.Mapping;
 import de.learnlib.ralib.data.RegisterAssignment;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.VarMapping;
 import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.api.Valuation;
 import gov.nasa.jpf.constraints.api.Variable;
@@ -16,10 +12,14 @@ import gov.nasa.jpf.constraints.expressions.NumericBooleanExpression;
 import gov.nasa.jpf.constraints.expressions.NumericComparator;
 import gov.nasa.jpf.constraints.types.BuiltinTypes;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.Mapping;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.VarMapping;
 
 public class SMTUtil {
 
-    public static Valuation compose(Mapping<? extends SymbolicDataValue, DataValue>... varVals) {
+    public static Valuation compose(Mapping<? extends SymbolicDataValue<?>, DataValue<?>>... varVals) {
         Valuation val = new Valuation();
         //System.out.println(Arrays.toString(varVals));
         Arrays.stream(varVals).sequential().flatMap( vv -> vv.entrySet().stream() ).forEach( e -> {

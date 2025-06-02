@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import de.learnlib.ralib.data.Bijection;
-import de.learnlib.ralib.data.Mapping;
-import de.learnlib.ralib.data.TypedValue;
+import net.automatalib.data.Mapping;
+import net.automatalib.data.TypedValue;
 
 public class RemappingIterator<T extends TypedValue> implements Iterable<Bijection<T>>, Iterator<Bijection<T>> {
 

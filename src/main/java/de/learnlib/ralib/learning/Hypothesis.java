@@ -27,19 +27,19 @@ import de.learnlib.ralib.automata.MutableRegisterAutomaton;
 import de.learnlib.ralib.automata.RALocation;
 import de.learnlib.ralib.automata.Transition;
 import de.learnlib.ralib.automata.TransitionSequenceTransformer;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.ParameterValuation;
 import de.learnlib.ralib.data.RegisterAssignment;
-import de.learnlib.ralib.data.RegisterValuation;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
-import de.learnlib.ralib.data.VarMapping;
 import de.learnlib.ralib.oracles.Branching;
 import de.learnlib.ralib.smt.SMTUtil;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
 import gov.nasa.jpf.constraints.api.Expression;
 import net.automatalib.common.util.Pair;
+import net.automatalib.data.Constants;
+import net.automatalib.data.ParameterValuation;
+import net.automatalib.data.RegisterValuation;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.VarMapping;
 import net.automatalib.word.Word;
 
 /**
@@ -109,7 +109,7 @@ implements AccessSequenceTransformer<PSymbolInstance>, TransitionSequenceTransfo
 
         List<Pair<Transition, RegisterValuation>> tvseq = getTransitionsAndValuations(word);
         RegisterValuation vars = tvseq.get(tvseq.size()-1).getSecond();
-        ParameterValuation pval = ParameterValuation.fromPSymbolInstance(word.lastSymbol());
+        ParameterValuation pval = new ParameterValuation(word.lastSymbol());
 
 	for (Map.Entry<Word<PSymbolInstance>, Expression<Boolean>> e : branching.getBranches().entrySet()) {
 	    if (e.getKey().lastSymbol().getBaseSymbol().equals(ps)) {
@@ -127,7 +127,7 @@ implements AccessSequenceTransformer<PSymbolInstance>, TransitionSequenceTransfo
 	return null;
     }
 
-    public VarMapping<Register, ? extends SymbolicDataValue> getLastTransitionAssignment(Word<PSymbolInstance> word) {
+    public VarMapping<Register<?>, ? extends SymbolicDataValue> getLastTransitionAssignment(Word<PSymbolInstance> word) {
 	List<Transition> tseq = getTransitions(word);
 	return tseq.get(tseq.size() - 1).getAssignment().getAssignment();
     }

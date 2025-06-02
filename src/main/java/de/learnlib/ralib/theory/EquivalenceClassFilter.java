@@ -3,19 +3,19 @@ package de.learnlib.ralib.theory;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.Mapping;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.Parameter;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
+import de.learnlib.ralib.data.SuffixValue;
 import de.learnlib.ralib.data.WordValuation;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.ParameterGenerator;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.SuffixValueGenerator;
+import de.learnlib.ralib.data.util.SuffixValueGenerator;
 import de.learnlib.ralib.smt.SMTUtil;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
 import gov.nasa.jpf.constraints.api.Expression;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.Mapping;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValueGenerator.ParameterGenerator;
 import net.automatalib.word.Word;
 
 public class EquivalenceClassFilter {
@@ -39,7 +39,7 @@ public class EquivalenceClassFilter {
 
 		ParameterGenerator pgen = new ParameterGenerator();
 		SuffixValueGenerator svgen = new SuffixValueGenerator();
-		Mapping<SymbolicDataValue, DataValue> mapping = new Mapping<>();
+		Mapping<SymbolicDataValue<?>, DataValue<?>> mapping = new Mapping<>();
 		for (PSymbolInstance psi : prefix) {
 			DataType[] dts = psi.getBaseSymbol().getPtypes();
 			DataValue[] dvs = psi.getParameterValues();
@@ -63,7 +63,7 @@ public class EquivalenceClassFilter {
 
 		Expression<Boolean> expr = restr.toGuardExpression(mapping.keySet());
 		for (DataValue ec : equivClasses) {
-			Mapping<SymbolicDataValue, DataValue> ecMapping = new Mapping<>();
+			Mapping<SymbolicDataValue<?>, DataValue<?>> ecMapping = new Mapping<>();
 			ecMapping.putAll(mapping);
 			ecMapping.put(restr.getParameter(), ec);
 			//System.out.println(" -- " + expr + "  - " + ecMapping);

@@ -7,6 +7,8 @@ import de.learnlib.ralib.data.*;
 import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.expressions.Constant;
 import gov.nasa.jpf.constraints.util.DuplicatingVisitor;
+import net.automatalib.data.Mapping;
+import net.automatalib.data.SymbolicDataValue;
 
 public class ReplacingValuesVisitor extends
         DuplicatingVisitor<Map<? extends Constant<?>, ? extends Expression<?>>> {

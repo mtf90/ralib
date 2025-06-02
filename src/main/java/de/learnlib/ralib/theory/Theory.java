@@ -21,22 +21,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataValue;
 import de.learnlib.ralib.data.SuffixValuation;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
+import de.learnlib.ralib.data.SuffixValue;
 import de.learnlib.ralib.data.WordValuation;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.oracles.mto.MultiTheoryTreeOracle;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValue;
 import net.automatalib.word.Word;
 
 /**
  * @author falk
  */
-public interface Theory {
+public interface Theory<T> {
 
     /**
      * Returns a fresh data value.
@@ -44,7 +44,7 @@ public interface Theory {
      * @param vals
      * @return a fresh data value of type T
      */
-    DataValue getFreshValue(List<DataValue> vals);
+    DataValue<T> getFreshValue(List<DataValue<T>> vals);
 
     /**
      * Implements a tree query for this theory. This tree query
@@ -79,7 +79,7 @@ public interface Theory {
      * @param vals
      * @return
      */
-    Collection<DataValue> getAllNextValues(List<DataValue> vals);
+    Collection<DataValue<T>> getAllNextValues(List<DataValue<T>> vals);
 
     /**
      * TBD

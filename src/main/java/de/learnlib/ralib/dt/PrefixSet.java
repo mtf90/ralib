@@ -7,8 +7,8 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import de.learnlib.ralib.data.Bijection;
-import de.learnlib.ralib.data.DataValue;
 import de.learnlib.ralib.words.PSymbolInstance;
+import net.automatalib.data.DataValue;
 import net.automatalib.word.Word;
 
 public class PrefixSet {

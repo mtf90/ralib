@@ -22,13 +22,15 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.ParameterValuation;
-import de.learnlib.ralib.data.RegisterValuation;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import gov.nasa.jpf.constraints.api.Expression;
 import net.automatalib.automaton.MutableDeterministic;
+import net.automatalib.automaton.ra.Assignment;
 import net.automatalib.common.util.Pair;
+import net.automatalib.data.Constants;
+import net.automatalib.data.ParameterValuation;
+import net.automatalib.data.RegisterValuation;
 import net.automatalib.word.Word;
 
 /**
@@ -37,7 +39,8 @@ import net.automatalib.word.Word;
  * @author falk
  */
 public class MutableRegisterAutomaton extends RegisterAutomaton
-        implements MutableDeterministic<RALocation, ParameterizedSymbol, Transition, Boolean, Void> {
+        implements MutableDeterministic<RALocation, ParameterizedSymbol, Transition, Boolean, Void>,
+                   net.automatalib.automaton.ra.MutableRegisterAutomaton<RALocation, ParameterizedSymbol, Transition> {
 
     protected final Constants constants;
 
@@ -77,6 +80,11 @@ public class MutableRegisterAutomaton extends RegisterAutomaton
     }
 
     @Override
+    public Constants getConstants() {
+        return this.constants;
+    }
+
+    @Override
     public RALocation getInitialState() {
         return initial;
     }
@@ -87,12 +95,12 @@ public class MutableRegisterAutomaton extends RegisterAutomaton
     }
 
     protected List<Transition> getTransitions(Word<PSymbolInstance> dw) {
-        RegisterValuation vars = RegisterValuation.copyOf(getInitialRegisters());
+        RegisterValuation vars = new RegisterValuation(getInitialRegisters());
         RALocation current = initial;
         List<Transition> tseq = new ArrayList<>();
         for (PSymbolInstance psi : dw) {
 
-            ParameterValuation pars = ParameterValuation.fromPSymbolInstance(psi);
+            ParameterValuation pars = new ParameterValuation(psi);
 
             Collection<Transition> candidates =
                     current.getOut(psi.getBaseSymbol());
@@ -120,12 +128,12 @@ public class MutableRegisterAutomaton extends RegisterAutomaton
     }
 
     protected List<Pair<Transition,RegisterValuation>> getTransitionsAndValuations(Word<PSymbolInstance> dw) {
-        RegisterValuation vars = RegisterValuation.copyOf(getInitialRegisters());
+        RegisterValuation vars = new RegisterValuation(getInitialRegisters());
         RALocation current = initial;
         List<Pair<Transition,RegisterValuation>> tvseq = new ArrayList<>();
         for (PSymbolInstance psi : dw) {
 
-            ParameterValuation pars = ParameterValuation.fromPSymbolInstance(psi);
+            ParameterValuation pars = new ParameterValuation(psi);
 
             Collection<Transition> candidates =
                     current.getOut(psi.getBaseSymbol());
@@ -139,7 +147,7 @@ public class MutableRegisterAutomaton extends RegisterAutomaton
                 if (t.isEnabled(vars, pars, constants)) {
                     vars = t.execute(vars, pars, constants);
                     current = t.getDestination();
-                    tvseq.add(Pair.of(t, RegisterValuation.copyOf(vars)));
+                    tvseq.add(Pair.of(t, new RegisterValuation(vars)));
                     found = true;
                     break;
                 }
@@ -247,7 +255,7 @@ public class MutableRegisterAutomaton extends RegisterAutomaton
     }
 
     @Override
-    public Transition createTransition(RALocation s, Void tp) {
+    public Transition createTransition(RALocation successor, Expression<Boolean> guard, Assignment assignment) {
         throw new UnsupportedOperationException(
                 "Unsupported: A RA can have input and output transitions.");
     }

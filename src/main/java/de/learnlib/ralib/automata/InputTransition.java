@@ -18,6 +18,7 @@ package de.learnlib.ralib.automata;
 
 import de.learnlib.ralib.words.InputSymbol;
 import gov.nasa.jpf.constraints.api.Expression;
+import net.automatalib.automaton.ra.Assignment;
 
 /**
  *

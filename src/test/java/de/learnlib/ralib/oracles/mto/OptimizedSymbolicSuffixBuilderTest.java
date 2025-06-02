@@ -18,7 +18,7 @@ import de.learnlib.ralib.data.DataValue;
 import de.learnlib.ralib.data.SymbolicDataValue;
 import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
 import de.learnlib.ralib.data.util.SymbolicDataValueGenerator;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.SuffixValueGenerator;
+import de.learnlib.ralib.data.util.SuffixValueGenerator;
 import de.learnlib.ralib.example.list.BoundedList;
 import de.learnlib.ralib.example.list.BoundedListDataWordOracle;
 import de.learnlib.ralib.learning.SymbolicSuffix;
@@ -61,8 +61,8 @@ public class OptimizedSymbolicSuffixBuilderTest {
 
         OptimizedSymbolicSuffixBuilder builder = new OptimizedSymbolicSuffixBuilder(consts, restrictionBuilder);
 
-        SymbolicDataValueGenerator.SuffixValueGenerator svGen =
-                new SymbolicDataValueGenerator.SuffixValueGenerator();
+        SuffixValueGenerator svGen =
+                new SuffixValueGenerator();
 
         SymbolicDataValue.SuffixValue s1 = svGen.next(INT_TYPE);
         SymbolicDataValue.SuffixValue s2 = svGen.next(INT_TYPE);
@@ -252,8 +252,8 @@ public class OptimizedSymbolicSuffixBuilderTest {
         InputSymbol A = new InputSymbol("a", type, type);
         InputSymbol B = new InputSymbol("b", type);
         InputSymbol C = new InputSymbol("c");
-        SymbolicDataValueGenerator.SuffixValueGenerator sgen =
-                new SymbolicDataValueGenerator.SuffixValueGenerator();
+        SuffixValueGenerator sgen =
+                new SuffixValueGenerator();
         SymbolicDataValue.SuffixValue s1 = sgen.next(type);
         SymbolicDataValue.SuffixValue s2 = sgen.next(type);
         SymbolicDataValue.SuffixValue s3 = sgen.next(type);
@@ -350,7 +350,7 @@ public class OptimizedSymbolicSuffixBuilderTest {
         IntegerEqualityTheory dit = new IntegerEqualityTheory(type);
         teachers.put(type, dit);
 
-        SuffixValueGenerator sgen = new SymbolicDataValueGenerator.SuffixValueGenerator();
+        SuffixValueGenerator sgen = new SuffixValueGenerator();
         SuffixValue s1 = sgen.next(type);
         SuffixValue s2 = sgen.next(type);
         SuffixValue s3 = sgen.next(type);
@@ -435,7 +435,7 @@ public class OptimizedSymbolicSuffixBuilderTest {
         IntegerEqualityTheory dit = new IntegerEqualityTheory(type);
         teachers.put(type, dit);
 
-        SuffixValueGenerator sgen = new SymbolicDataValueGenerator.SuffixValueGenerator();
+        SuffixValueGenerator sgen = new SuffixValueGenerator();
         SuffixValue s1 = sgen.next(type);
         SuffixValue s2 = sgen.next(type);
 
@@ -508,7 +508,7 @@ public class OptimizedSymbolicSuffixBuilderTest {
         IntegerEqualityTheory dit = new IntegerEqualityTheory(type);
         teachers.put(type, dit);
 
-        SuffixValueGenerator sgen = new SymbolicDataValueGenerator.SuffixValueGenerator();
+        SuffixValueGenerator sgen = new SuffixValueGenerator();
         SuffixValue s1 = sgen.next(type);
         SuffixValue s2 = sgen.next(type);
         SuffixValue s3 = sgen.next(type);

@@ -16,8 +16,9 @@
  */
 package de.learnlib.ralib.tools.classanalyzer;
 
-import de.learnlib.ralib.data.DataType;
 import de.learnlib.ralib.words.OutputSymbol;
+import gov.nasa.jpf.constraints.types.BuiltinTypes;
+import net.automatalib.data.DataType;
 
 /**
  *
@@ -66,5 +67,5 @@ public class SpecialSymbols {
 
     public static final OutputSymbol FALSE = new OutputSymbol("FALSE");
 
-    public static final DataType BOOLEAN_TYPE = new DataType("boolean");
+    public static final DataType<Boolean> BOOLEAN_TYPE = new DataType<>("boolean", BuiltinTypes.BOOL);
 }

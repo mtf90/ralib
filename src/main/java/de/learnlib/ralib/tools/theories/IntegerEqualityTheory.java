@@ -21,32 +21,32 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
 import de.learnlib.ralib.oracles.io.IOOracle;
 import de.learnlib.ralib.theory.equality.EqualityTheory;
 import de.learnlib.ralib.tools.classanalyzer.TypedTheory;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 
 /**
  *
  * @author falk
  */
-public class IntegerEqualityTheory  extends EqualityTheory implements TypedTheory {
+public class IntegerEqualityTheory  extends EqualityTheory implements TypedTheory<BigDecimal> {
 
 
-    private DataType type = null;
+    private DataType<BigDecimal> type = null;
 
     public IntegerEqualityTheory() {
     }
 
-    public IntegerEqualityTheory(DataType t) {
+    public IntegerEqualityTheory(DataType<BigDecimal> t) {
         this.type = t;
     }
 
     @Override
-    public DataValue getFreshValue(List<DataValue> vals) {
+    public DataValue<BigDecimal> getFreshValue(List<DataValue<BigDecimal>> vals) {
         BigDecimal dv = new BigDecimal("-1");
-        for (DataValue d : vals) {
+        for (DataValue<BigDecimal> d : vals) {
             dv = dv.max(d.getValue());
         }
 
@@ -54,7 +54,7 @@ public class IntegerEqualityTheory  extends EqualityTheory implements TypedTheor
     }
 
     @Override
-    public void setType(DataType type) {
+    public void setType(DataType<BigDecimal> type) {
         this.type = type;
     }
 
@@ -69,9 +69,9 @@ public class IntegerEqualityTheory  extends EqualityTheory implements TypedTheor
     }
 
     @Override
-    public Collection<DataValue> getAllNextValues(List<DataValue> vals) {
+    public Collection<DataValue<BigDecimal>> getAllNextValues(List<DataValue<BigDecimal>> vals) {
         // TODO: add constants ...
-        ArrayList<DataValue> ret = new ArrayList<>(vals);
+        ArrayList<DataValue<BigDecimal>> ret = new ArrayList<>(vals);
         ret.add(getFreshValue(vals));
         return ret;
     }

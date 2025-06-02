@@ -2,15 +2,10 @@ package de.learnlib.ralib.oracles.mto;
 
 import java.util.*;
 
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.Mapping;
 import de.learnlib.ralib.data.SDTGuardElement;
 import de.learnlib.ralib.data.SDTRelabeling;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator;
+import de.learnlib.ralib.data.SuffixValue;
+import de.learnlib.ralib.data.util.SuffixValueGenerator;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.smt.ConstraintSolver;
 import de.learnlib.ralib.theory.SDT;
@@ -23,6 +18,11 @@ import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
 import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.Mapping;
+import net.automatalib.data.SymbolicDataValue;
 import net.automatalib.word.Word;
 
 public class OptimizedSymbolicSuffixBuilder {
@@ -378,9 +378,9 @@ public class OptimizedSymbolicSuffixBuilder {
 
         Map<SuffixValue, SuffixValueRestriction> restrictions = new LinkedHashMap<>();
 
-        SymbolicDataValueGenerator.SuffixValueGenerator sgen = new SymbolicDataValueGenerator.SuffixValueGenerator();
+        SuffixValueGenerator sgen = new SuffixValueGenerator();
         for (int i = 0; i < DataWords.paramLength(suffix1.getActions()); i++) {
-            DataType type = suffix1.getDataValue(i+1).getDataType();
+            DataType type = suffix1.getDataValue(i + 1).getDataType();
             SuffixValue sv = sgen.next(type);
             SuffixValueRestriction restr1 = suffix1.getRestriction(sv);
             SuffixValueRestriction restr2 = suffix2.getRestriction(sv);

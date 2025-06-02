@@ -29,20 +29,20 @@ import java.util.stream.Stream;
 
 import com.google.common.collect.Sets;
 
+import de.learnlib.ralib.data.SuffixValue;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.Mapping;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValueGenerator.ParameterGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.learnlib.logging.Category;
 import de.learnlib.query.DefaultQuery;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.Mapping;
 import de.learnlib.ralib.data.SuffixValuation;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
 import de.learnlib.ralib.data.WordValuation;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.ParameterGenerator;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.oracles.Branching;
 import de.learnlib.ralib.oracles.DataWordOracle;
@@ -399,8 +399,8 @@ public class MultiTheoryTreeOracle implements TreeOracle {
             SDT sdt) {
 
         Map<Word<PSymbolInstance>, Boolean> words = new LinkedHashMap<Word<PSymbolInstance>, Boolean>();
-        instantiate(words, prefix, suffix,  sdt, 0, 0,
-                new SuffixValuation(), new ParameterGenerator(), new SuffixValuation(), new ParameterGenerator());
+        instantiate(words, prefix, suffix, sdt, 0, 0,
+                    new SuffixValuation(), new ParameterGenerator(), new SuffixValuation(), new ParameterGenerator());
         return words;
     }
 

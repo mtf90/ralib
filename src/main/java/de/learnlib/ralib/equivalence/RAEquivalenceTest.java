@@ -24,15 +24,15 @@ import de.learnlib.query.DefaultQuery;
 import de.learnlib.ralib.automata.RALocation;
 import de.learnlib.ralib.automata.RegisterAutomaton;
 import de.learnlib.ralib.automata.Transition;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.ParameterValuation;
-import de.learnlib.ralib.data.RegisterValuation;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
 import de.learnlib.ralib.theory.Theory;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.ParameterValuation;
+import net.automatalib.data.RegisterValuation;
+import net.automatalib.data.SymbolicDataValue.Register;
 import net.automatalib.word.Word;
 
 /**
@@ -56,8 +56,8 @@ public class RAEquivalenceTest implements IOEquivalenceOracle
         public Tuple(RALocation l1, RALocation l2, RegisterValuation r1, RegisterValuation r2) {
             sys1loc = l1;
             sys2loc = l2;
-            sys1reg = RegisterValuation.copyOf(r1);
-            sys2reg = RegisterValuation.copyOf(r2);
+            sys1reg = new RegisterValuation(r1);
+            sys2reg = new RegisterValuation(r2);
         }
 
         @Override
@@ -106,7 +106,7 @@ public class RAEquivalenceTest implements IOEquivalenceOracle
     private boolean compareRegister(
             RegisterValuation r1, RegisterValuation r2, Map<Object,Object> vMap) {
 
-        for (Map.Entry<Register,DataValue> entry : r1.entrySet())
+        for (Map.Entry<Register<?>, DataValue<?>> entry : r1.entrySet())
         {
             DataValue v1 = entry.getValue();
             DataValue v2 = r2.get(entry.getKey());
@@ -156,8 +156,8 @@ public class RAEquivalenceTest implements IOEquivalenceOracle
         public Triple(RALocation l1, RALocation l2, RegisterValuation r1, RegisterValuation r2, Word w, Word t) {
             sys1loc = l1;
             sys2loc = l2;
-            sys1reg = RegisterValuation.copyOf(r1);
-            sys2reg = RegisterValuation.copyOf(r2);
+            sys1reg = new RegisterValuation(r1);
+            sys2reg = new RegisterValuation(r2);
             as = w;
             trace = t;
         }
@@ -277,10 +277,10 @@ public class RAEquivalenceTest implements IOEquivalenceOracle
     }
 
     private void executeStep(Triple in, PSymbolInstance psi, Triple out) {
-        out.sys1reg = RegisterValuation.copyOf(in.sys1reg);
-        out.sys2reg = RegisterValuation.copyOf(in.sys2reg);
+        out.sys1reg = new RegisterValuation(in.sys1reg);
+        out.sys2reg = new RegisterValuation(in.sys2reg);
 
-        ParameterValuation pval = ParameterValuation.fromPSymbolInstance(psi);
+        ParameterValuation pval = new ParameterValuation(psi);
 
         // first sys input
         RALocation loc1 = null;

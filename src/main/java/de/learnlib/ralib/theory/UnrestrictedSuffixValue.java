@@ -3,10 +3,10 @@ package de.learnlib.ralib.theory;
 import java.util.Map;
 import java.util.Set;
 
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
+import de.learnlib.ralib.data.SuffixValue;
 import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.data.SymbolicDataValue;
 
 public class UnrestrictedSuffixValue extends SuffixValueRestriction {
 
@@ -19,7 +19,7 @@ public class UnrestrictedSuffixValue extends SuffixValueRestriction {
 	}
 
 	@Override
-	public Expression<Boolean> toGuardExpression(Set<SymbolicDataValue> vals) {
+	public Expression<Boolean> toGuardExpression(Set<SymbolicDataValue<?>> vals) {
 		return ExpressionUtil.TRUE;
 	}
 

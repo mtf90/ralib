@@ -4,14 +4,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
+import de.learnlib.ralib.data.SuffixValue;
 import de.learnlib.ralib.theory.FreshSuffixValue;
 import de.learnlib.ralib.theory.SuffixValueRestriction;
 import de.learnlib.ralib.theory.UnrestrictedSuffixValue;
 import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.expressions.NumericBooleanExpression;
 import gov.nasa.jpf.constraints.expressions.NumericComparator;
+import net.automatalib.data.SymbolicDataValue;
 
 public class EqualRestriction extends SuffixValueRestriction {
 	private final SuffixValue equalParam;
@@ -32,7 +32,7 @@ public class EqualRestriction extends SuffixValueRestriction {
 	}
 
 	@Override
-	public Expression<Boolean> toGuardExpression(Set<SymbolicDataValue> vals) {
+	public Expression<Boolean> toGuardExpression(Set<SymbolicDataValue<?>> vals) {
 		assert vals.contains(equalParam);
 
 		return new NumericBooleanExpression(parameter, NumericComparator.EQ, equalParam);

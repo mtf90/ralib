@@ -19,7 +19,7 @@ package de.learnlib.ralib.words;
 import java.util.Arrays;
 import java.util.Objects;
 
-import de.learnlib.ralib.data.DataType;
+import net.automatalib.data.DataType;
 
 /**
  * A symbol with typed parameters
@@ -27,7 +27,7 @@ import de.learnlib.ralib.data.DataType;
  *
  * @author falk
  */
-public abstract class ParameterizedSymbol {
+public abstract class ParameterizedSymbol implements net.automatalib.symbol.ParameterizedSymbol {
 
     /**
      * name of symbol

@@ -16,18 +16,12 @@
  */
 package de.learnlib.ralib.example.keygen;
 
-import de.learnlib.ralib.automata.Assignment;
 import de.learnlib.ralib.automata.InputTransition;
 import de.learnlib.ralib.automata.MutableRegisterAutomaton;
 import de.learnlib.ralib.automata.RALocation;
 import de.learnlib.ralib.automata.RegisterAutomaton;
 import de.learnlib.ralib.automata.output.OutputMapping;
 import de.learnlib.ralib.automata.output.OutputTransition;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
-import de.learnlib.ralib.data.VarMapping;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator;
 import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.OutputSymbol;
 import gov.nasa.jpf.constraints.api.Expression;
@@ -35,6 +29,12 @@ import gov.nasa.jpf.constraints.expressions.Negation;
 import gov.nasa.jpf.constraints.expressions.NumericBooleanExpression;
 import gov.nasa.jpf.constraints.expressions.NumericComparator;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.automaton.ra.Assignment;
+import net.automatalib.data.DataType;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.SymbolicDataValueGenerator;
+import net.automatalib.data.VarMapping;
 
 /**
  *
@@ -101,7 +101,7 @@ public final class MapAutomatonExample {
         Expression<Boolean> trueGuard   = ExpressionUtil.TRUE;
 
         // assignments
-        VarMapping<SymbolicDataValue.Register, SymbolicDataValue> store1IMapping = new VarMapping<SymbolicDataValue.Register, SymbolicDataValue>();
+        VarMapping<Register, SymbolicDataValue> store1IMapping = new VarMapping<SymbolicDataValue.Register, SymbolicDataValue>();
         store1IMapping.put(rVal1, pVal);
 
         VarMapping<SymbolicDataValue.Register, SymbolicDataValue> store1OMapping = new VarMapping<SymbolicDataValue.Register, SymbolicDataValue>();

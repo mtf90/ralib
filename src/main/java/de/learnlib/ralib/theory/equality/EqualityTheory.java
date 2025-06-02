@@ -16,6 +16,7 @@
  */
 package de.learnlib.ralib.theory.equality;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -28,14 +29,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Constant;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValue.Register;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.learnlib.ralib.data.*;
-import de.learnlib.ralib.data.SymbolicDataValue.Constant;
-import de.learnlib.ralib.data.SymbolicDataValue.Parameter;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.oracles.io.IOOracle;
 import de.learnlib.ralib.oracles.mto.MultiTheoryTreeOracle;
@@ -51,7 +55,7 @@ import net.automatalib.word.Word;
 /**
  * @author falk and sofia
  */
-public abstract class EqualityTheory implements Theory {
+public abstract class EqualityTheory implements Theory<BigDecimal> {
 
     protected boolean useNonFreeOptimization;
 
@@ -74,7 +78,7 @@ public abstract class EqualityTheory implements Theory {
         this(false);
     }
 
-    public List<DataValue> getPotential(List<DataValue> vals) {
+    public List<DataValue<BigDecimal>> getPotential(List<DataValue<BigDecimal>> vals) {
         return vals;
     }
 
@@ -130,11 +134,11 @@ public abstract class EqualityTheory implements Theory {
 
         Map<SDTGuard.EqualityGuard, SDT> tempKids = new LinkedHashMap<>();
 
-        Collection<DataValue> potSet = DataWords.joinValsToSet(constants.values(type),
-                DataWords.valSet(prefix, type), suffixValues.values(type));
+        Collection<DataValue<BigDecimal>> potSet = DataWords.joinValsToSet(constants.values(type.getType()),
+                DataWords.valSet(prefix, type), suffixValues.values(type.getType()));
 
-        List<DataValue> potList = new ArrayList<>(potSet);
-        List<DataValue> potential = getPotential(potList);
+        List<DataValue<BigDecimal>> potList = new ArrayList<>(potSet);
+        List<DataValue<BigDecimal>> potential = getPotential(potList);
 
         DataValue fresh = getFreshValue(potential);
 
@@ -280,7 +284,7 @@ public abstract class EqualityTheory implements Theory {
             WordValuation ifValues, Constants constants) {
         DataType type = currentParam.getDataType();
         int newDv_i;
-        for (Map.Entry <Constant, DataValue> entry : constants.entrySet()) {
+        for (Map.Entry <Constant<?>, DataValue<?>> entry : constants.entrySet()) {
             if (entry.getValue().equals(newDv)) {
                 return new SDTGuard.EqualityGuard(currentParam, entry.getKey());
             }
@@ -320,7 +324,7 @@ public abstract class EqualityTheory implements Theory {
                 SDTGuardElement ereg = eqGuard.register();
                 if (SDTGuardElement.isDataValue(ereg)) {
 
-                    Parameter p = new Parameter(ereg.getDataType(), prefixValues.indexOf( (DataValue) ereg)+1);
+                    Parameter p = new Parameter(ereg.getDataType(), prefixValues.indexOf((DataValue) ereg) + 1);
                     LOGGER.trace("p: " + p.toString());
                     int idx = p.getId();
                     return prefixValues.get(idx - 1);
@@ -335,7 +339,7 @@ public abstract class EqualityTheory implements Theory {
             // todo: this only works under the assumption that disjunctions only contain disequality guards
         }
 
-        Collection<DataValue> potSet = DataWords.joinValsToSet(constants.values(type), DataWords.valSet(prefix, type),
+        Collection<DataValue> potSet = DataWords.joinValsToSet(constants.values(type.getType()), DataWords.valSet(prefix, type),
                 pval.values(type));
 
         if (!potSet.isEmpty()) {
@@ -343,7 +347,7 @@ public abstract class EqualityTheory implements Theory {
         } else {
             LOGGER.trace("potSet is empty");
         }
-        DataValue fresh = this.getFreshValue(new ArrayList<DataValue>(potSet));
+        DataValue fresh = this.getFreshValue(new ArrayList<>(potSet));
         LOGGER.trace("fresh = " + fresh.toString());
         return fresh;
 

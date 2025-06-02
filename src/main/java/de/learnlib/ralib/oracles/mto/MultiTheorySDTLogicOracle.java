@@ -18,13 +18,17 @@ package de.learnlib.ralib.oracles.mto;
 
 import java.util.Map;
 
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.Mapping;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.VarMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.learnlib.ralib.data.*;
-import de.learnlib.ralib.data.SymbolicDataValue.Parameter;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
 import de.learnlib.ralib.oracles.SDTLogicOracle;
 import de.learnlib.ralib.smt.ConstraintSolver;
 import de.learnlib.ralib.smt.SMTUtil;
@@ -70,7 +74,7 @@ public class MultiTheorySDTLogicOracle implements SDTLogicOracle {
 
         //System.out.println(exprG);
 
-        VarMapping<SymbolicDataValue, SymbolicDataValue> gremap = new VarMapping<>();
+        VarMapping<SymbolicDataValue<?>, SymbolicDataValue<?>> gremap = new VarMapping<>();
         for (Variable<?> sv : ExpressionUtil.freeVariables(exprG)) {
             if (sv instanceof Parameter p) {
                 gremap.put(p, new SuffixValue( p.getDataType(), p.getId()));
@@ -78,7 +82,7 @@ public class MultiTheorySDTLogicOracle implements SDTLogicOracle {
         }
 
         exprG = SMTUtil.renameVars(exprG, gremap);
-        VarMapping<Register, Register> remap = new VarMapping<>();
+        VarMapping<Register<?>, Register<?>> remap = new VarMapping<>();
 
         Expression<Boolean> expr2r = SMTUtil.renameVars(expr2, remap);
         Expression<Boolean> left = ExpressionUtil.and(exprG, expr1, new Negation(expr2r));

@@ -26,19 +26,21 @@ import de.learnlib.ralib.automata.RegisterAutomaton;
 import de.learnlib.ralib.automata.Transition;
 import de.learnlib.ralib.automata.output.OutputMapping;
 import de.learnlib.ralib.automata.output.OutputTransition;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.ParameterValuation;
-import de.learnlib.ralib.data.RegisterValuation;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator;
 import de.learnlib.ralib.theory.Theory;
 import de.learnlib.ralib.words.DataWords;
 import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.ParameterValuation;
+import net.automatalib.data.RegisterValuation;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Constant;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.SymbolicDataValueGenerator;
 import net.automatalib.word.Word;
 
 /**
@@ -86,8 +88,8 @@ public class IOEquivalenceTest implements IOEquivalenceOracle
         public Tuple(RALocation l1, RALocation l2, RegisterValuation r1, RegisterValuation r2) {
             sys1loc = l1;
             sys2loc = l2;
-            sys1reg = RegisterValuation.copyOf(r1);
-            sys2reg = RegisterValuation.copyOf(r2);
+            sys1reg = new RegisterValuation(r1);
+            sys2reg = new RegisterValuation(r2);
         }
 
         @Override
@@ -136,7 +138,7 @@ public class IOEquivalenceTest implements IOEquivalenceOracle
     private boolean compareRegister(
             RegisterValuation r1, RegisterValuation r2, Map<Object,Object> vMap) {
 
-        for (Map.Entry<Register,DataValue> entry : r1.entrySet()) {
+        for (Map.Entry<Register<?>,DataValue<?>> entry : r1.entrySet()) {
             DataValue v1 = entry.getValue();
             DataValue v2 = r2.get(entry.getKey());
 
@@ -182,8 +184,8 @@ public class IOEquivalenceTest implements IOEquivalenceOracle
         public Triple(RALocation l1, RALocation l2, RegisterValuation r1, RegisterValuation r2, Word<PSymbolInstance> w, Word<PSymbolInstance> t) {
             sys1loc = l1;
             sys2loc = l2;
-            sys1reg = RegisterValuation.copyOf(r1);
-            sys2reg = RegisterValuation.copyOf(r2);
+            sys1reg = new RegisterValuation(r1);
+            sys2reg = new RegisterValuation(r2);
             as = w;
             trace = t;
         }
@@ -329,10 +331,10 @@ public class IOEquivalenceTest implements IOEquivalenceOracle
     private Pair<PSymbolInstance, PSymbolInstance> executeStep(
             Triple in, PSymbolInstance psi, Triple out)
     {
-        out.sys1reg = RegisterValuation.copyOf(in.sys1reg);
-        out.sys2reg = RegisterValuation.copyOf(in.sys2reg);
+        out.sys1reg = new RegisterValuation(in.sys1reg);
+        out.sys2reg = new RegisterValuation(in.sys2reg);
 
-        ParameterValuation pval = ParameterValuation.fromPSymbolInstance(psi);
+        ParameterValuation pval = new ParameterValuation(psi);
 
         // first sys input
         RALocation loc1 = null;
@@ -381,7 +383,7 @@ public class IOEquivalenceTest implements IOEquivalenceOracle
         PSymbolInstance ret2 = createOutputSymbol(ot2, out.sys2reg, out.sys1reg);
 
         // first sys output commit
-        out.sys1reg = ot1.execute(out.sys1reg, ParameterValuation.fromPSymbolInstance(ret1), consts);
+        out.sys1reg = ot1.execute(out.sys1reg, new ParameterValuation(ret1), consts);
         out.sys1loc = ot1.getDestination();
 
         if (out.sys1loc == null) {
@@ -389,7 +391,7 @@ public class IOEquivalenceTest implements IOEquivalenceOracle
         }
 
         // second sys output commit
-        out.sys2reg = ot2.execute(out.sys2reg, ParameterValuation.fromPSymbolInstance(ret2), consts);
+        out.sys2reg = ot2.execute(out.sys2reg, new ParameterValuation(ret2), consts);
         out.sys2loc = ot2.getDestination();
 
         if (out.sys2loc == null) {
@@ -491,13 +493,13 @@ public class IOEquivalenceTest implements IOEquivalenceOracle
             }
             else {
                 SymbolicDataValue sv = mapping.getOutput().get(p);
-                if (sv.isRegister()) {
-                    vals[i] = register.get( (Register) sv);
+                if (sv instanceof Register<?>) {
+                    vals[i] = register.get(sv);
                 }
-                else if (sv.isConstant()) {
-                    vals[i] = consts.get( (SymbolicDataValue.Constant) sv);
+                else if (sv instanceof Constant<?>) {
+                    vals[i] = consts.get(sv);
                 }
-                else if (sv.isParameter()) {
+                else if (sv instanceof Parameter<?>) {
                     throw new UnsupportedOperationException("not supported yet.");
                 }
                 else {

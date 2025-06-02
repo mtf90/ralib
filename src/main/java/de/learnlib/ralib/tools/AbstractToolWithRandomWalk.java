@@ -25,14 +25,14 @@ import java.util.logging.Level;
 
 import com.google.gson.Gson;
 
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
 import de.learnlib.ralib.smt.ConstraintSolver;
 import de.learnlib.ralib.tools.classanalyzer.TypedTheory;
 import de.learnlib.ralib.tools.config.Configuration;
 import de.learnlib.ralib.tools.config.ConfigurationException;
 import de.learnlib.ralib.tools.config.ConfigurationOption;
 import net.automatalib.common.util.Pair;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 
 /**
  *

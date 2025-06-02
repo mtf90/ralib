@@ -1,7 +1,11 @@
 package de.learnlib.ralib.theory.equality;
 
+import java.math.BigDecimal;
 import java.util.*;
 
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +22,7 @@ import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
 import net.automatalib.word.Word;
 
-public abstract class UniqueEqualityTheory implements Theory {
+public abstract class UniqueEqualityTheory implements Theory<BigDecimal> {
 
     // protected boolean useNonFreeOptimization;
 
@@ -41,7 +45,7 @@ public abstract class UniqueEqualityTheory implements Theory {
         this(false);
     }
 
-    public List<DataValue> getPotential(List<DataValue> vals) {
+    public List<DataValue<BigDecimal>> getPotential(List<DataValue<BigDecimal>> vals) {
         return vals;
     }
 
@@ -51,14 +55,14 @@ public abstract class UniqueEqualityTheory implements Theory {
 
         int pId = values.size() + 1;
 
-        SymbolicDataValue.SuffixValue sv = suffix.getDataValue(pId);
+        SuffixValue sv = suffix.getDataValue(pId);
         DataType type = sv.getDataType();
 
-        Collection<DataValue> potSet = DataWords.joinValsToSet(constants.values(type),
-                DataWords.valSet(prefix, type), suffixValues.values(type));
+        Collection<DataValue> potSet = DataWords.joinValsToSet(constants.values(type.getType()),
+                DataWords.valSet(prefix, type), suffixValues.values(type.getType()));
 
-        List<DataValue> potList = new ArrayList<>(potSet);
-        List<DataValue> potential = getPotential(potList);
+        List<DataValue<BigDecimal>> potList = new ArrayList<>(potSet);
+        List<DataValue<BigDecimal>> potential = getPotential(potList);
 
         SDT sdt;
         Map<SDTGuard, SDT> merged = new HashMap<>();
@@ -82,20 +86,20 @@ public abstract class UniqueEqualityTheory implements Theory {
     @Override
     // instantiate a parameter with a data value
     public DataValue instantiate(Word<PSymbolInstance> prefix, ParameterizedSymbol ps, SuffixValuation pval,
-                                 Constants constants, SDTGuard guard, SymbolicDataValue.SuffixValue param, Set<DataValue> oldDvs) {
+                                 Constants constants, SDTGuard guard, SuffixValue param, Set<DataValue> oldDvs) {
 
         List<DataValue> prefixValues = Arrays.asList(DataWords.valsOf(prefix));
         LOGGER.trace(Category.QUERY, "prefix values : {}", prefixValues);
         DataType type = param.getDataType();
-        Collection potSet = DataWords.joinValsToSet(constants.values(type), DataWords.valSet(prefix, type),
-                pval.values(type));
+        Collection potSet = DataWords.joinValsToSet(constants.values(type.getType()), DataWords.valSet(prefix, type),
+                pval.values(type.getType()));
 
         if (!potSet.isEmpty()) {
             LOGGER.trace(Category.DATASTRUCTURE, "potSet = {}", potSet);
         } else {
             LOGGER.trace(Category.DATASTRUCTURE, "potSet is empty");
         }
-        DataValue fresh = this.getFreshValue(new ArrayList<DataValue>(potSet));
+        DataValue fresh = this.getFreshValue(new ArrayList<>(potSet));
         LOGGER.trace(Category.DATASTRUCTURE, "fresh = {}", fresh.toString());
         return fresh;
 

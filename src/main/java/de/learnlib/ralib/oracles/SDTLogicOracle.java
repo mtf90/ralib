@@ -20,6 +20,9 @@ import de.learnlib.ralib.data.*;
 import de.learnlib.ralib.theory.SDT;
 import de.learnlib.ralib.words.PSymbolInstance;
 import gov.nasa.jpf.constraints.api.Expression;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.Mapping;
+import net.automatalib.data.SymbolicDataValue;
 import net.automatalib.word.Word;
 
 /**

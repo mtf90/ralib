@@ -25,23 +25,23 @@ import java.util.Map.Entry;
 import java.util.Set;
 import jakarta.xml.bind.JAXB;
 
-import de.learnlib.ralib.automata.Assignment;
 import de.learnlib.ralib.automata.RALocation;
 import de.learnlib.ralib.automata.Transition;
 import de.learnlib.ralib.automata.output.OutputMapping;
 import de.learnlib.ralib.automata.output.OutputTransition;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.Constant;
-import de.learnlib.ralib.data.SymbolicDataValue.Parameter;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.ParameterGenerator;
 import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.OutputSymbol;
 import de.learnlib.ralib.words.ParameterizedSymbol;
 import gov.nasa.jpf.constraints.api.Expression;
+import net.automatalib.automaton.ra.Assignment;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Constant;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.SymbolicDataValueGenerator.ParameterGenerator;
 
 /**
  *
@@ -53,7 +53,7 @@ public class RegisterAutomatonExporter {
 
     private static RegisterAutomaton.Constants exportConstants(Constants consts) {
         RegisterAutomaton.Constants ret = factory.createRegisterAutomatonConstants();
-        for (Entry<Constant, DataValue> e : consts) {
+        for (Entry<Constant<?>, DataValue<?>> e : consts) {
             RegisterAutomaton.Constants.Constant c = factory.createRegisterAutomatonConstantsConstant();
             c.setName(e.getKey().toString());
             c.setType(e.getKey().getDataType().getName());
@@ -63,7 +63,7 @@ public class RegisterAutomatonExporter {
         return ret;
     }
 
-    private static RegisterAutomaton.Globals exportRegisters(Collection<Register> reg, Map<String,DataType> extra) {
+    private static RegisterAutomaton.Globals exportRegisters(Collection<Register<?>> reg, Map<String,DataType> extra) {
         RegisterAutomaton.Globals ret = factory.createRegisterAutomatonGlobals();
         for (Register r : reg) {
             RegisterAutomaton.Globals.Variable v = factory.createRegisterAutomatonGlobalsVariable();
@@ -247,7 +247,7 @@ public class RegisterAutomatonExporter {
     private static RegisterAutomaton.Transitions.Transition.Assignments exportAssignments(Assignment as) {
         RegisterAutomaton.Transitions.Transition.Assignments ret =
                 factory.createRegisterAutomatonTransitionsTransitionAssignments();
-        for (Entry<Register, ? extends SymbolicDataValue> e : as.getAssignment()) {
+        for (Entry<Register<?>, ? extends SymbolicDataValue> e : as.getAssignment()) {
             RegisterAutomaton.Transitions.Transition.Assignments.Assign a =
                     factory.createRegisterAutomatonTransitionsTransitionAssignmentsAssign();
 

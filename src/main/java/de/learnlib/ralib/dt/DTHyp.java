@@ -6,16 +6,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.ParameterValuation;
 import de.learnlib.ralib.data.RegisterAssignment;
-import de.learnlib.ralib.data.RegisterValuation;
 import de.learnlib.ralib.learning.Hypothesis;
 import de.learnlib.ralib.oracles.Branching;
 import de.learnlib.ralib.smt.SMTUtil;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
 import gov.nasa.jpf.constraints.api.Expression;
+import net.automatalib.data.Constants;
+import net.automatalib.data.ParameterValuation;
+import net.automatalib.data.RegisterValuation;
 import net.automatalib.word.Word;
 
 public class DTHyp extends Hypothesis {
@@ -73,11 +73,11 @@ public class DTHyp extends Hypothesis {
     }
 
     protected List<Word<PSymbolInstance>> getDTTransitions(Word<PSymbolInstance> dw) {
-        RegisterValuation vars = RegisterValuation.copyOf(getInitialRegisters());
+        RegisterValuation vars = new RegisterValuation(getInitialRegisters());
         DTLeaf current = dt.getLeaf(Word.epsilon());
         List<Word<PSymbolInstance>> tseq = new ArrayList<>();
         for (PSymbolInstance psi : dw) {
-            ParameterValuation pars = ParameterValuation.fromPSymbolInstance(psi);
+            ParameterValuation pars = new ParameterValuation(psi);
 
             Map<Word<PSymbolInstance>, Expression<Boolean>> candidates =
                 current.getBranching(psi.getBaseSymbol()).getBranches();

@@ -5,8 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
+import de.learnlib.ralib.data.SuffixValue;
 import de.learnlib.ralib.theory.FreshSuffixValue;
 import de.learnlib.ralib.theory.SuffixValueRestriction;
 import de.learnlib.ralib.theory.UnrestrictedSuffixValue;
@@ -15,6 +14,7 @@ import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.expressions.NumericBooleanExpression;
 import gov.nasa.jpf.constraints.expressions.NumericComparator;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.data.SymbolicDataValue;
 
 public class LesserSuffixValue extends SuffixValueRestriction {
 
@@ -32,7 +32,7 @@ public class LesserSuffixValue extends SuffixValueRestriction {
 	}
 
 	@Override
-	public Expression<Boolean> toGuardExpression(Set<SymbolicDataValue> vals) {
+	public Expression<Boolean> toGuardExpression(Set<SymbolicDataValue<?>> vals) {
 		List<Expression<Boolean>> expr = new ArrayList<>();
 		for (SymbolicDataValue sdv : vals) {
 			return new NumericBooleanExpression(parameter, NumericComparator.LT, sdv);

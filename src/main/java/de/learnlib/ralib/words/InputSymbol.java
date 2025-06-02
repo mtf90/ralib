@@ -16,7 +16,7 @@
  */
 package de.learnlib.ralib.words;
 
-import de.learnlib.ralib.data.DataType;
+import net.automatalib.data.DataType;
 
 /**
  *

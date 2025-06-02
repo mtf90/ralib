@@ -16,69 +16,28 @@
  */
 package de.learnlib.ralib.words;
 
-import java.util.Arrays;
-import java.util.Objects;
-
-import de.learnlib.ralib.data.DataValue;
+import net.automatalib.data.DataValue;
+import net.automatalib.symbol.SymbolInstance;
 
 /**
  * A concrete data symbol.
  *
  * @author falk
  */
-public class PSymbolInstance {
+public class PSymbolInstance extends SymbolInstance<ParameterizedSymbol> {
 
-    /**
-     * action
-     */
-    private final ParameterizedSymbol baseSymbol;
-
-    /**
-     * concrete parameter values
-     */
-    private final DataValue[] parameterValues;
-
-    public PSymbolInstance(ParameterizedSymbol baseSymbol,
-            DataValue ... parameterValues) {
-        this.baseSymbol = baseSymbol;
-        this.parameterValues = parameterValues;
+    public PSymbolInstance(ParameterizedSymbol baseSymbol, DataValue<?>... parameterValues) {
+        super(baseSymbol, toValues(parameterValues));
     }
 
-    public ParameterizedSymbol getBaseSymbol() {
-        return baseSymbol;
-    }
-
-    public DataValue[] getParameterValues() {
-        return parameterValues;
-    }
-
-    @Override
-    public String toString() {
-        return this.baseSymbol.getName() + Arrays.toString(parameterValues);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
+    private static Object[] toValues(DataValue<?>... values) {
+        final Object[] result = new Object[values.length];
+        int i = 0;
+        for (DataValue<?> value : values) {
+            result[i++] = value.getValue();
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final PSymbolInstance other = (PSymbolInstance) obj;
-        if (!Objects.equals(this.baseSymbol, other.baseSymbol)) {
-            return false;
-        }
-        return Arrays.deepEquals(this.parameterValues, other.parameterValues);
-    }
 
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 11 * hash + (this.baseSymbol != null ? this.baseSymbol.hashCode() : 0);
-        hash = 11 * hash + Arrays.deepHashCode(this.parameterValues);
-        return hash;
+        return result;
     }
-
 
 }

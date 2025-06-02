@@ -2,17 +2,23 @@ package de.learnlib.ralib.ceanalysis;
 
 import java.util.*;
 
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.Mapping;
+import net.automatalib.data.ParameterValuation;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValueGenerator.ParameterGenerator;
+import net.automatalib.data.VarMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.learnlib.logging.Category;
 import de.learnlib.query.DefaultQuery;
 import de.learnlib.ralib.data.*;
-import de.learnlib.ralib.data.SymbolicDataValue.Parameter;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
 import de.learnlib.ralib.data.util.RemappingIterator;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.ParameterGenerator;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.SuffixValueGenerator;
+import de.learnlib.ralib.data.util.SuffixValueGenerator;
 import de.learnlib.ralib.learning.*;
 import de.learnlib.ralib.learning.rastar.CEAnalysisResult;
 import de.learnlib.ralib.oracles.SDTLogicOracle;
@@ -237,7 +243,7 @@ public class PrefixFinder {
         			parGen.next(dt);
         	}
 
-        	VarMapping<SuffixValue, Parameter> renaming = new VarMapping<>();
+        	VarMapping<SuffixValue<?>, Parameter<?>> renaming = new VarMapping<>();
         	SuffixValueGenerator svGen = new SuffixValueGenerator();
         	for (ParameterizedSymbol ps : symSuffix.getActions()) {
         		for (DataType dt : ps.getPtypes()) {
@@ -248,8 +254,8 @@ public class PrefixFinder {
         	}
         	Expression<Boolean> exprR = SMTUtil.renameVars(expr, renaming);
 
-        	ParameterValuation pars = ParameterValuation.fromPSymbolWord(path);
-        	Mapping<SymbolicDataValue, DataValue> vals = new Mapping<>();
+        	ParameterValuation pars = new ParameterValuation(path);
+        	Mapping<SymbolicDataValue<?>, DataValue<?>> vals = new Mapping<>();
         	vals.putAll(pars);
         	vals.putAll(consts);
 

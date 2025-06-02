@@ -18,14 +18,7 @@ package de.learnlib.ralib.oracles.mto;
 
 import java.util.*;
 
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.ParameterValuation;
-import de.learnlib.ralib.data.RegisterValuation;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.Parameter;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
-import de.learnlib.ralib.data.VarMapping;
+import de.learnlib.ralib.data.SuffixValue;
 import de.learnlib.ralib.oracles.Branching;
 import de.learnlib.ralib.smt.SMTUtil;
 import de.learnlib.ralib.theory.Memorables;
@@ -36,6 +29,13 @@ import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
 import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.ParameterValuation;
+import net.automatalib.data.RegisterValuation;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.VarMapping;
 import net.automatalib.word.Word;
 
 /**

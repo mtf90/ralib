@@ -18,21 +18,21 @@ package de.learnlib.ralib.automata.output;
 
 import java.util.Map.Entry;
 
-import de.learnlib.ralib.automata.Assignment;
 import de.learnlib.ralib.automata.RALocation;
 import de.learnlib.ralib.automata.Transition;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.ParameterValuation;
-import de.learnlib.ralib.data.RegisterValuation;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.Constant;
-import de.learnlib.ralib.data.SymbolicDataValue.Parameter;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
 import de.learnlib.ralib.smt.SMTUtil;
 import de.learnlib.ralib.words.OutputSymbol;
 import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.automaton.ra.Assignment;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.ParameterValuation;
+import net.automatalib.data.RegisterValuation;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Constant;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValue.Register;
 
 /**
  * Output transitions are a convenient way of
@@ -69,7 +69,7 @@ public class OutputTransition extends Transition {
             if (registers.containsValue(pval) || consts.containsValue(pval)) {
                 return false;
             }
-            for (Entry<Parameter, DataValue> e : parameters) {
+            for (Entry<Parameter<?>, DataValue<?>> e : parameters) {
                 if (!p.equals(e.getKey()) && pval.equals(e.getValue())) {
                     return false;
                 }
@@ -77,15 +77,15 @@ public class OutputTransition extends Transition {
         }
 
         // check other parameters
-        for (Entry<Parameter, SymbolicDataValue> e : output.getOutput()) {
-            if (e.getValue() instanceof Register) {
+        for (Entry<Parameter<?>, SymbolicDataValue<?>> e : output.getOutput()) {
+            if (e.getValue() instanceof Register<?>) {
                 if (!parameters.get(e.getKey()).equals(
-                        registers.get( (Register) e.getValue()))) {
+                        registers.get(e.getValue()))) {
                     return false;
                 }
-            } else if (e.getValue() instanceof Constant) {
+            } else if (e.getValue() instanceof Constant<?>) {
                 if (!parameters.get(e.getKey()).equals(
-                        consts.get( (Constant) e.getValue()))) {
+                        consts.get(e.getValue()))) {
                     return false;
                 }
             } else {

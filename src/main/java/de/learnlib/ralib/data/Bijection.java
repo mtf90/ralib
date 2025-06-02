@@ -2,6 +2,9 @@ package de.learnlib.ralib.data;
 
 import java.util.*;
 
+import net.automatalib.data.DataValue;
+import net.automatalib.data.Mapping;
+import net.automatalib.data.TypedValue;
 
 public class Bijection<T extends TypedValue> implements Map<T, T> {
 

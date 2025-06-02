@@ -16,15 +16,16 @@
  */
 package de.learnlib.ralib.data;
 
-import java.math.BigDecimal;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 
 /**
  *
  * @author falk
  */
-public class FreshValue extends DataValue {
+public class FreshValue<T> extends DataValue<T> {
 
-    public FreshValue(DataType type, BigDecimal id) {
+    public FreshValue(DataType<T> type, T id) {
         super(type, id);
     }
 

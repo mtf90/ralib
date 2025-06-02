@@ -20,13 +20,14 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValueGenerator;
+import net.automatalib.data.SymbolicDataValueGenerator.RegisterGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.learnlib.logging.Category;
 import de.learnlib.ralib.data.*;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.RegisterGenerator;
 import de.learnlib.ralib.learning.PrefixContainer;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.oracles.TreeOracle;

@@ -6,11 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
+import de.learnlib.ralib.data.SuffixValue;
 import de.learnlib.ralib.oracles.io.IOOracle;
 import de.learnlib.ralib.theory.SDTGuard;
 import de.learnlib.ralib.theory.SuffixValueRestriction;
@@ -18,21 +14,25 @@ import de.learnlib.ralib.theory.UnrestrictedSuffixValue;
 import de.learnlib.ralib.theory.equality.UniqueEqualityTheory;
 import de.learnlib.ralib.tools.classanalyzer.TypedTheory;
 import de.learnlib.ralib.words.PSymbolInstance;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValue;
 import net.automatalib.word.Word;
 
-public class UniqueIntegerEqualityTheory extends UniqueEqualityTheory implements TypedTheory {
+public class UniqueIntegerEqualityTheory extends UniqueEqualityTheory implements TypedTheory<BigDecimal> {
 
-    private DataType type = null;
+    private DataType<BigDecimal> type = null;
 
     public UniqueIntegerEqualityTheory() {
     }
 
-    public UniqueIntegerEqualityTheory(DataType t) {
+    public UniqueIntegerEqualityTheory(DataType<BigDecimal> t) {
         this.type = t;
     }
 
     @Override
-    public DataValue getFreshValue(List<DataValue> vals) {
+    public DataValue<BigDecimal> getFreshValue(List<DataValue<BigDecimal>> vals) {
         BigDecimal dv = new BigDecimal("-1");
         for (DataValue d : vals) {
             dv = dv.max(d.getValue());
@@ -41,7 +41,7 @@ public class UniqueIntegerEqualityTheory extends UniqueEqualityTheory implements
     }
 
     @Override
-    public void setType(DataType type) {
+    public void setType(DataType<BigDecimal> type) {
         this.type = type;
     }
 
@@ -56,16 +56,16 @@ public class UniqueIntegerEqualityTheory extends UniqueEqualityTheory implements
     }
 
     @Override
-    public Collection<DataValue> getAllNextValues(List<DataValue> vals) {
+    public Collection<DataValue<BigDecimal>> getAllNextValues(List<DataValue<BigDecimal>> vals) {
         // only fresh value is next value ...
-        ArrayList<DataValue> ret = new ArrayList<>();
+        ArrayList<DataValue<BigDecimal>> ret = new ArrayList<>();
         ret.add(getFreshValue(vals));
         return ret;
     }
 
     @Override
     public SuffixValueRestriction restrictSuffixValue(SuffixValue suffixValue, Word<PSymbolInstance> prefix,
-			Word<PSymbolInstance> suffix, Constants consts) {
+                                                      Word<PSymbolInstance> suffix, Constants consts) {
         return new UnrestrictedSuffixValue(suffixValue);
     }
 

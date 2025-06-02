@@ -22,6 +22,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.ParameterValuation;
+import net.automatalib.data.RegisterValuation;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Constant;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.SymbolicDataValueGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,17 +42,7 @@ import de.learnlib.ralib.automata.RegisterAutomaton;
 import de.learnlib.ralib.automata.Transition;
 import de.learnlib.ralib.automata.output.OutputMapping;
 import de.learnlib.ralib.automata.output.OutputTransition;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
 import de.learnlib.ralib.data.FreshValue;
-import de.learnlib.ralib.data.ParameterValuation;
-import de.learnlib.ralib.data.RegisterValuation;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.Constant;
-import de.learnlib.ralib.data.SymbolicDataValue.Parameter;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator;
 import de.learnlib.ralib.theory.Theory;
 import de.learnlib.ralib.words.DataWords;
 import de.learnlib.ralib.words.PSymbolInstance;
@@ -96,7 +96,7 @@ public class SimulatorSUL extends DataWordSUL {
 
         boolean found = false;
         for (Transition t : this.model.getTransitions(loc, i.getBaseSymbol())) {
-            ParameterValuation pval = ParameterValuation.fromPSymbolInstance(i);
+            ParameterValuation pval = new ParameterValuation(i);
             if (t.isEnabled(register, pval, consts)) {
                 found = true;
                 register = t.execute(register, pval, consts);
@@ -113,7 +113,7 @@ public class SimulatorSUL extends DataWordSUL {
         PSymbolInstance out = createOutputSymbol(ot);
         prefix = prefix.append(out);
 
-        register = ot.execute(register, ParameterValuation.fromPSymbolInstance(out), consts);
+        register = ot.execute(register, new ParameterValuation(out), consts);
         loc = ot.getDestination();
         return out;
     }
@@ -135,13 +135,13 @@ public class SimulatorSUL extends DataWordSUL {
             }
             else {
                 SymbolicDataValue sv = mapping.getOutput().get(p);
-                if (sv.isRegister()) {
-                    vals[i] = register.get( (Register) sv);
+                if (sv instanceof Register<?>) {
+                    vals[i] = register.get(sv);
                 }
-                else if (sv.isConstant()) {
-                    vals[i] = consts.get( (Constant) sv);
+                else if (sv instanceof Constant<?>) {
+                    vals[i] = consts.get(sv);
                 }
-                else if (sv.isParameter()) {
+                else if (sv instanceof Parameter<?>) {
                     throw new UnsupportedOperationException("not supported yet.");
                 }
                 else {

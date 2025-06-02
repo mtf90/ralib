@@ -8,10 +8,13 @@ import java.util.stream.Stream;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 
+import net.automatalib.automaton.ra.Assignment;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.Mapping;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import de.learnlib.ralib.automata.Assignment;
 import de.learnlib.ralib.data.*;
 import de.learnlib.ralib.learning.AutomatonBuilder;
 import de.learnlib.ralib.learning.LocationComponent;
@@ -308,7 +311,7 @@ public class DTLeaf extends DTNode implements LocationComponent {
     	for (Entry<Word<PSymbolInstance>, Expression<Boolean>> e : accBranching.getBranches().entrySet()) {
             Expression<Boolean> ag = e.getValue();
             //System.out.println("ag: " + ag);
-            boolean eq = oracle.areEquivalent(ag, remapping, g, new Mapping<SymbolicDataValue, DataValue>());
+            boolean eq = oracle.areEquivalent(ag, remapping, g, new Mapping<>());
             if (eq) {
                 a = e.getKey();
                 break;

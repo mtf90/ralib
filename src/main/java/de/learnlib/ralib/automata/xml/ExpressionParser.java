@@ -21,11 +21,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import de.learnlib.ralib.data.SymbolicDataValue;
 import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.expressions.NumericBooleanExpression;
 import gov.nasa.jpf.constraints.expressions.NumericComparator;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.data.SymbolicDataValue;
 
 /**
  *

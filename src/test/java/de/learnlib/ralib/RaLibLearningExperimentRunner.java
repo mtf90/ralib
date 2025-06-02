@@ -6,12 +6,12 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
 import org.testng.Assert;
 
 import de.learnlib.query.DefaultQuery;
 import de.learnlib.ralib.automata.RegisterAutomaton;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
 import de.learnlib.ralib.equivalence.IOEquivalenceOracle;
 import de.learnlib.ralib.learning.Hypothesis;
 import de.learnlib.ralib.learning.Measurements;
@@ -106,8 +106,8 @@ public class RaLibLearningExperimentRunner {
 	 *
 	 */
 	public Hypothesis run(RaLearningAlgorithmName algorithmName, DataWordOracle dataOracle,
-			Map<DataType, Theory> teachers, Constants consts, ConstraintSolver solver,
-			ParameterizedSymbol[] actionSymbols) {
+						  Map<DataType, Theory> teachers, Constants consts, ConstraintSolver solver,
+						  ParameterizedSymbol[] actionSymbols) {
 		try {
 			logger.log(Level.INFO, "SEED={0}", seed);
 			Random random = new Random(seed);

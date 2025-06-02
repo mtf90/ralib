@@ -20,16 +20,21 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.automatalib.automaton.ra.Assignment;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.ParameterValuation;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.VarMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.learnlib.logging.Category;
-import de.learnlib.ralib.automata.Assignment;
 import de.learnlib.ralib.automata.RALocation;
 import de.learnlib.ralib.automata.Transition;
 import de.learnlib.ralib.data.*;
-import de.learnlib.ralib.data.SymbolicDataValue.Parameter;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
 import de.learnlib.ralib.dt.DT;
 import de.learnlib.ralib.dt.DTHyp;
 import de.learnlib.ralib.learning.rastar.RaStar;
@@ -182,7 +187,7 @@ public class AutomatonBuilder {
 
     public static Expression<Boolean> findMatchingGuard(Word<PSymbolInstance> dw, RegisterAssignment div, Map<Word<PSymbolInstance>, Expression<Boolean>> branches, Constants consts) {
     	//System.out.println("findMatchingGuard: " + div);
-        ParameterValuation pars = ParameterValuation.fromPSymbolWord(dw);
+        ParameterValuation pars = new ParameterValuation(dw);
     	//RegisterValuation vars = div.registerValuation();
     	for (Expression<Boolean> g : branches.values()) {
     		if (g.evaluateSMT(SMTUtil.compose(pars, consts))) {
@@ -195,7 +200,7 @@ public class AutomatonBuilder {
     public static Assignment computeAssignment(Word<PSymbolInstance> prefix, RegisterAssignment srcAssign,
                                                RegisterAssignment destAssign, Bijection<DataValue> remapping) {
 
-        VarMapping<Register, SymbolicDataValue> assignments = new VarMapping<>();
+        VarMapping<Register<?>, SymbolicDataValue<?>> assignments = new VarMapping<>();
         ParameterizedSymbol action = prefix.lastSymbol().getBaseSymbol();
         DataValue[] pvals = DataWords.valsOf(prefix);
         for (Entry<DataValue, DataValue> e : remapping.entrySet()) {

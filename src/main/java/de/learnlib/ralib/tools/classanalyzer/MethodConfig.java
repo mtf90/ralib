@@ -19,10 +19,11 @@ package de.learnlib.ralib.tools.classanalyzer;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import de.learnlib.ralib.data.DataType;
 import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.OutputSymbol;
+import gov.nasa.jpf.constraints.types.BuiltinTypes;
 import net.automatalib.common.util.Pair;
+import net.automatalib.data.DataType;
 
 /**
  *
@@ -56,7 +57,7 @@ public class MethodConfig {
 
             Pair<Class<?>, String> parsed = parseParamConfig(pc);
             pTypes[idx] = parsed.getFirst();
-            cTypes[idx] = getOrCreate(parsed.getSecond(), types);
+            cTypes[idx] = getOrCreate(parsed.getSecond(), parsed.getFirst(), types);
             idx++;
         }
 
@@ -72,7 +73,7 @@ public class MethodConfig {
         else {
             Pair<Class<?>, String> parsed = parseParamConfig(returnConfig);
             assert rType.equals(parsed.getFirst());
-            DataType rtc = getOrCreate(parsed.getSecond(), types);
+            DataType rtc = getOrCreate(parsed.getSecond(), parsed.getFirst(), types);
             this.output = new OutputSymbol("O_" + methodName, rtc);
             this.isVoid = false;
             this.retType = rtc;
@@ -123,10 +124,10 @@ public class MethodConfig {
         return Pair.of(cl, parts[1].trim());
     }
 
-    private DataType getOrCreate(String name, Map<String, DataType> map) {
+    private DataType getOrCreate(String name, Class<?> clazz, Map<String, DataType> map) {
         DataType ret = map.get(name);
         if (ret == null) {
-            ret = new DataType(name);
+            ret = new DataType(name, DataType.valueOf(clazz));
             map.put(name, ret);
         }
         return ret;

@@ -21,15 +21,19 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import de.learnlib.ralib.data.*;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
 import de.learnlib.ralib.data.util.RemappingIterator;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator;
 import de.learnlib.ralib.smt.ConstraintSolver;
 import de.learnlib.ralib.smt.SMTUtil;
 import de.learnlib.ralib.words.DataWords;
 import de.learnlib.ralib.words.PSymbolInstance;
 import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.Mapping;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.SymbolicDataValueGenerator;
 import net.automatalib.word.Word;
 
 /**
@@ -126,8 +130,8 @@ public class SDT {
         return variables;
     }
 
-    public Set<SymbolicDataValue.SuffixValue> getSuffixValues() {
-    	Set<SymbolicDataValue.SuffixValue> values = new LinkedHashSet<>();
+    public Set<SuffixValue> getSuffixValues() {
+    	Set<SuffixValue> values = new LinkedHashSet<>();
     	if (this instanceof SDTLeaf)
     		return values;
     	for (Entry<SDTGuard, SDT> e : children.entrySet()) {
@@ -146,8 +150,8 @@ public class SDT {
         return true;
     }
 
-    public boolean isAccepting(Mapping<SymbolicDataValue, DataValue> vals, Constants consts) {
-    	Mapping<SymbolicDataValue, DataValue> mapping = new Mapping<SymbolicDataValue, DataValue>();
+    public boolean isAccepting(Mapping<SymbolicDataValue<?>, DataValue<?>> vals, Constants consts) {
+    	Mapping<SymbolicDataValue<?>, DataValue<?>> mapping = new Mapping<>();
     	mapping.putAll(vals);
     	mapping.putAll(consts);
         Expression<Boolean> expr = getAcceptingPaths(consts);

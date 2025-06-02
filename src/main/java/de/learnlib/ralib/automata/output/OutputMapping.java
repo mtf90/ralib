@@ -21,10 +21,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.Parameter;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
-import de.learnlib.ralib.data.VarMapping;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.VarMapping;
 
 /**
  * An output mapping encodes the guard of an output transition in a
@@ -37,37 +37,37 @@ import de.learnlib.ralib.data.VarMapping;
  */
 public class OutputMapping  {
 
-    private final Collection<Parameter> fresh;
+    private final Collection<Parameter<?>> fresh;
 
-    private final VarMapping<Parameter, SymbolicDataValue> pmap;
+    private final VarMapping<Parameter<?>, SymbolicDataValue<?>> pmap;
 
-    public OutputMapping(Collection<Parameter> fresh,
-            VarMapping<Parameter, SymbolicDataValue> pmap) {
+    public OutputMapping(Collection<Parameter<?>> fresh,
+            VarMapping<Parameter<?>, SymbolicDataValue<?>> pmap) {
         this.fresh = fresh;
         this.pmap = pmap;
     }
 
     public OutputMapping() {
-        this(new ArrayList<Parameter>(), new VarMapping<Parameter, SymbolicDataValue>());
+        this(new ArrayList<>(), new VarMapping<>());
     }
 
     public OutputMapping(Parameter fresh) {
-        this(Collections.singleton(fresh), new VarMapping<Parameter, SymbolicDataValue>());
+        this(Collections.singleton(fresh), new VarMapping<>());
     }
 
-    public OutputMapping(Parameter key, Register value) {
-        this(new ArrayList<Parameter>(), VarMapping.fromPair(key, value));
+    public OutputMapping(Parameter<?> key, Register<?> value) {
+        this(new ArrayList<>(), new VarMapping<>(key, value));
     }
 
-    public OutputMapping(VarMapping<Parameter, SymbolicDataValue> outputs) {
-        this(new ArrayList<Parameter>(), outputs);
+    public OutputMapping(VarMapping<Parameter<?>, SymbolicDataValue<?>> outputs) {
+        this(new ArrayList<>(), outputs);
     }
 
-    public Collection<Parameter> getFreshParameters() {
+    public Collection<Parameter<?>> getFreshParameters() {
         return fresh;
     }
 
-    public VarMapping<Parameter, SymbolicDataValue> getOutput() {
+    public VarMapping<Parameter<?>, SymbolicDataValue<?>> getOutput() {
         return pmap;
     }
 

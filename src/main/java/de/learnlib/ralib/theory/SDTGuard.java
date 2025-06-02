@@ -20,8 +20,7 @@ import java.util.*;
 
 import de.learnlib.ralib.data.SDTGuardElement;
 import de.learnlib.ralib.data.SDTRelabeling;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
+import de.learnlib.ralib.data.SuffixValue;
 import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.expressions.NumericBooleanExpression;
 import gov.nasa.jpf.constraints.expressions.NumericComparator;
@@ -33,7 +32,7 @@ import gov.nasa.jpf.constraints.util.ExpressionUtil;
  */
 public sealed interface SDTGuard permits SDTGuard.DisequalityGuard, SDTGuard.EqualityGuard, SDTGuard.IntervalGuard, SDTGuard.SDTAndGuard, SDTGuard.SDTOrGuard, SDTGuard.SDTTrueGuard {
 
-    record SDTTrueGuard(SymbolicDataValue.SuffixValue parameter) implements SDTGuard {
+    record SDTTrueGuard(SuffixValue parameter) implements SDTGuard {
         @Override
         public String toString() {
             return "TRUE: " + parameter;
@@ -46,7 +45,7 @@ public sealed interface SDTGuard permits SDTGuard.DisequalityGuard, SDTGuard.Equ
         public Set<SDTGuardElement> getRegisters() { return Set.of(); }
     }
 
-    record EqualityGuard(SymbolicDataValue.SuffixValue parameter, SDTGuardElement register) implements SDTGuard {
+    record EqualityGuard(SuffixValue parameter, SDTGuardElement register) implements SDTGuard {
         @Override
         public String toString() {
             return "(" + parameter + "=" + register + ")";
@@ -59,7 +58,7 @@ public sealed interface SDTGuard permits SDTGuard.DisequalityGuard, SDTGuard.Equ
         public Set<SDTGuardElement> getRegisters() { return Set.of(register); }
     }
 
-    record DisequalityGuard(SymbolicDataValue.SuffixValue parameter, SDTGuardElement register) implements SDTGuard {
+    record DisequalityGuard(SuffixValue parameter, SDTGuardElement register) implements SDTGuard {
         @Override
         public String toString() {
             return "(" + parameter + "!=" +register + ")";
@@ -72,7 +71,7 @@ public sealed interface SDTGuard permits SDTGuard.DisequalityGuard, SDTGuard.Equ
         public Set<SDTGuardElement> getRegisters() { return Set.of(register); }
     }
 
-    record IntervalGuard(SymbolicDataValue.SuffixValue parameter,
+    record IntervalGuard(SuffixValue parameter,
                          SDTGuardElement smallerElement, SDTGuardElement greaterElement,
                          boolean smallerEqual, boolean greaterEqual) implements SDTGuard {
 
@@ -145,7 +144,7 @@ public sealed interface SDTGuard permits SDTGuard.DisequalityGuard, SDTGuard.Equ
         }
     }
 
-    record SDTAndGuard(SymbolicDataValue.SuffixValue parameter, List<SDTGuard> conjuncts) implements SDTGuard {
+    record SDTAndGuard(SuffixValue parameter, List<SDTGuard> conjuncts) implements SDTGuard {
         @Override
         public String toString() {
             String p = "ANDCOMPOUND: " + parameter;
@@ -183,7 +182,7 @@ public sealed interface SDTGuard permits SDTGuard.DisequalityGuard, SDTGuard.Equ
         }
     }
 
-    record SDTOrGuard(SymbolicDataValue.SuffixValue parameter, List<SDTGuard> disjuncts) implements SDTGuard {
+    record SDTOrGuard(SuffixValue parameter, List<SDTGuard> disjuncts) implements SDTGuard {
         @Override
         public String toString() {
             String p = "ORCOMPOUND: " + parameter;

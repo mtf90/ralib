@@ -1,5 +1,8 @@
 package de.learnlib.ralib.data;
 
+import net.automatalib.data.DataValue;
+import net.automatalib.data.Mapping;
+
 public class SDTRelabeling extends Mapping<SDTGuardElement, SDTGuardElement> {
 
     public static SDTRelabeling fromBijection(Bijection<DataValue> in) {

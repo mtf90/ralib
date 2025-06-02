@@ -16,19 +16,21 @@
  */
 package de.learnlib.ralib.automata;
 
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.ParameterValuation;
-import de.learnlib.ralib.data.RegisterValuation;
 import de.learnlib.ralib.smt.SMTUtil;
 import de.learnlib.ralib.words.ParameterizedSymbol;
 import gov.nasa.jpf.constraints.api.Expression;
+import net.automatalib.automaton.ra.Assignment;
+import net.automatalib.automaton.ra.GuardedTransition;
+import net.automatalib.data.Constants;
+import net.automatalib.data.ParameterValuation;
+import net.automatalib.data.RegisterValuation;
 
 /**
  * Register Automaton transitions have input symbols, and assignments.
  *
  * @author falk
  */
-public class Transition {
+public class Transition implements GuardedTransition {
 
     protected final ParameterizedSymbol label;
 

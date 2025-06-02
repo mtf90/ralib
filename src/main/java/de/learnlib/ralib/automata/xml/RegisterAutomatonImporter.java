@@ -27,31 +27,33 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
+
+import gov.nasa.jpf.constraints.types.BuiltinTypes;
 import jakarta.xml.bind.JAXB;
 
+import net.automatalib.automaton.ra.Assignment;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.RegisterValuation;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Constant;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.SymbolicDataValueGenerator.ConstantGenerator;
+import net.automatalib.data.SymbolicDataValueGenerator.ParameterGenerator;
+import net.automatalib.data.SymbolicDataValueGenerator.RegisterGenerator;
+import net.automatalib.data.VarMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.learnlib.logging.Category;
-import de.learnlib.ralib.automata.Assignment;
 import de.learnlib.ralib.automata.InputTransition;
 import de.learnlib.ralib.automata.MutableRegisterAutomaton;
 import de.learnlib.ralib.automata.RALocation;
 import de.learnlib.ralib.automata.output.OutputMapping;
 import de.learnlib.ralib.automata.output.OutputTransition;
 import de.learnlib.ralib.automata.xml.RegisterAutomaton.Transitions.Transition;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.RegisterValuation;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.Constant;
-import de.learnlib.ralib.data.SymbolicDataValue.Parameter;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
-import de.learnlib.ralib.data.VarMapping;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.ConstantGenerator;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.ParameterGenerator;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.RegisterGenerator;
 import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.OutputSymbol;
 import de.learnlib.ralib.words.ParameterizedSymbol;
@@ -160,7 +162,7 @@ public class RegisterAutomatonImporter {
 
             // assignment
             Set<Register> freshRegs = new HashSet<>();
-            VarMapping<Register, SymbolicDataValue> assignments = new VarMapping<>();
+            VarMapping<Register<?>, SymbolicDataValue<?>> assignments = new VarMapping<>();
             if (t.getAssignments() != null) {
                 for (RegisterAutomaton.Transitions.Transition.Assignments.Assign ass :
                         t.getAssignments().getAssign()) {
@@ -189,7 +191,7 @@ public class RegisterAutomatonImporter {
 
                 Parameter[] pList = paramList(ps);
                 int idx = 0;
-                VarMapping<Parameter, SymbolicDataValue> outputs = new VarMapping<>();
+                VarMapping<Parameter<?>, SymbolicDataValue<?>> outputs = new VarMapping<>();
                 for (String s : pnames) {
                     //Parameter param = paramMap.get(s);
                     Parameter param = pList[idx++];
@@ -218,7 +220,7 @@ public class RegisterAutomatonImporter {
 
                 // all unassigned parameters have to be fresh by convention,
                 // we do not allow "don't care" in outputs
-                Set<Parameter> fresh = new LinkedHashSet<>(paramMap.values());
+                Set<Parameter<?>> fresh = new LinkedHashSet<>(paramMap.values());
                 fresh.removeAll(outputs.keySet());
                 OutputMapping outMap = new OutputMapping(fresh, outputs);
 
@@ -315,7 +317,7 @@ public class RegisterAutomatonImporter {
         DataType t = typeMap.get(name);
         if (t == null) {
             // TODO: there should be a proper way of specifying java types to be bound
-            t = new DataType(name);
+            t = new DataType(name, isDoubleTempCheck(name) ? BuiltinTypes.DOUBLE : BuiltinTypes.SINT32);
             typeMap.put(name, t);
         }
         return t;
