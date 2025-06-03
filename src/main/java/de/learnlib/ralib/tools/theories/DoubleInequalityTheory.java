@@ -145,7 +145,7 @@ public class DoubleInequalityTheory extends InequalityTheoryWithEq implements Ty
     }
 
     @Override
-    public DataValue instantiate(SDTGuard g, Valuation val, Constants c, Collection<DataValue> alreadyUsedValues) {
+    public DataValue<BigDecimal> instantiate(SDTGuard g, Valuation val, Constants c, Collection<DataValue<BigDecimal>> alreadyUsedValues) {
         //System.out.println("INSTANTIATING: " + g.toString());
         SuffixValue sp = g.getParameter();
         Valuation newVal = new Valuation();

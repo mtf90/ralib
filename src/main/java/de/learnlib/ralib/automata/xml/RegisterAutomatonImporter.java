@@ -220,7 +220,7 @@ public class RegisterAutomatonImporter {
 
                 // all unassigned parameters have to be fresh by convention,
                 // we do not allow "don't care" in outputs
-                Set<Parameter<?>> fresh = new LinkedHashSet<>(paramMap.values());
+                Set<Parameter<?>> fresh = new LinkedHashSet(paramMap.values());
                 fresh.removeAll(outputs.keySet());
                 OutputMapping outMap = new OutputMapping(fresh, outputs);
 

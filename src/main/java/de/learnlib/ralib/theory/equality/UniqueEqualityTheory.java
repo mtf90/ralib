@@ -61,7 +61,7 @@ public abstract class UniqueEqualityTheory implements Theory<BigDecimal> {
         Collection<DataValue> potSet = DataWords.joinValsToSet(constants.values(type.getType()),
                 DataWords.valSet(prefix, type), suffixValues.values(type.getType()));
 
-        List<DataValue<BigDecimal>> potList = new ArrayList<>(potSet);
+        List<DataValue<BigDecimal>> potList = new ArrayList(potSet);
         List<DataValue<BigDecimal>> potential = getPotential(potList);
 
         SDT sdt;

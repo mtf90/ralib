@@ -340,14 +340,14 @@ public abstract class EqualityTheory implements Theory<BigDecimal> {
         }
 
         Collection<DataValue> potSet = DataWords.joinValsToSet(constants.values(type.getType()), DataWords.valSet(prefix, type),
-                pval.values(type));
+                pval.values(type.getType()));
 
         if (!potSet.isEmpty()) {
             LOGGER.trace("potSet = " + potSet);
         } else {
             LOGGER.trace("potSet is empty");
         }
-        DataValue fresh = this.getFreshValue(new ArrayList<>(potSet));
+        DataValue fresh = this.getFreshValue(new ArrayList(potSet));
         LOGGER.trace("fresh = " + fresh.toString());
         return fresh;
 

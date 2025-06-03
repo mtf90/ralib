@@ -19,13 +19,12 @@ public class ReplacingValuesVisitor extends
         return (newVar != null) ? newVar.requireAs(v.getType()) : v;
     }
 
-    public <T> Expression<T> apply(Expression<T> expr, Mapping<? extends Constant<?>, ? extends SDTGuardElement> rename) {
-        Map<Constant<?>, Expression<?>> map = new HashMap<>();
-        rename.forEach((k, v) -> map.put( k, v.asExpression() ));
+    public <T> Expression<T> apply(Expression<T> expr, Mapping<? extends Constant<?>, ? extends Expression<?>> rename) {
+        Map<Constant<?>, Expression<?>> map = new HashMap<>(rename);
         return visit(expr, map).requireAs(expr.getType());
     }
 
-    public <T> Expression<T> applyRegs(Expression<T> expr, Mapping<? extends Constant<?>, SymbolicDataValue.Register> rename) {
+    public <T> Expression<T> applyRegs(Expression<T> expr, Mapping<? extends Constant<?>, SymbolicDataValue.Register<?>> rename) {
         Map<Constant<?>, Expression<?>> map = new HashMap<>(rename);
         return visit(expr, map).requireAs(expr.getType());
     }

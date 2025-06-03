@@ -34,7 +34,7 @@ public class UniqueIntegerEqualityTheory extends UniqueEqualityTheory implements
     @Override
     public DataValue<BigDecimal> getFreshValue(List<DataValue<BigDecimal>> vals) {
         BigDecimal dv = new BigDecimal("-1");
-        for (DataValue d : vals) {
+        for (DataValue<BigDecimal> d : vals) {
             dv = dv.max(d.getValue());
         }
         return new DataValue(type, BigDecimal.ONE.add(dv));

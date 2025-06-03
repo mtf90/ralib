@@ -123,7 +123,7 @@ public class CounterexampleAnalysis {
         }
 
         Set<DataValue> pSul = resSul.getDataValues();
-        Set<DataValue> pHyp = c.getPrimePrefix().getAssignment().keySet();
+        Set<DataValue<?>> pHyp = c.getPrimePrefix().getAssignment().keySet();
 
         boolean sulHasMoreRegs = !pHyp.containsAll(pSul);
         boolean hypRefinesTransition = hypRefinesTransitions(location, act, resSul);

@@ -70,12 +70,12 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
      * @param consts
      * @return A mapping from data values to their corresponding SDT guards
      */
-    private Map<DataValue, SDTGuard> generateEquivClasses(Word<PSymbolInstance> prefix,
+    private Map<DataValue<BigDecimal>, SDTGuard> generateEquivClasses(Word<PSymbolInstance> prefix,
     		SuffixValue suffixValue,
-    		Map<DataValue, SDTGuardElement> potValuation,
+    		Map<DataValue<BigDecimal>, SDTGuardElement> potValuation,
     		Constants consts) {
 
-	Map<DataValue, SDTGuardElement> filteredPotValuation = new LinkedHashMap<>(potValuation);
+	Map<DataValue<BigDecimal>, SDTGuardElement> filteredPotValuation = new LinkedHashMap<>(potValuation);
 	for (DataValue d : potValuation.keySet()) {
 		if (!d.getDataType().equals(suffixValue.getDataType())) {
 			filteredPotValuation.remove(d);
@@ -83,7 +83,7 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
 	}
 	potValuation = filteredPotValuation;
 
-    	Map<DataValue, SDTGuard> valueGuards = new LinkedHashMap<>();
+    	Map<DataValue<BigDecimal>, SDTGuard> valueGuards = new LinkedHashMap<>();
 
     	if (potValuation.isEmpty()) {
     		DataValue fresh = getFreshValue(new ArrayList<>());
@@ -91,12 +91,12 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
     		return valueGuards;
     	}
         int usedVals = potValuation.size();
-        List<DataValue> potential = new ArrayList<>();
+        List<DataValue<BigDecimal>> potential = new ArrayList<>();
         potential.addAll(potValuation.keySet());
-        List<DataValue> sortedPot = sort(potential);
+        List<DataValue<BigDecimal>> sortedPot = sort(potential);
 
         Valuation vals = new Valuation();
-        for (Map.Entry<DataValue, SDTGuardElement> pot : potValuation.entrySet()) {
+        for (Map.Entry<DataValue<BigDecimal>, SDTGuardElement> pot : potValuation.entrySet()) {
             SDTGuardElement r = pot.getValue();
             DataValue<BigDecimal> dv = pot.getKey();
             // TODO: fix unchecked invocation
@@ -154,11 +154,11 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
      * @param values - word valuation
      * @return valueGuards without data values that are filtered out due to optimizations
      */
-    private Map<DataValue, SDTGuard> filterEquivClasses(Map<DataValue, SDTGuard> valueGuards,
+    private Map<DataValue, SDTGuard> filterEquivClasses(Map<DataValue<BigDecimal>, SDTGuard> valueGuards,
 			Word<PSymbolInstance> prefix,
 			SymbolicSuffix suffix,
 			SuffixValue suffixValue,
-			Map<DataValue, SDTGuardElement> potValuation,
+			Map<DataValue<BigDecimal>, SDTGuardElement> potValuation,
 			SuffixValuation suffixVals,
 			Constants consts,
 			WordValuation values) {
@@ -168,7 +168,7 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
 		List<DataValue> filteredEquivClasses = eqcFilter.toList(suffix.getRestriction(suffixValue), prefix, suffix.getActions(), values);
 
 		Map<DataValue, SDTGuard> ret = new LinkedHashMap<>();
-		for (Map.Entry<DataValue, SDTGuard> e : valueGuards.entrySet()) {
+		for (Map.Entry<DataValue<BigDecimal>, SDTGuard> e : valueGuards.entrySet()) {
 			DataValue ec = e.getKey();
 			if (filteredEquivClasses.contains(ec)) {
 				ret.put(ec, e.getValue());
@@ -200,10 +200,10 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
 	 */
 	protected Map<SDTGuard, SDT> mergeGuards(Map<SDTGuard, SDT> sdts,
 			Map<DataValue<BigDecimal>, SDTGuard> equivClasses,
-			Collection<DataValue> filteredOut) {
+			Collection<DataValue<BigDecimal>> filteredOut) {
 		Map<SDTGuard, SDT> merged = new LinkedHashMap<>();
 
-		List<DataValue> ecValuesSorted = sort(equivClasses.keySet());
+		List<DataValue<BigDecimal>> ecValuesSorted = sort(equivClasses.keySet());
 
 		// merge guards from left (lesser values) to right (greater values)
 		// stop merging when reaching
@@ -417,9 +417,9 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
 
     	int pId = values.size() + 1;
     	SuffixValue currentParam = suffix.getSuffixValue(pId);
-    	Map<DataValue, SDTGuardElement> pot = getPotential(prefix, suffixValues, consts);
+    	Map<DataValue<BigDecimal>, SDTGuardElement> pot = getPotential(prefix, suffixValues, consts);
 
-        Map<DataValue, SDTGuard> equivClasses = generateEquivClasses(prefix, currentParam, pot, consts);
+        Map<DataValue<BigDecimal>, SDTGuard> equivClasses = generateEquivClasses(prefix, currentParam, pot, consts);
         Map<DataValue, SDTGuard> filteredEquivClasses = filterEquivClasses(equivClasses, prefix, suffix, currentParam, pot, suffixValues, consts, values);
 
         Map<SDTGuard, SDT> children = new LinkedHashMap<>();
@@ -434,7 +434,7 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
         	children.put(ec.getValue(), sdt);
         }
 
-        Collection<DataValue> filteredOut = new ArrayList<>();
+        Collection<DataValue<BigDecimal>> filteredOut = new ArrayList<>();
         filteredOut.addAll(equivClasses.keySet());
         filteredOut.removeAll(filteredEquivClasses.keySet());
         Map<SDTGuard, SDT> merged = mergeGuards(children, equivClasses, filteredOut);
@@ -449,10 +449,10 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
         return new SDT(reversed);
     }
 
-    private Map<DataValue, SDTGuardElement> getPotential(Word<PSymbolInstance> prefix,
+    private Map<DataValue<BigDecimal>, SDTGuardElement> getPotential(Word<PSymbolInstance> prefix,
     		SuffixValuation suffixValues,
     		Constants consts) {
-    	Map<DataValue, SDTGuardElement> pot = new LinkedHashMap<>();
+    	Map<DataValue<BigDecimal>, SDTGuardElement> pot = new LinkedHashMap<>();
     	//RegisterGenerator rgen = new RegisterGenerator();
 
     	List<DataValue> seen = new ArrayList<>();
@@ -508,8 +508,8 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
         }
     }
 
-    public abstract DataValue instantiate(SDTGuard guard, Valuation val,
-            Constants constants, Collection<DataValue> alreadyUsedValues);
+    public abstract DataValue<BigDecimal> instantiate(SDTGuard guard, Valuation val,
+            Constants constants, Collection<DataValue<BigDecimal>> alreadyUsedValues);
 
     @Override
     public DataValue instantiate(
@@ -544,9 +544,9 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
                     DataWords.valSet(prefix, type),
                     pval.values(type.getType()));
 
-            returnThis = this.getFreshValue(new ArrayList<>(potSet));
+            returnThis = this.getFreshValue(new ArrayList(potSet));
         } else {
-            Collection<DataValue> alreadyUsedValues
+            Collection<DataValue<BigDecimal>> alreadyUsedValues
                     = DataWords.joinValsToSet(
                             constants.values(type.getType()),
                             DataWords.valSet(prefix, type),
