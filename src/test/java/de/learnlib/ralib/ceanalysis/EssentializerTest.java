@@ -7,13 +7,14 @@ import java.util.List;
 import org.testng.annotations.Test;
 
 import de.learnlib.query.Query;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
 import de.learnlib.ralib.oracles.DataWordOracle;
 import de.learnlib.ralib.theory.equality.EqualityTheory;
 import de.learnlib.ralib.words.DataWords;
 import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
+import gov.nasa.jpf.constraints.types.BuiltinTypes;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 import net.automatalib.word.Word;
 
 public class EssentializerTest {
@@ -21,21 +22,21 @@ public class EssentializerTest {
     @Test
     public void testEssentializerLogin() {
 
-        final DataType _t = new DataType("T");
+        final DataType<BigDecimal> _t = new DataType<>("T", BuiltinTypes.DECIMAL);
         final InputSymbol act = new InputSymbol("act", _t);
 
         final EqualityTheory theory = new EqualityTheory() {
             @Override
-            public DataValue getFreshValue(List<DataValue> vals) {
+            public DataValue<BigDecimal> getFreshValue(List<DataValue<BigDecimal>> vals) {
                 BigDecimal max = BigDecimal.ZERO;
-                for (DataValue i : vals) {
+                for (DataValue<BigDecimal> i : vals) {
                     max = max.max(i.getValue());
                 }
                 return new DataValue(_t, max.add(BigDecimal.ONE));
             }
 
             @Override
-            public Collection<DataValue> getAllNextValues(List<DataValue> vals) {
+            public Collection<DataValue<BigDecimal>> getAllNextValues(List<DataValue<BigDecimal>> vals) {
                 throw new RuntimeException("not implemented for test.");
             }
         };

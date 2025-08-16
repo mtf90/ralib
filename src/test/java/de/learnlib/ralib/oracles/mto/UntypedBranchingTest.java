@@ -29,10 +29,6 @@ import de.learnlib.ralib.TestUtil;
 import de.learnlib.ralib.automata.RegisterAutomaton;
 import de.learnlib.ralib.automata.xml.RegisterAutomatonImporter;
 import de.learnlib.ralib.data.*;
-import de.learnlib.ralib.data.SymbolicDataValue.Parameter;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.ParameterGenerator;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.RegisterGenerator;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.oracles.Branching;
 import de.learnlib.ralib.smt.ConstraintSolver;
@@ -45,6 +41,13 @@ import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.OutputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.SymbolicDataValueGenerator.ParameterGenerator;
+import net.automatalib.data.SymbolicDataValueGenerator.RegisterGenerator;
 import net.automatalib.word.Word;
 
 /**

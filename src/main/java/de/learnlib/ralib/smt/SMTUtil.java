@@ -1,6 +1,7 @@
 package de.learnlib.ralib.smt;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 import de.learnlib.ralib.data.Bijection;
 import de.learnlib.ralib.data.RegisterAssignment;
@@ -12,6 +13,7 @@ import gov.nasa.jpf.constraints.expressions.NumericBooleanExpression;
 import gov.nasa.jpf.constraints.expressions.NumericComparator;
 import gov.nasa.jpf.constraints.types.BuiltinTypes;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.automaton.ra.Util;
 import net.automatalib.data.DataValue;
 import net.automatalib.data.Mapping;
 import net.automatalib.data.SymbolicDataValue;
@@ -19,18 +21,8 @@ import net.automatalib.data.VarMapping;
 
 public class SMTUtil {
 
-    public static Valuation compose(Mapping<? extends SymbolicDataValue<?>, DataValue<?>>... varVals) {
-        Valuation val = new Valuation();
-        //System.out.println(Arrays.toString(varVals));
-        Arrays.stream(varVals).sequential().flatMap( vv -> vv.entrySet().stream() ).forEach( e -> {
-            assert !val.containsValueFor(e.getKey());
-            if (e.getValue() != null) {
-                val.setValue((Variable<Object>)e.getKey(), e.getValue().getValue());
-            } else {
-                System.out.println("Warning: null value for " + e.getKey());
-            }
-        });
-        return val;
+    public static Valuation compose(net.automatalib.data.Valuation<? extends SymbolicDataValue<?>, DataValue<?>>... varVals) {
+        return Util.compose(varVals);
     }
 
     public static Constant constantFor(DataValue sv) {
@@ -53,16 +45,18 @@ public class SMTUtil {
 
     public static Expression<Boolean> renameVals(Expression<Boolean> expr, Bijection<DataValue> renaming) {
         final ReplacingValuesVisitor replacer = new ReplacingValuesVisitor();
-        Mapping<DataValue, DataValue> map = new Mapping<>();
-        map.putAll(renaming);
-        return replacer.apply(expr, (Mapping) map);
+        Mapping<DataValue<?>, DataValue<?>> map = new Mapping<>();
+        for (Entry<DataValue, DataValue> e : renaming.entrySet()) {
+            map.put(e.getKey(), e.getValue());
+        }
+        return replacer.apply(expr, map);
     }
 
     public static Expression<Boolean> valsToRegisters(Expression<Boolean> expr, RegisterAssignment ra) {
         final ReplacingValuesVisitor replacer = new ReplacingValuesVisitor();
-        Mapping<DataValue<?>, SymbolicDataValue.Register<?>> map = new Mapping<>();
+        RegisterAssignment map = new RegisterAssignment();
         map.putAll(ra);
-        return replacer.applyRegs(expr, map);
+        return replacer.apply(expr, map);
     }
 
     public static Expression<Boolean> toExpression(Expression<Boolean> expr, Mapping<SymbolicDataValue, DataValue> val) {

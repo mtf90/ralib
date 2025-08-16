@@ -32,14 +32,15 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import de.learnlib.ralib.RaLibTestSuite;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
+import de.learnlib.ralib.data.SuffixValue;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.theory.FreshSuffixValue;
 import de.learnlib.ralib.theory.SuffixValueRestriction;
 import de.learnlib.ralib.theory.UnrestrictedSuffixValue;
 import de.learnlib.ralib.theory.equality.EqualRestriction;
+import gov.nasa.jpf.constraints.types.BuiltinTypes;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 import net.automatalib.word.Word;
 
 /**
@@ -50,7 +51,7 @@ public class TestWords extends RaLibTestSuite {
 
     @Test
     public void testSymbolicSuffix1() {
-        DataType intType = new DataType("int");
+        DataType intType = new DataType("int", BuiltinTypes.DECIMAL);
 
         ParameterizedSymbol a = new InputSymbol("a", intType);
 

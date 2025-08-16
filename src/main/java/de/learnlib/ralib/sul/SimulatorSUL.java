@@ -22,16 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.automatalib.data.Constants;
-import net.automatalib.data.DataType;
-import net.automatalib.data.DataValue;
-import net.automatalib.data.ParameterValuation;
-import net.automatalib.data.RegisterValuation;
-import net.automatalib.data.SymbolicDataValue;
-import net.automatalib.data.SymbolicDataValue.Constant;
-import net.automatalib.data.SymbolicDataValue.Parameter;
-import net.automatalib.data.SymbolicDataValue.Register;
-import net.automatalib.data.SymbolicDataValueGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +37,16 @@ import de.learnlib.ralib.theory.Theory;
 import de.learnlib.ralib.words.DataWords;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.ParameterValuation;
+import net.automatalib.data.RegisterValuation;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Constant;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.SymbolicDataValueGenerator;
 import net.automatalib.word.Word;
 
 /**

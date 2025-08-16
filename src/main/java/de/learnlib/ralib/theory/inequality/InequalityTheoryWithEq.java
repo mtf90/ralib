@@ -48,6 +48,7 @@ import gov.nasa.jpf.constraints.solvers.nativez3.NativeZ3Solver;
 import net.automatalib.data.Constants;
 import net.automatalib.data.DataType;
 import net.automatalib.data.DataValue;
+import net.automatalib.data.GuardElement;
 import net.automatalib.data.SymbolicDataValue;
 import net.automatalib.data.SymbolicDataValue.Constant;
 import net.automatalib.word.Word;
@@ -72,10 +73,10 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
      */
     private Map<DataValue<BigDecimal>, SDTGuard> generateEquivClasses(Word<PSymbolInstance> prefix,
     		SuffixValue suffixValue,
-    		Map<DataValue<BigDecimal>, SDTGuardElement> potValuation,
+    		Map<DataValue<BigDecimal>, GuardElement> potValuation,
     		Constants consts) {
 
-	Map<DataValue<BigDecimal>, SDTGuardElement> filteredPotValuation = new LinkedHashMap<>(potValuation);
+	Map<DataValue<BigDecimal>, GuardElement> filteredPotValuation = new LinkedHashMap<>(potValuation);
 	for (DataValue d : potValuation.keySet()) {
 		if (!d.getDataType().equals(suffixValue.getDataType())) {
 			filteredPotValuation.remove(d);
@@ -96,8 +97,8 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
         List<DataValue<BigDecimal>> sortedPot = sort(potential);
 
         Valuation vals = new Valuation();
-        for (Map.Entry<DataValue<BigDecimal>, SDTGuardElement> pot : potValuation.entrySet()) {
-            SDTGuardElement r = pot.getValue();
+        for (Map.Entry<DataValue<BigDecimal>, GuardElement> pot : potValuation.entrySet()) {
+            GuardElement r = pot.getValue();
             DataValue<BigDecimal> dv = pot.getKey();
             // TODO: fix unchecked invocation
 	    if (!(r instanceof DataValue)) {
@@ -107,7 +108,7 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
 
         // smallest
         DataValue dl = sortedPot.get(0);
-        SDTGuardElement rl = potValuation.get(dl);
+        GuardElement rl = potValuation.get(dl);
         SDTGuard.IntervalGuard sg = new SDTGuard.IntervalGuard(suffixValue, null, rl);
         DataValue smallest = instantiate(sg, vals, consts, sortedPot);
         assert smallest != null;
@@ -120,7 +121,7 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
 
             // interval
             DataValue dr = sortedPot.get(i);
-            SDTGuardElement rr = potValuation.get(dr);
+            GuardElement rr = potValuation.get(dr);
             SDTGuard.IntervalGuard ig = new SDTGuard.IntervalGuard(suffixValue, rl, rr);
             DataValue di = instantiate(ig, vals, consts, sortedPot);
             assert di != null;
@@ -158,7 +159,7 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
 			Word<PSymbolInstance> prefix,
 			SymbolicSuffix suffix,
 			SuffixValue suffixValue,
-			Map<DataValue<BigDecimal>, SDTGuardElement> potValuation,
+			Map<DataValue<BigDecimal>, GuardElement> potValuation,
 			SuffixValuation suffixVals,
 			Constants consts,
 			WordValuation values) {
@@ -325,7 +326,7 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
 		SuffixValue suffixValue = leftGuard.getParameter();
 		if (leftGuard instanceof SDTGuard.EqualityGuard) {
 			SDTGuard.EqualityGuard egLeft = (SDTGuard.EqualityGuard) leftGuard;
-			SDTGuardElement rl = egLeft.register();
+			GuardElement rl = egLeft.register();
 			if (rightGuard instanceof SDTGuard.IntervalGuard) {
 				SDTGuard.IntervalGuard igRight = (SDTGuard.IntervalGuard) rightGuard;
 				if (!igRight.isSmallerGuard() && igRight.smallerElement().equals(rl)) {
@@ -338,7 +339,7 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
 			}
 		} else if (leftGuard instanceof SDTGuard.IntervalGuard && !((SDTGuard.IntervalGuard) leftGuard).isBiggerGuard()) {
 			SDTGuard.IntervalGuard igLeft = (SDTGuard.IntervalGuard) leftGuard;
-			SDTGuardElement rr = igLeft.greaterElement();
+			GuardElement rr = igLeft.greaterElement();
 			if (igLeft.isSmallerGuard()) {
 				if (rightGuard instanceof SDTGuard.EqualityGuard && ((SDTGuard.EqualityGuard) rightGuard).register().equals(rr)) {
 					return SDTGuard.IntervalGuard.lessOrEqualGuard(suffixValue, rr);
@@ -390,8 +391,8 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
 			SDTGuard.IntervalGuard gg = (SDTGuard.IntervalGuard) greater.get();
 			SDT ls = guards.get(lg);
 			SDT gs = guards.get(gg);
-			SDTGuardElement rr = lg.greaterElement();
-			SDTGuardElement rl = gg.smallerElement();
+			GuardElement rr = lg.greaterElement();
+			GuardElement rl = gg.smallerElement();
 			if (rr.equals(rl) && ls.isEquivalent(gs, new Bijection<>())) {
 				Map<SDTGuard, SDT> diseq = new LinkedHashMap<>();
 				diseq.put(new SDTGuard.DisequalityGuard(lg.getParameter(), rr), guards.get(lg));
@@ -417,7 +418,7 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
 
     	int pId = values.size() + 1;
     	SuffixValue currentParam = suffix.getSuffixValue(pId);
-    	Map<DataValue<BigDecimal>, SDTGuardElement> pot = getPotential(prefix, suffixValues, consts);
+    	Map<DataValue<BigDecimal>, GuardElement> pot = getPotential(prefix, suffixValues, consts);
 
         Map<DataValue<BigDecimal>, SDTGuard> equivClasses = generateEquivClasses(prefix, currentParam, pot, consts);
         Map<DataValue, SDTGuard> filteredEquivClasses = filterEquivClasses(equivClasses, prefix, suffix, currentParam, pot, suffixValues, consts, values);
@@ -449,10 +450,10 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
         return new SDT(reversed);
     }
 
-    private Map<DataValue<BigDecimal>, SDTGuardElement> getPotential(Word<PSymbolInstance> prefix,
-    		SuffixValuation suffixValues,
-    		Constants consts) {
-    	Map<DataValue<BigDecimal>, SDTGuardElement> pot = new LinkedHashMap<>();
+    private Map<DataValue<BigDecimal>, GuardElement> getPotential(Word<PSymbolInstance> prefix,
+													  SuffixValuation suffixValues,
+													  Constants consts) {
+    	Map<DataValue<BigDecimal>, GuardElement> pot = new LinkedHashMap<>();
     	//RegisterGenerator rgen = new RegisterGenerator();
 
     	List<DataValue> seen = new ArrayList<>();
@@ -469,7 +470,7 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
     		}
     	}
 
-    	for (Map.Entry<SuffixValue, DataValue> e : suffixValues.entrySet()) {
+    	for (Map.Entry<SuffixValue<?>, DataValue<?>> e : suffixValues.entrySet()) {
     		SuffixValue sv = e.getKey();
     		DataValue dv = safeCast(e.getValue());
     		if (dv != null) {
@@ -479,7 +480,7 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
 
     	for (Map.Entry<Constant<?>, DataValue<?>> e : consts.entrySet()) {
     		Constant<?> c = e.getKey();
-    		DataValue<?> dv = safeCast(e.getValue());
+    		DataValue<BigDecimal> dv = safeCast(e.getValue());
     		if (dv != null) {
     			pot.put(dv, c);
     		}
@@ -494,15 +495,15 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
 
     public abstract NativeZ3Solver getSolver();
 
-    private DataValue getRegisterValue(SDTGuardElement r,
-            List<DataValue> prefixValues, Constants constants,
-            SuffixValuation pval) {
-        if (SDTGuardElement.isDataValue(r)) {
-            return (DataValue) r;
-        } else if (SDTGuardElement.isSuffixValue(r)) {
-            return pval.get( (SuffixValue) r);
-        } else if (SDTGuardElement.isConstant(r)) {
-            return constants.get((SymbolicDataValue.Constant) r);
+    private DataValue getRegisterValue(net.automatalib.data.GuardElement r,
+									   List<DataValue> prefixValues, Constants constants,
+									   SuffixValuation pval) {
+        if (r instanceof DataValue<?> dv) {
+            return dv;
+        } else if (r instanceof SuffixValue<?> sv) {
+            return pval.get(sv);
+        } else if (r instanceof Constant<?> c) {
+            return constants.get(c);
         } else {
             throw new IllegalStateException("this can't possibly happen");
         }
@@ -528,42 +529,42 @@ public abstract class InequalityTheoryWithEq implements Theory<BigDecimal> {
         if (guard instanceof SDTGuard.EqualityGuard) {
             SDTGuard.EqualityGuard eqGuard = (SDTGuard.EqualityGuard) guard;
 
-            SDTGuardElement ereg = eqGuard.register();
-            if (SDTGuardElement.isDataValue(ereg)) {
-                returnThis = (DataValue) ereg;
-            } else if (SDTGuardElement.isSuffixValue(ereg)) {
-                returnThis = pval.get( (SuffixValue) ereg);
-            } else if (SDTGuardElement.isConstant(ereg)) {
-                returnThis = constants.get((SymbolicDataValue.Constant) ereg);
+            GuardElement ereg = eqGuard.register();
+            if (ereg instanceof DataValue<?> dv) {
+                returnThis = dv;
+            } else if (ereg instanceof SuffixValue<?> sv) {
+                returnThis = pval.get(sv);
+            } else if (ereg instanceof Constant<?> c) {
+                returnThis = constants.get(c);
             }
             assert returnThis != null;
         } else if (guard instanceof SDTGuard.SDTTrueGuard || guard instanceof SDTGuard.DisequalityGuard) {
 
             Collection<DataValue> potSet = DataWords.joinValsToSet(
-                    constants.values(type.getType()),
+                    constants.values(type.getDataType()),
                     DataWords.valSet(prefix, type),
-                    pval.values(type.getType()));
+                    pval.values(type.getDataType()));
 
             returnThis = this.getFreshValue(new ArrayList(potSet));
         } else {
             Collection<DataValue<BigDecimal>> alreadyUsedValues
                     = DataWords.joinValsToSet(
-                            constants.values(type.getType()),
+                            constants.values(type.getDataType()),
                             DataWords.valSet(prefix, type),
-                            pval.values(type.getType()));
+                            pval.values(type.getDataType()));
             Valuation val = new Valuation();
             if (guard instanceof SDTGuard.IntervalGuard) {
                 SDTGuard.IntervalGuard iGuard = (SDTGuard.IntervalGuard) guard;
                 if (!iGuard.isBiggerGuard()) {
-                    SDTGuardElement r = iGuard.greaterElement();
-                    if (SDTGuardElement.isSuffixValue(r) || SDTGuardElement.isConstant(r)) {
+                    GuardElement r = iGuard.greaterElement();
+                    if (r instanceof SuffixValue<?> || r instanceof Constant<?>) {
                         DataValue regVal = getRegisterValue(r, prefixValues, constants, pval);
                         val.setValue( (Variable) r, regVal.getValue());
                     }
                 }
                 if (!iGuard.isSmallerGuard()) {
-                    SDTGuardElement l =  iGuard.smallerElement();
-                    if (SDTGuardElement.isSuffixValue(l) || SDTGuardElement.isConstant(l)) {
+                    GuardElement l =  iGuard.smallerElement();
+                    if (l instanceof SuffixValue<?> || l instanceof Constant<?>) {
                         DataValue regVal = getRegisterValue(l, prefixValues, constants, pval);
                         val.setValue( (Variable) l, regVal.getValue());
                     }

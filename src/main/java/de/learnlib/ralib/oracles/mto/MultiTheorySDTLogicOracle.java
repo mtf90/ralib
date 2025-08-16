@@ -18,13 +18,6 @@ package de.learnlib.ralib.oracles.mto;
 
 import java.util.Map;
 
-import net.automatalib.data.Constants;
-import net.automatalib.data.DataValue;
-import net.automatalib.data.Mapping;
-import net.automatalib.data.SymbolicDataValue;
-import net.automatalib.data.SymbolicDataValue.Parameter;
-import net.automatalib.data.SymbolicDataValue.Register;
-import net.automatalib.data.VarMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +33,13 @@ import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.api.Variable;
 import gov.nasa.jpf.constraints.expressions.Negation;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.Mapping;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.VarMapping;
 import net.automatalib.word.Word;
 
 /**

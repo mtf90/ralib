@@ -2,12 +2,13 @@ package de.learnlib.ralib.data;
 
 import gov.nasa.jpf.constraints.api.Expression;
 import net.automatalib.data.DataType;
+import net.automatalib.data.GuardElement;
 import net.automatalib.data.SymbolicDataValue;
 
-public final class SuffixValue<T> extends SymbolicDataValue<T> implements SDTGuardElement {
+public final class SuffixValue<T> extends SymbolicDataValue<T> implements GuardElement {
 
     public SuffixValue(DataType<T> dataType, int id) {
-        super(dataType, "s" + id, id);
+        super(dataType, "s", id);
     }
 
 
@@ -21,4 +22,3 @@ public final class SuffixValue<T> extends SymbolicDataValue<T> implements SDTGua
         return this;
     }
 }
-

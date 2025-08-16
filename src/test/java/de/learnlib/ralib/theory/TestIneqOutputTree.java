@@ -29,9 +29,6 @@ import org.testng.annotations.Test;
 import de.learnlib.exception.SULException;
 import de.learnlib.ralib.RaLibTestSuite;
 import de.learnlib.ralib.TestUtil;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
 import de.learnlib.ralib.example.priority.PriorityQueueSUL;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.oracles.mto.MultiTheoryTreeOracle;
@@ -41,6 +38,9 @@ import de.learnlib.ralib.tools.theories.DoubleInequalityTheory;
 import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.OutputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 import net.automatalib.word.Word;
 
 /**
@@ -66,7 +66,7 @@ public class TestIneqOutputTree extends RaLibTestSuite {
         @Override
         public PSymbolInstance step(PSymbolInstance i) throws SULException {
             return new PSymbolInstance(OUT, new DataValue(TYPE,
-                    i.getParameterValues()[0].getValue().add(BigDecimal.ONE)));
+                                                          ((DataValue<BigDecimal>)i.getParameterValues()[0]).getValue().add(BigDecimal.ONE)));
         }
 
     }

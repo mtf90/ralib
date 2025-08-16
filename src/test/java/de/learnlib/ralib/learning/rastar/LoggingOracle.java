@@ -18,7 +18,6 @@ package de.learnlib.ralib.learning.rastar;
 
 import java.util.Map;
 
-import de.learnlib.ralib.data.Constants;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.oracles.Branching;
 import de.learnlib.ralib.oracles.TreeOracle;
@@ -26,6 +25,7 @@ import de.learnlib.ralib.oracles.mto.SymbolicSuffixRestrictionBuilder;
 import de.learnlib.ralib.theory.SDT;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.Constants;
 import net.automatalib.word.Word;
 
 /**

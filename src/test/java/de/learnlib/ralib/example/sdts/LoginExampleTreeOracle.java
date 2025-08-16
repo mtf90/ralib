@@ -27,12 +27,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.RegisterGenerator;
 import de.learnlib.ralib.example.sdts.LoginExampleSDT.SDTClass;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.oracles.Branching;
@@ -46,6 +40,12 @@ import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.expressions.NumericBooleanExpression;
 import gov.nasa.jpf.constraints.expressions.NumericComparator;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.SymbolicDataValueGenerator;
+import net.automatalib.data.SymbolicDataValueGenerator.RegisterGenerator;
 import net.automatalib.word.Word;
 
 /**
@@ -73,7 +73,7 @@ public class LoginExampleTreeOracle implements TreeOracle {
             Word<PSymbolInstance> prefix, SymbolicSuffix suffix) {
 
         if (prefix.length() < 1) {
-            return new LoginExampleSDT(SDTClass.REJECT, suffix, new LinkedHashSet<Register>());
+            return new LoginExampleSDT(SDTClass.REJECT, suffix, new LinkedHashSet<>());
         }
 
         DataValue uid = null;
@@ -112,7 +112,7 @@ public class LoginExampleTreeOracle implements TreeOracle {
             }
 
             if (state == State.ERROR) {
-                return new LoginExampleSDT(SDTClass.REJECT, suffix, new LinkedHashSet<Register>());
+                return new LoginExampleSDT(SDTClass.REJECT, suffix, new LinkedHashSet<>());
             }
 
             idx++;
@@ -137,7 +137,7 @@ public class LoginExampleTreeOracle implements TreeOracle {
                 break;
         }
 
-        return new LoginExampleSDT(clazz, suffix, new LinkedHashSet<Register>());
+        return new LoginExampleSDT(clazz, suffix, new LinkedHashSet<>());
     }
 
 

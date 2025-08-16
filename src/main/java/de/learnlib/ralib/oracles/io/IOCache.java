@@ -22,7 +22,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import net.automatalib.data.DataValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +31,7 @@ import de.learnlib.ralib.data.FreshValue;
 import de.learnlib.ralib.oracles.DataWordOracle;
 import de.learnlib.ralib.words.OutputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
+import net.automatalib.data.DataValue;
 import net.automatalib.word.Word;
 
 /**

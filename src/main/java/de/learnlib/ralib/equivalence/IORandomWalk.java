@@ -24,9 +24,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import net.automatalib.data.Constants;
-import net.automatalib.data.DataType;
-import net.automatalib.data.DataValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +37,9 @@ import de.learnlib.ralib.words.DataWords;
 import de.learnlib.ralib.words.OutputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 import net.automatalib.word.Word;
 
 /**
@@ -197,7 +197,7 @@ public class IORandomWalk implements IOEquivalenceOracle {
                 teacher.getAllNextValues(old));
 
             // TODO: add constants in teacher?
-            newSet.addAll(constants.values(t.getType()));
+            newSet.addAll(constants.values(t.getDataType()));
 
             newSet.removeAll(old);
             ArrayList<DataValue> newList = new ArrayList<>(newSet);

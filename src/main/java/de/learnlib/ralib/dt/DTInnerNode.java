@@ -2,13 +2,13 @@ package de.learnlib.ralib.dt;
 
 import java.util.*;
 
-import net.automatalib.data.DataValue;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import de.learnlib.ralib.data.Bijection;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.oracles.TreeOracle;
+import net.automatalib.data.DataValue;
 
 public class DTInnerNode extends DTNode {
 

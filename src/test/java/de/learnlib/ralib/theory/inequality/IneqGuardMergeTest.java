@@ -10,23 +10,24 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import de.learnlib.ralib.RaLibTestSuite;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.RegisterGenerator;
+import de.learnlib.ralib.data.SuffixValue;
 import de.learnlib.ralib.data.util.SuffixValueGenerator;
 import de.learnlib.ralib.theory.SDT;
 import de.learnlib.ralib.theory.SDTGuard;
 import de.learnlib.ralib.theory.SDTLeaf;
 import de.learnlib.ralib.theory.Theory;
 import de.learnlib.ralib.tools.theories.DoubleInequalityTheory;
+import gov.nasa.jpf.constraints.types.BuiltinTypes;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.SymbolicDataValueGenerator.RegisterGenerator;
 
 public class IneqGuardMergeTest extends RaLibTestSuite {
 
     @Test
     public void testIntervalMerge() {
-        final DataType D_TYPE = new DataType("double");
+        final DataType D_TYPE = new DataType("double", BuiltinTypes.DECIMAL);
 
         final Map<DataType, Theory> teachers = new LinkedHashMap<>();
         DoubleInequalityTheory dit = new DoubleInequalityTheory(D_TYPE);
@@ -57,7 +58,7 @@ public class IneqGuardMergeTest extends RaLibTestSuite {
         SDTGuard g5 = new SDTGuard.EqualityGuard(s1, r3);
         SDTGuard g6 = new SDTGuard.IntervalGuard(s1, r3, null);
 
-        Map<DataValue, SDTGuard> equivClasses = new LinkedHashMap<>();
+        Map<DataValue<BigDecimal>, SDTGuard> equivClasses = new LinkedHashMap<>();
         equivClasses.put(dv0, g0);
         equivClasses.put(dv1, g1);
         equivClasses.put(dv2, g2);
@@ -81,7 +82,7 @@ public class IneqGuardMergeTest extends RaLibTestSuite {
         expected1.put(new SDTGuard.IntervalGuard(s1, r1, r3), SDTLeaf.REJECTING);
         expected1.put(SDTGuard.IntervalGuard.greaterOrEqualGuard(s1, r3), SDTLeaf.ACCEPTING);
 
-        Map<SDTGuard, SDT> actual1 = dit.mergeGuards(sdts1, equivClasses, new ArrayList<DataValue>());
+        Map<SDTGuard, SDT> actual1 = dit.mergeGuards(sdts1, equivClasses, new ArrayList<>());
 
         Assert.assertEquals(actual1.size(), expected1.size());
         Assert.assertTrue(actual1.entrySet().containsAll(expected1.entrySet()));
@@ -101,7 +102,7 @@ public class IneqGuardMergeTest extends RaLibTestSuite {
         expected2.put(new SDTGuard.IntervalGuard(s1, r2, r3, true, true), SDTLeaf.REJECTING);
         expected2.put(g6, SDTLeaf.ACCEPTING);
 
-        Map<SDTGuard, SDT> actual2 = dit.mergeGuards(sdts2, equivClasses, new ArrayList<DataValue>());
+        Map<SDTGuard, SDT> actual2 = dit.mergeGuards(sdts2, equivClasses, new ArrayList<>());
 
         Assert.assertEquals(actual2.size(), expected2.size());
         Assert.assertTrue(actual2.entrySet().containsAll(expected2.entrySet()));
@@ -122,7 +123,7 @@ public class IneqGuardMergeTest extends RaLibTestSuite {
         expected3.put(new SDTGuard.IntervalGuard(s1, r1, r2, false, true), SDTLeaf.ACCEPTING);
         expected3.put(SDTGuard.IntervalGuard.greaterGuard(s1, r2), SDTLeaf.REJECTING);
 
-        Map<SDTGuard, SDT> actual3 = dit.mergeGuards(sdts3, equivClasses, new ArrayList<DataValue>());
+        Map<SDTGuard, SDT> actual3 = dit.mergeGuards(sdts3, equivClasses, new ArrayList<>());
 
         Assert.assertEquals(actual3.size(), expected3.size());
         Assert.assertTrue(actual3.entrySet().containsAll(expected3.entrySet()));
@@ -145,7 +146,7 @@ public class IneqGuardMergeTest extends RaLibTestSuite {
         expected4.put(g5, SDTLeaf.ACCEPTING);
         expected4.put(g6, SDTLeaf.REJECTING);
 
-        Map<SDTGuard, SDT> actual4 = dit.mergeGuards(sdts4, equivClasses, new ArrayList<DataValue>());
+        Map<SDTGuard, SDT> actual4 = dit.mergeGuards(sdts4, equivClasses, new ArrayList<>());
 
         Assert.assertEquals(actual4.size(), expected4.size());
         Assert.assertTrue(actual4.entrySet().containsAll(expected4.entrySet()));
@@ -153,7 +154,7 @@ public class IneqGuardMergeTest extends RaLibTestSuite {
 
     @Test
     public void testTrueGuard() {
-        final DataType D_TYPE = new DataType("double");
+        final DataType D_TYPE = new DataType("double", BuiltinTypes.DECIMAL);
 
         final Map<DataType, Theory> teachers = new LinkedHashMap<>();
         DoubleInequalityTheory dit = new DoubleInequalityTheory(D_TYPE);
@@ -179,7 +180,7 @@ public class IneqGuardMergeTest extends RaLibTestSuite {
         SDTGuard g3 = new SDTGuard.EqualityGuard(s1, r2);
         SDTGuard g4 = new SDTGuard.IntervalGuard(s1, r2, null);
 
-        Map<DataValue, SDTGuard> equivClasses = new LinkedHashMap<>();
+        Map<DataValue<BigDecimal>, SDTGuard> equivClasses = new LinkedHashMap<>();
         equivClasses.put(dv0, g0);
         equivClasses.put(dv1, g1);
         equivClasses.put(dv2, g2);
@@ -201,7 +202,7 @@ public class IneqGuardMergeTest extends RaLibTestSuite {
 
     @Test
     public void testFilteredDataValues() {
-        final DataType D_TYPE = new DataType("double");
+        final DataType D_TYPE = new DataType("double", BuiltinTypes.DECIMAL);
 
         final Map<DataType, Theory> teachers = new LinkedHashMap<>();
         DoubleInequalityTheory dit = new DoubleInequalityTheory(D_TYPE);
@@ -232,7 +233,7 @@ public class IneqGuardMergeTest extends RaLibTestSuite {
         SDTGuard g5 = new SDTGuard.EqualityGuard(s1, r3);
         SDTGuard g6 = new SDTGuard.IntervalGuard(s1, r3, null);
 
-        Map<DataValue, SDTGuard> equivClasses = new LinkedHashMap<>();
+        Map<DataValue<BigDecimal>, SDTGuard> equivClasses = new LinkedHashMap<>();
         equivClasses.put(dv0, g0);
         equivClasses.put(dv1, g1);
         equivClasses.put(dv2, g2);
@@ -246,7 +247,7 @@ public class IneqGuardMergeTest extends RaLibTestSuite {
         sdts.put(g2, SDTLeaf.ACCEPTING);
         sdts.put(g5, SDTLeaf.REJECTING);
 
-        List<DataValue> filtered = new ArrayList<>();
+        List<DataValue<BigDecimal>> filtered = new ArrayList<>();
         filtered.add(dv0);
         filtered.add(dv3);
         filtered.add(dv4);
@@ -264,7 +265,7 @@ public class IneqGuardMergeTest extends RaLibTestSuite {
 
     @Test
     public void testSDTSubtree() {
-        final DataType D_TYPE = new DataType("double");
+        final DataType D_TYPE = new DataType("double", BuiltinTypes.DECIMAL);
 
         final Map<DataType, Theory> teachers = new LinkedHashMap<>();
         DoubleInequalityTheory dit = new DoubleInequalityTheory(D_TYPE);
@@ -291,7 +292,7 @@ public class IneqGuardMergeTest extends RaLibTestSuite {
         SDTGuard g3 = new SDTGuard.EqualityGuard(s1, r2);
         SDTGuard g4 = new SDTGuard.IntervalGuard(s1, r2, null);
 
-        Map<DataValue, SDTGuard> equivClasses = new LinkedHashMap<>();
+        Map<DataValue<BigDecimal>, SDTGuard> equivClasses = new LinkedHashMap<>();
         equivClasses.put(dv0, g0);
         equivClasses.put(dv1, g1);
         equivClasses.put(dv2, g2);
@@ -326,7 +327,7 @@ public class IneqGuardMergeTest extends RaLibTestSuite {
 
     @Test
     public void testDisequalityGuard() {
-        final DataType D_TYPE = new DataType("double");
+        final DataType D_TYPE = new DataType("double", BuiltinTypes.DECIMAL);
 
         final Map<DataType, Theory> teachers = new LinkedHashMap<>();
         DoubleInequalityTheory dit = new DoubleInequalityTheory(D_TYPE);
@@ -353,7 +354,7 @@ public class IneqGuardMergeTest extends RaLibTestSuite {
         SDTGuard g3 = new SDTGuard.EqualityGuard(s1, r2);
         SDTGuard g4 = new SDTGuard.IntervalGuard(s1, r2, null);
 
-        Map<DataValue, SDTGuard> equivClasses = new LinkedHashMap<>();
+        Map<DataValue<BigDecimal>, SDTGuard> equivClasses = new LinkedHashMap<>();
         equivClasses.put(dv0, g0);
         equivClasses.put(dv1, g1);
         equivClasses.put(dv2, g2);
@@ -367,7 +368,7 @@ public class IneqGuardMergeTest extends RaLibTestSuite {
         sdts1.put(g3, SDTLeaf.REJECTING);
         sdts1.put(g4, SDTLeaf.REJECTING);
 
-        List<DataValue> filteredOut = new ArrayList<>();
+        List<DataValue<BigDecimal>> filteredOut = new ArrayList<>();
         filteredOut.add(dv1);
 
         Map<SDTGuard, SDT> expected1 = new LinkedHashMap<>();

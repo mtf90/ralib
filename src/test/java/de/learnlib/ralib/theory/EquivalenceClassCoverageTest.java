@@ -11,10 +11,7 @@ import org.testng.annotations.Test;
 
 import de.learnlib.ralib.RaLibTestSuite;
 import de.learnlib.ralib.TestUtil;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
+import de.learnlib.ralib.data.SuffixValue;
 import de.learnlib.ralib.data.util.SuffixValueGenerator;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.oracles.mto.MultiTheoryTreeOracle;
@@ -24,6 +21,10 @@ import de.learnlib.ralib.tools.theories.IntegerEqualityTheory;
 import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
 import gov.nasa.jpf.constraints.api.Valuation;
+import gov.nasa.jpf.constraints.types.BuiltinTypes;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 import net.automatalib.word.Word;
 
 public class EquivalenceClassCoverageTest extends RaLibTestSuite {
@@ -31,7 +32,7 @@ public class EquivalenceClassCoverageTest extends RaLibTestSuite {
     @Test
     public void testEqualityTheory() {
 
-        DataType type = new DataType("int");
+        DataType type = new DataType("int", BuiltinTypes.DECIMAL);
 
         final Map<DataType, Theory> teachers = new LinkedHashMap<>();
         IntegerEqualityTheory dit = new IntegerEqualityTheory(type);
@@ -66,7 +67,7 @@ public class EquivalenceClassCoverageTest extends RaLibTestSuite {
 
     @Test
     public void testDoubleInequalityTheory() {
-        DataType type = new DataType("double");
+        DataType type = new DataType("double", BuiltinTypes.DECIMAL);
 
         final Map<DataType, Theory> teachers = new LinkedHashMap<>();
         DoubleInequalityTheory dit = new DoubleInequalityTheory(type);
@@ -346,7 +347,7 @@ public class EquivalenceClassCoverageTest extends RaLibTestSuite {
 		Valuation vals1 = new Valuation();
 		vals1.setValue(s1, d1.getValue());
 		vals1.setValue(s2, d2.getValue());
-		Collection<DataValue> usedVals1 = new ArrayList<>();
+		Collection<DataValue<BigDecimal>> usedVals1 = new ArrayList<>();
 		usedVals1.add(d1);
 		usedVals1.add(d2);
 		return theory.instantiate(ig, vals1, new Constants(), usedVals1);

@@ -21,7 +21,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import net.automatalib.data.DataValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +28,7 @@ import de.learnlib.logging.Category;
 import de.learnlib.ralib.oracles.io.IOOracle;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.DataValue;
 import net.automatalib.word.Word;
 
 /**

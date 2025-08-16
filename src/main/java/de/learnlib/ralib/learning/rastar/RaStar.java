@@ -21,7 +21,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import net.automatalib.data.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +41,7 @@ import de.learnlib.ralib.oracles.TreeOracleFactory;
 import de.learnlib.ralib.words.OutputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.Constants;
 import net.automatalib.word.Word;
 
 /**

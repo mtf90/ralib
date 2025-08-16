@@ -6,8 +6,6 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.automatalib.data.Constants;
-import net.automatalib.data.DataType;
 import org.testng.Assert;
 
 import de.learnlib.query.DefaultQuery;
@@ -29,6 +27,8 @@ import de.learnlib.ralib.smt.ConstraintSolver;
 import de.learnlib.ralib.theory.Theory;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
 
 /**
  * Class for running RA learning experiments.

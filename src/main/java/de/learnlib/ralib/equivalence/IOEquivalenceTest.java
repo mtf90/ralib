@@ -138,7 +138,7 @@ public class IOEquivalenceTest implements IOEquivalenceOracle
     private boolean compareRegister(
             RegisterValuation r1, RegisterValuation r2, Map<Object,Object> vMap) {
 
-        for (Map.Entry<Register<?>,DataValue<?>> entry : r1.entrySet()) {
+        for (Map.Entry<Register<?>, DataValue<?>> entry : r1.entrySet()) {
             DataValue v1 = entry.getValue();
             DataValue v2 = r2.get(entry.getKey());
 

@@ -20,14 +20,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.automatalib.automaton.ra.Assignment;
-import net.automatalib.data.Constants;
-import net.automatalib.data.DataValue;
-import net.automatalib.data.ParameterValuation;
-import net.automatalib.data.SymbolicDataValue;
-import net.automatalib.data.SymbolicDataValue.Parameter;
-import net.automatalib.data.SymbolicDataValue.Register;
-import net.automatalib.data.VarMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,6 +37,14 @@ import de.learnlib.ralib.words.DataWords;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
 import gov.nasa.jpf.constraints.api.Expression;
+import net.automatalib.automaton.ra.Assignment;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.ParameterValuation;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.VarMapping;
 import net.automatalib.word.Word;
 
 /**

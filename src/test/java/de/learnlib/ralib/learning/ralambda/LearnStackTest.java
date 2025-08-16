@@ -23,9 +23,6 @@ import de.learnlib.query.DefaultQuery;
 import de.learnlib.ralib.RaLibLearningExperimentRunner;
 import de.learnlib.ralib.RaLibTestSuite;
 import de.learnlib.ralib.automata.RegisterAutomaton;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
 import de.learnlib.ralib.learning.Hypothesis;
 import de.learnlib.ralib.learning.Measurements;
 import de.learnlib.ralib.learning.MeasuringOracle;
@@ -42,6 +39,9 @@ import de.learnlib.ralib.theory.Theory;
 import de.learnlib.ralib.tools.theories.IntegerEqualityTheory;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 import net.automatalib.word.Word;
 
 public class LearnStackTest extends RaLibTestSuite {

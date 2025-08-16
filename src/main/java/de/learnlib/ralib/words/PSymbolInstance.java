@@ -27,17 +27,7 @@ import net.automatalib.symbol.SymbolInstance;
 public class PSymbolInstance extends SymbolInstance<ParameterizedSymbol> {
 
     public PSymbolInstance(ParameterizedSymbol baseSymbol, DataValue<?>... parameterValues) {
-        super(baseSymbol, toValues(parameterValues));
-    }
-
-    private static Object[] toValues(DataValue<?>... values) {
-        final Object[] result = new Object[values.length];
-        int i = 0;
-        for (DataValue<?> value : values) {
-            result[i++] = value.getValue();
-        }
-
-        return result;
+        super(baseSymbol, parameterValues);
     }
 
 }

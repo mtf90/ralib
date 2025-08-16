@@ -27,23 +27,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
-
-import gov.nasa.jpf.constraints.types.BuiltinTypes;
 import jakarta.xml.bind.JAXB;
 
-import net.automatalib.automaton.ra.Assignment;
-import net.automatalib.data.Constants;
-import net.automatalib.data.DataType;
-import net.automatalib.data.DataValue;
-import net.automatalib.data.RegisterValuation;
-import net.automatalib.data.SymbolicDataValue;
-import net.automatalib.data.SymbolicDataValue.Constant;
-import net.automatalib.data.SymbolicDataValue.Parameter;
-import net.automatalib.data.SymbolicDataValue.Register;
-import net.automatalib.data.SymbolicDataValueGenerator.ConstantGenerator;
-import net.automatalib.data.SymbolicDataValueGenerator.ParameterGenerator;
-import net.automatalib.data.SymbolicDataValueGenerator.RegisterGenerator;
-import net.automatalib.data.VarMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,9 +43,23 @@ import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.OutputSymbol;
 import de.learnlib.ralib.words.ParameterizedSymbol;
 import gov.nasa.jpf.constraints.api.Expression;
+import gov.nasa.jpf.constraints.types.BuiltinTypes;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
 import net.automatalib.alphabet.Alphabet;
 import net.automatalib.alphabet.impl.GrowingMapAlphabet;
+import net.automatalib.automaton.ra.Assignment;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.RegisterValuation;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Constant;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.SymbolicDataValueGenerator.ConstantGenerator;
+import net.automatalib.data.SymbolicDataValueGenerator.ParameterGenerator;
+import net.automatalib.data.SymbolicDataValueGenerator.RegisterGenerator;
+import net.automatalib.data.VarMapping;
 
 /**
  *
@@ -317,7 +316,7 @@ public class RegisterAutomatonImporter {
         DataType t = typeMap.get(name);
         if (t == null) {
             // TODO: there should be a proper way of specifying java types to be bound
-            t = new DataType(name, isDoubleTempCheck(name) ? BuiltinTypes.DOUBLE : BuiltinTypes.SINT32);
+            t = new DataType(name, BuiltinTypes.DECIMAL);
             typeMap.put(name, t);
         }
         return t;

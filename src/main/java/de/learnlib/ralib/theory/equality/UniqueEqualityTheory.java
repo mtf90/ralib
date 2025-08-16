@@ -3,9 +3,6 @@ package de.learnlib.ralib.theory.equality;
 import java.math.BigDecimal;
 import java.util.*;
 
-import net.automatalib.data.Constants;
-import net.automatalib.data.DataType;
-import net.automatalib.data.DataValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +17,9 @@ import de.learnlib.ralib.theory.Theory;
 import de.learnlib.ralib.words.DataWords;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 import net.automatalib.word.Word;
 
 public abstract class UniqueEqualityTheory implements Theory<BigDecimal> {
@@ -58,8 +58,8 @@ public abstract class UniqueEqualityTheory implements Theory<BigDecimal> {
         SuffixValue sv = suffix.getDataValue(pId);
         DataType type = sv.getDataType();
 
-        Collection<DataValue> potSet = DataWords.joinValsToSet(constants.values(type.getType()),
-                DataWords.valSet(prefix, type), suffixValues.values(type.getType()));
+        Collection<DataValue> potSet = DataWords.joinValsToSet(constants.values(type.getDataType()),
+                DataWords.valSet(prefix, type), suffixValues.values(type.getDataType()));
 
         List<DataValue<BigDecimal>> potList = new ArrayList(potSet);
         List<DataValue<BigDecimal>> potential = getPotential(potList);
@@ -91,8 +91,8 @@ public abstract class UniqueEqualityTheory implements Theory<BigDecimal> {
         List<DataValue> prefixValues = Arrays.asList(DataWords.valsOf(prefix));
         LOGGER.trace(Category.QUERY, "prefix values : {}", prefixValues);
         DataType type = param.getDataType();
-        Collection potSet = DataWords.joinValsToSet(constants.values(type.getType()), DataWords.valSet(prefix, type),
-                pval.values(type.getType()));
+        Collection potSet = DataWords.joinValsToSet(constants.values(type.getDataType()), DataWords.valSet(prefix, type),
+                pval.values(type.getDataType()));
 
         if (!potSet.isEmpty()) {
             LOGGER.trace(Category.DATASTRUCTURE, "potSet = {}", potSet);

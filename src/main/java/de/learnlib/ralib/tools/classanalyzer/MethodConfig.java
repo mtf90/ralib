@@ -57,7 +57,7 @@ public class MethodConfig {
 
             Pair<Class<?>, String> parsed = parseParamConfig(pc);
             pTypes[idx] = parsed.getFirst();
-            cTypes[idx] = getOrCreate(parsed.getSecond(), parsed.getFirst(), types);
+            cTypes[idx] = getOrCreate(parsed.getSecond(), types);
             idx++;
         }
 
@@ -73,7 +73,7 @@ public class MethodConfig {
         else {
             Pair<Class<?>, String> parsed = parseParamConfig(returnConfig);
             assert rType.equals(parsed.getFirst());
-            DataType rtc = getOrCreate(parsed.getSecond(), parsed.getFirst(), types);
+            DataType rtc = getOrCreate(parsed.getSecond(), types);
             this.output = new OutputSymbol("O_" + methodName, rtc);
             this.isVoid = false;
             this.retType = rtc;
@@ -124,10 +124,10 @@ public class MethodConfig {
         return Pair.of(cl, parts[1].trim());
     }
 
-    private DataType getOrCreate(String name, Class<?> clazz, Map<String, DataType> map) {
+    private DataType getOrCreate(String name, Map<String, DataType> map) {
         DataType ret = map.get(name);
         if (ret == null) {
-            ret = new DataType(name, DataType.valueOf(clazz));
+            ret = new DataType(name, BuiltinTypes.DECIMAL);
             map.put(name, ret);
         }
         return ret;

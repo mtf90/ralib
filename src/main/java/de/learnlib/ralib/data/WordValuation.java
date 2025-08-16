@@ -16,14 +16,29 @@
  */
 package de.learnlib.ralib.data;
 
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+
 import net.automatalib.data.DataValue;
-import net.automatalib.data.Mapping;
 
 /**
  *
  * @author falk
  */
 //TODO: check is necessary
-public class WordValuation extends Mapping<Integer, DataValue> {
+public class WordValuation extends LinkedHashMap<Integer, DataValue> {
 
+    public Set<Integer> getAllKeysForValue(DataValue value) {
+        Set<Integer> retKeySet = new LinkedHashSet();
+
+        for (Map.Entry<Integer, DataValue> entry : this.entrySet()) {
+            if (entry.getValue().equals(value)) {
+                retKeySet.add(entry.getKey());
+            }
+        }
+
+        return retKeySet;
+    }
 }

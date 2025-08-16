@@ -21,11 +21,12 @@ import java.util.Collection;
 import java.util.PriorityQueue;
 
 import de.learnlib.query.Query;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
 import de.learnlib.ralib.oracles.DataWordOracle;
 import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
+import gov.nasa.jpf.constraints.types.BuiltinTypes;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 
 /**
  *
@@ -34,7 +35,7 @@ import de.learnlib.ralib.words.PSymbolInstance;
 public final class PriorityQueueOracle implements DataWordOracle {
     public static final Integer CAPACITY = 3;
 
-    public static final DataType doubleType = new DataType("DOUBLE");
+    public static final DataType doubleType = new DataType("DOUBLE", BuiltinTypes.DECIMAL);
 
     public static final InputSymbol POLL = new InputSymbol("poll", doubleType);
     public static final InputSymbol OFFER = new InputSymbol("offer", doubleType);
@@ -64,7 +65,7 @@ public final class PriorityQueueOracle implements DataWordOracle {
                     answer[i] = false;
                     //try {
                         PSymbolInstance psi = query.getInput().getSymbol(i);
-                        DataValue d = psi.getParameterValues()[0];
+                        DataValue<BigDecimal> d = (DataValue<BigDecimal>) psi.getParameterValues()[0];
                         if (psi.getBaseSymbol().equals(OFFER) && queue.size() < capacity) {
                             queue.offer(d.getValue());
                             answer[i] = true;

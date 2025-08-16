@@ -29,13 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.automatalib.data.Constants;
-import net.automatalib.data.DataType;
-import net.automatalib.data.DataValue;
-import net.automatalib.data.SymbolicDataValue;
-import net.automatalib.data.SymbolicDataValue.Constant;
-import net.automatalib.data.SymbolicDataValue.Parameter;
-import net.automatalib.data.SymbolicDataValue.Register;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,6 +43,14 @@ import de.learnlib.ralib.words.DataWords;
 import de.learnlib.ralib.words.OutputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.GuardElement;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Constant;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValue.Register;
 import net.automatalib.word.Word;
 
 /**
@@ -134,8 +135,8 @@ public abstract class EqualityTheory implements Theory<BigDecimal> {
 
         Map<SDTGuard.EqualityGuard, SDT> tempKids = new LinkedHashMap<>();
 
-        Collection<DataValue<BigDecimal>> potSet = DataWords.joinValsToSet(constants.values(type.getType()),
-                DataWords.valSet(prefix, type), suffixValues.values(type.getType()));
+        Collection<DataValue<BigDecimal>> potSet = DataWords.joinValsToSet(constants.values(type.getDataType()),
+                DataWords.valSet(prefix, type), suffixValues.values(type.getDataType()));
 
         List<DataValue<BigDecimal>> potList = new ArrayList<>(potSet);
         List<DataValue<BigDecimal>> potential = getPotential(potList);
@@ -321,17 +322,17 @@ public abstract class EqualityTheory implements Theory<BigDecimal> {
             SDTGuard current = guards.remove();
             if (current instanceof SDTGuard.EqualityGuard eqGuard) {
                 LOGGER.trace("equality guard " + current);
-                SDTGuardElement ereg = eqGuard.register();
-                if (SDTGuardElement.isDataValue(ereg)) {
+                GuardElement ereg = eqGuard.register();
+                if (ereg instanceof DataValue<?> dv) {
 
-                    Parameter p = new Parameter(ereg.getDataType(), prefixValues.indexOf((DataValue) ereg) + 1);
+                    Parameter p = new Parameter(ereg.getDataType(), prefixValues.indexOf(dv) + 1);
                     LOGGER.trace("p: " + p.toString());
                     int idx = p.getId();
                     return prefixValues.get(idx - 1);
-                } else if (SDTGuardElement.isSuffixValue(ereg)) {
-                    return pval.get( (SuffixValue) ereg);
-                } else if (SDTGuardElement.isConstant(ereg)) {
-                    return constants.get((Constant) ereg);
+                } else if (ereg instanceof SuffixValue<?> sv) {
+                    return pval.get(sv);
+                } else if (ereg instanceof Constant<?> c) {
+                    return constants.get(c);
                 }
             } else if (current instanceof SDTGuard.SDTAndGuard) {
                 guards.addAll(((SDTGuard.SDTAndGuard) current).conjuncts());
@@ -339,8 +340,8 @@ public abstract class EqualityTheory implements Theory<BigDecimal> {
             // todo: this only works under the assumption that disjunctions only contain disequality guards
         }
 
-        Collection<DataValue> potSet = DataWords.joinValsToSet(constants.values(type.getType()), DataWords.valSet(prefix, type),
-                pval.values(type.getType()));
+        Collection<DataValue> potSet = DataWords.joinValsToSet(constants.values(type.getDataType()), DataWords.valSet(prefix, type),
+                pval.values(type));
 
         if (!potSet.isEmpty()) {
             LOGGER.trace("potSet = " + potSet);

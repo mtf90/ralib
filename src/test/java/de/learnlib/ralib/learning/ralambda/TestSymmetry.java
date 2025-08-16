@@ -9,18 +9,10 @@ import org.testng.annotations.Test;
 
 import de.learnlib.query.DefaultQuery;
 import de.learnlib.ralib.RaLibTestSuite;
-import de.learnlib.ralib.automata.Assignment;
 import de.learnlib.ralib.automata.InputTransition;
 import de.learnlib.ralib.automata.MutableRegisterAutomaton;
 import de.learnlib.ralib.automata.RALocation;
 import de.learnlib.ralib.automata.RegisterAutomaton;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
-import de.learnlib.ralib.data.VarMapping;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator;
 import de.learnlib.ralib.learning.Hypothesis;
 import de.learnlib.ralib.oracles.DataWordOracle;
 import de.learnlib.ralib.oracles.SDTLogicOracle;
@@ -36,12 +28,21 @@ import de.learnlib.ralib.words.PSymbolInstance;
 import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.expressions.NumericBooleanExpression;
 import gov.nasa.jpf.constraints.expressions.NumericComparator;
+import gov.nasa.jpf.constraints.types.BuiltinTypes;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.automaton.ra.Assignment;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.SymbolicDataValueGenerator;
+import net.automatalib.data.VarMapping;
 import net.automatalib.word.Word;
 
 public class TestSymmetry extends RaLibTestSuite {
 
-    private static final DataType T_INT = new DataType("int");
+    private static final DataType T_INT = new DataType("int", BuiltinTypes.DECIMAL);
 
     private static final InputSymbol A = new InputSymbol("a", T_INT);
     private static final InputSymbol B = new InputSymbol("b", T_INT);
@@ -135,19 +136,19 @@ public class TestSymmetry extends RaLibTestSuite {
 				new NumericBooleanExpression(r1, NumericComparator.NE, p1),
 				new NumericBooleanExpression(r2, NumericComparator.NE, p1));
 
-	VarMapping<SymbolicDataValue.Register, SymbolicDataValue> storeR1Mapping = new VarMapping<SymbolicDataValue.Register, SymbolicDataValue>();
+	VarMapping<Register<?>, SymbolicDataValue<?>> storeR1Mapping = new VarMapping<>();
 	storeR1Mapping.put(r1, p1);
-	VarMapping<SymbolicDataValue.Register, SymbolicDataValue> storeR1R2Mapping = new VarMapping<SymbolicDataValue.Register, SymbolicDataValue>();
+	VarMapping<SymbolicDataValue.Register<?>, SymbolicDataValue<?>> storeR1R2Mapping = new VarMapping<>();
 	storeR1R2Mapping.put(r1, p1);
 	storeR1R2Mapping.put(r2, r1);
-	VarMapping<SymbolicDataValue.Register, SymbolicDataValue> copyMapping = new VarMapping<SymbolicDataValue.Register, SymbolicDataValue>();
+	VarMapping<SymbolicDataValue.Register<?>, SymbolicDataValue<?>> copyMapping = new VarMapping<>();
 	copyMapping.put(r1, r1);
 	copyMapping.put(r2, r2);
 
-	VarMapping<SymbolicDataValue.Register, SymbolicDataValue> forgetMapping = new VarMapping<SymbolicDataValue.Register, SymbolicDataValue>();
+	VarMapping<SymbolicDataValue.Register<?>, SymbolicDataValue<?>> forgetMapping = new VarMapping<>();
 	forgetMapping.put(r1, r2);
 
-	VarMapping<Register, SymbolicDataValue> noMapping = new VarMapping<SymbolicDataValue.Register, SymbolicDataValue>();
+	VarMapping<Register<?>, SymbolicDataValue<?>> noMapping = new VarMapping<>();
 
 	Assignment storeR1 = new Assignment(storeR1Mapping);
 	Assignment storeR1R2 = new Assignment(storeR1R2Mapping);
@@ -249,17 +250,17 @@ public class TestSymmetry extends RaLibTestSuite {
             new NumericBooleanExpression(r1, NumericComparator.EQ, p1),
             new NumericBooleanExpression(r2, NumericComparator.EQ, p1));
 
-        VarMapping<SymbolicDataValue.Register, SymbolicDataValue> storeR1Mapping = new VarMapping<SymbolicDataValue.Register, SymbolicDataValue>();
+        VarMapping<SymbolicDataValue.Register<?>, SymbolicDataValue<?>> storeR1Mapping = new VarMapping<>();
         storeR1Mapping.put(r1, p1);
-        VarMapping<SymbolicDataValue.Register, SymbolicDataValue> storeR2Mapping = new VarMapping<SymbolicDataValue.Register, SymbolicDataValue>();
+        VarMapping<SymbolicDataValue.Register<?>, SymbolicDataValue<?>> storeR2Mapping = new VarMapping<>();
         storeR2Mapping.put(r2, p1);
         storeR2Mapping.put(r1, r1);
-        VarMapping<SymbolicDataValue.Register, SymbolicDataValue> storeR1R2Mapping = new VarMapping<SymbolicDataValue.Register, SymbolicDataValue>();
+        VarMapping<SymbolicDataValue.Register<?>, SymbolicDataValue<?>> storeR1R2Mapping = new VarMapping<>();
         storeR1R2Mapping.put(r2, r1);
         storeR1R2Mapping.put(r1, p1);
-        VarMapping<SymbolicDataValue.Register, SymbolicDataValue> copyMapping = new VarMapping<SymbolicDataValue.Register, SymbolicDataValue>();
+        VarMapping<SymbolicDataValue.Register<?>, SymbolicDataValue<?>> copyMapping = new VarMapping<>();
         copyMapping.put(r1, r2);
-        VarMapping<Register, SymbolicDataValue> noMapping = new VarMapping<SymbolicDataValue.Register, SymbolicDataValue>();
+        VarMapping<Register<?>, SymbolicDataValue<?>> noMapping = new VarMapping<>();
 
         Assignment storeR1 = new Assignment(storeR1Mapping);
         Assignment storeR2 = new Assignment(storeR2Mapping);

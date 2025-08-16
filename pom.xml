@@ -192,12 +192,6 @@
                 <version>${jaxb-runtime.version}</version>
 	        <scope>runtime</scope>
             </dependency>
-             <!-- checker framework -->
-            <dependency>
-                <groupId>org.checkerframework</groupId>
-                <artifactId>checker-qual</artifactId>
-                <version>${checker-qual.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -252,10 +246,6 @@
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.checkerframework</groupId>
-            <artifactId>checker-qual</artifactId>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jaxb</groupId>

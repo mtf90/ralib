@@ -1,16 +1,16 @@
 package de.learnlib.ralib.example.llambda;
 
-import de.learnlib.ralib.automata.Assignment;
 import de.learnlib.ralib.automata.InputTransition;
 import de.learnlib.ralib.automata.MutableRegisterAutomaton;
 import de.learnlib.ralib.automata.RALocation;
 import de.learnlib.ralib.automata.RegisterAutomaton;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
-import de.learnlib.ralib.data.VarMapping;
 import de.learnlib.ralib.words.InputSymbol;
 import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.automaton.ra.Assignment;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.VarMapping;
 
 public class LLambdaAutomatonExample {
 
@@ -41,7 +41,7 @@ public class LLambdaAutomatonExample {
         Expression<Boolean> trueGuard = ExpressionUtil.TRUE;
 
         // assignments
-        VarMapping<Register, SymbolicDataValue> noMapping = new VarMapping<Register, SymbolicDataValue>();
+        VarMapping<Register<?>, SymbolicDataValue<?>> noMapping = new VarMapping<>();
 
         Assignment noAssign = new Assignment(noMapping);
 

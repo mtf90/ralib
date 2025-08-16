@@ -19,8 +19,6 @@ package de.learnlib.ralib.learning.rastar;
 import java.util.*;
 import java.util.Map.Entry;
 
-import net.automatalib.data.Constants;
-import net.automatalib.data.DataValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +37,8 @@ import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
 import gov.nasa.jpf.constraints.api.Expression;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataValue;
 import net.automatalib.word.Word;
 
 /**

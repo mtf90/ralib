@@ -16,22 +16,12 @@ import org.testng.annotations.Test;
 
 import de.learnlib.query.DefaultQuery;
 import de.learnlib.ralib.RaLibTestSuite;
-import de.learnlib.ralib.automata.Assignment;
 import de.learnlib.ralib.automata.InputTransition;
 import de.learnlib.ralib.automata.MutableRegisterAutomaton;
 import de.learnlib.ralib.automata.RALocation;
 import de.learnlib.ralib.automata.RegisterAutomaton;
 import de.learnlib.ralib.automata.output.OutputMapping;
 import de.learnlib.ralib.automata.output.OutputTransition;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.Parameter;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
-import de.learnlib.ralib.data.VarMapping;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.ParameterGenerator;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.RegisterGenerator;
 import de.learnlib.ralib.equivalence.IOEquivalenceTest;
 import de.learnlib.ralib.oracles.SimulatorOracle;
 import de.learnlib.ralib.oracles.TreeOracleFactory;
@@ -53,13 +43,24 @@ import de.learnlib.ralib.words.PSymbolInstance;
 import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.expressions.NumericBooleanExpression;
 import gov.nasa.jpf.constraints.expressions.NumericComparator;
+import gov.nasa.jpf.constraints.types.BuiltinTypes;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.automaton.ra.Assignment;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.SymbolicDataValueGenerator.ParameterGenerator;
+import net.automatalib.data.SymbolicDataValueGenerator.RegisterGenerator;
+import net.automatalib.data.VarMapping;
 import net.automatalib.word.Word;
 
 public class IOHandlingTest extends RaLibTestSuite {
 	static class IORAExamples {
 
-		static final DataType ID = new DataType("id");
+		static final DataType ID = new DataType("id", BuiltinTypes.DECIMAL);
 
 		static final OutputSymbol NOK = new OutputSymbol("NOK");
 
@@ -98,10 +99,10 @@ public class IOHandlingTest extends RaLibTestSuite {
 			Expression<Boolean> trueGuard = ExpressionUtil.TRUE;
 
 			// assignments
-			VarMapping<Register, SymbolicDataValue> copyMapping = new VarMapping<Register, SymbolicDataValue>();
+			VarMapping<Register<?>, SymbolicDataValue<?>> copyMapping = new VarMapping<>();
 			copyMapping.put(rVal, rVal);
 
-			VarMapping<Register, SymbolicDataValue> storeMapping = new VarMapping<Register, SymbolicDataValue>();
+			VarMapping<Register<?>, SymbolicDataValue<?>> storeMapping = new VarMapping<>();
 			storeMapping.put(rVal, pVal);
 
 			Assignment copyAssign = new Assignment(copyMapping);
@@ -158,10 +159,10 @@ public class IOHandlingTest extends RaLibTestSuite {
 			Expression<Boolean> trueGuard = ExpressionUtil.TRUE;
 
 			// assignments
-			VarMapping<Register, SymbolicDataValue> copyMapping = new VarMapping<Register, SymbolicDataValue>();
+			VarMapping<Register<?>, SymbolicDataValue<?>> copyMapping = new VarMapping<>();
 			copyMapping.put(rVal, rVal);
 
-			VarMapping<Register, SymbolicDataValue> storeMapping = new VarMapping<Register, SymbolicDataValue>();
+			VarMapping<Register<?>, SymbolicDataValue<?>> storeMapping = new VarMapping<>();
 			storeMapping.put(rVal, pVal);
 
 			Assignment copyAssign = new Assignment(copyMapping);

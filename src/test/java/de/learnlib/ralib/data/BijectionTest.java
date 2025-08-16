@@ -7,11 +7,13 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import de.learnlib.ralib.RaLibTestSuite;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
+import gov.nasa.jpf.constraints.types.BuiltinTypes;
+import net.automatalib.data.DataType;
+import net.automatalib.data.SymbolicDataValue.Register;
 
 public class BijectionTest extends RaLibTestSuite {
 
-	private static final DataType DT = new DataType("type");
+	private static final DataType DT = new DataType("type", BuiltinTypes.DECIMAL);
 
 	@Test
 	public void testBijection() {

@@ -12,18 +12,10 @@ import java.util.Map;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import de.learnlib.ralib.automata.Assignment;
 import de.learnlib.ralib.automata.InputTransition;
 import de.learnlib.ralib.automata.MutableRegisterAutomaton;
 import de.learnlib.ralib.automata.RALocation;
 import de.learnlib.ralib.automata.RegisterAutomaton;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
-import de.learnlib.ralib.data.VarMapping;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.oracles.DataWordOracle;
 import de.learnlib.ralib.oracles.SimulatorOracle;
@@ -37,6 +29,14 @@ import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.expressions.NumericBooleanExpression;
 import gov.nasa.jpf.constraints.expressions.NumericComparator;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.automaton.ra.Assignment;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.SymbolicDataValueGenerator;
+import net.automatalib.data.VarMapping;
 import net.automatalib.word.Word;
 
 public class InstantiateSymbolicWordTest {
@@ -115,9 +115,9 @@ public class InstantiateSymbolicWordTest {
         Expression<Boolean>  trueGuard = ExpressionUtil.TRUE;
 
         // assignments
-        VarMapping<SymbolicDataValue.Register, SymbolicDataValue> store = new VarMapping<SymbolicDataValue.Register, SymbolicDataValue>();
+        VarMapping<Register<?>, SymbolicDataValue<?>> store = new VarMapping<>();
         store.put(r1, p1);
-        VarMapping<Register, SymbolicDataValue> noMapping = new VarMapping<SymbolicDataValue.Register, SymbolicDataValue>();
+        VarMapping<Register<?>, SymbolicDataValue<?>> noMapping = new VarMapping<>();
 
         Assignment storeAssign = new Assignment(store);
         Assignment noAssign = new Assignment(noMapping);

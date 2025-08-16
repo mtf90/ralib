@@ -17,12 +17,12 @@
 package de.learnlib.ralib.data;
 
 import net.automatalib.data.DataValue;
-import net.automatalib.data.Mapping;
+import net.automatalib.data.Valuation;
 
 /**
  *
  * @author falk
  */
-public class SuffixValuation extends Mapping<SuffixValue, DataValue> {
+public class SuffixValuation extends Valuation<SuffixValue<?>, DataValue<?>> {
 
 }

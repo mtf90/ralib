@@ -29,19 +29,13 @@ import java.util.stream.Stream;
 
 import com.google.common.collect.Sets;
 
-import de.learnlib.ralib.data.SuffixValue;
-import net.automatalib.data.Constants;
-import net.automatalib.data.DataType;
-import net.automatalib.data.DataValue;
-import net.automatalib.data.Mapping;
-import net.automatalib.data.SymbolicDataValue;
-import net.automatalib.data.SymbolicDataValueGenerator.ParameterGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.learnlib.logging.Category;
 import de.learnlib.query.DefaultQuery;
 import de.learnlib.ralib.data.SuffixValuation;
+import de.learnlib.ralib.data.SuffixValue;
 import de.learnlib.ralib.data.WordValuation;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.oracles.Branching;
@@ -56,7 +50,14 @@ import de.learnlib.ralib.theory.Theory;
 import de.learnlib.ralib.words.DataWords;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import gov.nasa.jpf.constraints.types.BuiltinTypes;
 import net.automatalib.common.util.Pair;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.Mapping;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValueGenerator.ParameterGenerator;
 import net.automatalib.word.Word;
 
 /**
@@ -64,6 +65,8 @@ import net.automatalib.word.Word;
  * @author falk
  */
 public class MultiTheoryTreeOracle implements TreeOracle {
+
+    private final DataType EMPTY = new DataType("", BuiltinTypes.DECIMAL);
 
     private final DataWordOracle oracle;
 
@@ -153,7 +156,7 @@ public class MultiTheoryTreeOracle implements TreeOracle {
     private Node createFreshNode(int i, Word<PSymbolInstance> prefix, ParameterizedSymbol ps, SuffixValuation pval) {
 
         if (i == ps.getArity() + 1) {
-            return new Node(new SuffixValue(null, i));
+            return new Node(new SuffixValue(EMPTY, i));
         } else {
             Map<DataValue, Node> nextMap = new LinkedHashMap<>();
             Map<DataValue, SDTGuard> guardMap = new LinkedHashMap<>();
@@ -183,7 +186,7 @@ public class MultiTheoryTreeOracle implements TreeOracle {
             Map<SuffixValue, Set<DataValue>> oldDvMap, SDT... sdts) {
 
         if (i == ps.getArity() + 1) {
-            return new Node(new SuffixValue(null, i));
+            return new Node(new SuffixValue(EMPTY, i));
         } else {
             // obtain the data type, teacher, parameter
             DataType type = ps.getPtypes()[i - 1];

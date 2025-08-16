@@ -13,8 +13,6 @@ import de.learnlib.ralib.RaLibTestSuite;
 import de.learnlib.ralib.TestUtil;
 import de.learnlib.ralib.automata.RegisterAutomaton;
 import de.learnlib.ralib.automata.xml.RegisterAutomatonImporter;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
 import de.learnlib.ralib.dt.DTLeaf;
 import de.learnlib.ralib.equivalence.IOCounterExamplePrefixFinder;
 import de.learnlib.ralib.equivalence.IOCounterExamplePrefixReplacer;
@@ -38,6 +36,8 @@ import de.learnlib.ralib.theory.equality.EqualityTheory;
 import de.learnlib.ralib.tools.theories.IntegerEqualityTheory;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
 import net.automatalib.word.Word;
 
 public class LearnSipIOTest extends RaLibTestSuite {

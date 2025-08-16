@@ -3,16 +3,17 @@ package de.learnlib.ralib.example.repeater;
 import java.math.BigDecimal;
 
 import de.learnlib.exception.SULException;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
 import de.learnlib.ralib.sul.DataWordSUL;
 import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.OutputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import gov.nasa.jpf.constraints.types.BuiltinTypes;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 
 public class RepeaterSUL extends DataWordSUL {
-    public static final DataType TINT = new DataType("int");
+    public static final DataType TINT = new DataType("int", BuiltinTypes.DECIMAL);
 
     public static final ParameterizedSymbol IPUT = new InputSymbol("put", TINT);
     public static final ParameterizedSymbol OECHO = new OutputSymbol("echo", TINT);
@@ -68,7 +69,7 @@ public class RepeaterSUL extends DataWordSUL {
     public PSymbolInstance step(PSymbolInstance in) throws SULException {
         countInputs(1);
         if (in.getBaseSymbol().equals(IPUT)) {
-            Integer p = in.getParameterValues()[0].getValue().intValue();
+            Integer p = ((DataValue<BigDecimal>)in.getParameterValues()[0]).getValue().intValue();
             Integer x = repeater.repeat(p);
             return createOutputSymbol(x);
         } else {

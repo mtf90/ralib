@@ -20,9 +20,6 @@ import de.learnlib.query.DefaultQuery;
 import de.learnlib.ralib.RaLibLearningExperimentRunner;
 import de.learnlib.ralib.RaLibTestSuite;
 import de.learnlib.ralib.automata.RegisterAutomaton;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
 import de.learnlib.ralib.learning.Hypothesis;
 import de.learnlib.ralib.learning.Measurements;
 import de.learnlib.ralib.learning.RaLearningAlgorithmName;
@@ -37,6 +34,9 @@ import de.learnlib.ralib.theory.Theory;
 import de.learnlib.ralib.tools.theories.IntegerEqualityTheory;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 import net.automatalib.word.Word;
 
 public class LearnLoginTest extends RaLibTestSuite {
@@ -71,7 +71,7 @@ public class LearnLoginTest extends RaLibTestSuite {
 
         Word<PSymbolInstance> ce = Word.fromSymbols(
                 new PSymbolInstance(I_REGISTER,
-                        new DataValue(T_UID, BigDecimal.ZERO), new DataValue(T_PWD, BigDecimal.ZERO)),
+                                    new DataValue(T_UID, BigDecimal.ZERO), new DataValue(T_PWD, BigDecimal.ZERO)),
                 new PSymbolInstance(I_LOGIN,
                         new DataValue(T_UID, BigDecimal.ZERO), new DataValue(T_PWD, BigDecimal.ZERO)));
 

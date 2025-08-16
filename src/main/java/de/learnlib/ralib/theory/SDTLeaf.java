@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import de.learnlib.ralib.data.SDTGuardElement;
 import de.learnlib.ralib.data.SDTRelabeling;
+import net.automatalib.data.GuardElement;
 import net.automatalib.data.SymbolicDataValue.Register;
 
 /**
@@ -109,7 +109,7 @@ public class SDTLeaf extends SDT {
     }
 
     @Override
-    public Set<SDTGuardElement> getVariables() {
+    public Set<GuardElement> getVariables() {
         return new LinkedHashSet<>();
     }
 }

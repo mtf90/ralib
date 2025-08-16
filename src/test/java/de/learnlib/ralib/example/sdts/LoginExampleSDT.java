@@ -20,10 +20,10 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import de.learnlib.ralib.data.SDTRelabeling;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.theory.SDT;
 import de.learnlib.ralib.theory.SDTLeaf;
+import net.automatalib.data.SymbolicDataValue.Register;
 
 /**
  *

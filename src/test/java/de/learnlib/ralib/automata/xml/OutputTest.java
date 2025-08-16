@@ -26,9 +26,6 @@ import org.testng.annotations.Test;
 
 import de.learnlib.ralib.RaLibTestSuite;
 import de.learnlib.ralib.TestUtil;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
 import de.learnlib.ralib.oracles.io.IOOracle;
 import de.learnlib.ralib.sul.DataWordSUL;
 import de.learnlib.ralib.sul.SULOracle;
@@ -39,6 +36,9 @@ import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.OutputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 import net.automatalib.word.Word;
 
 /**

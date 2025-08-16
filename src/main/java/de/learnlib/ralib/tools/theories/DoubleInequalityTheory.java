@@ -21,10 +21,6 @@ package de.learnlib.ralib.tools.theories;
 import java.math.BigDecimal;
 import java.util.*;
 
-import net.automatalib.data.Constants;
-import net.automatalib.data.DataType;
-import net.automatalib.data.DataValue;
-import net.automatalib.data.SymbolicDataValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,6 +41,11 @@ import gov.nasa.jpf.constraints.solvers.nativez3.NativeZ3Solver;
 import gov.nasa.jpf.constraints.solvers.nativez3.NativeZ3SolverProvider;
 import gov.nasa.jpf.constraints.types.BuiltinTypes;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.GuardElement;
+import net.automatalib.data.SymbolicDataValue;
 
 /**
  *
@@ -123,16 +124,16 @@ public class DoubleInequalityTheory extends InequalityTheoryWithEq implements Ty
 
         } else if (g instanceof SDTGuard.IntervalGuard iGuard) {
             if (!iGuard.isBiggerGuard()) {
-                SDTGuardElement r =  iGuard.greaterElement();
+                GuardElement r =  iGuard.greaterElement();
                 assert r != null;
                 DataValue ri = (r instanceof DataValue) ? (DataValue) r :
-                        new DataValue(type, (BigDecimal) val.getValue( (Variable) r));
+                        new DataValue(type, (BigDecimal) val.getValue((Variable) r));
                 gov.nasa.jpf.constraints.expressions.Constant wm = new gov.nasa.jpf.constraints.expressions.Constant(BuiltinTypes.DECIMAL, (ri.getValue()));
                 // add the constant equivalence expression to the list
                 eList.add(new NumericBooleanExpression(wm, NumericComparator.EQ, r.asExpression()));
             }
             if (!iGuard.isSmallerGuard()) {
-                SDTGuardElement l = iGuard.smallerElement();
+                GuardElement l = iGuard.smallerElement();
                 assert l != null;
                 DataValue li = (l instanceof DataValue) ? (DataValue) l :
                         new DataValue(type, (BigDecimal) val.getValue( (Variable) l));

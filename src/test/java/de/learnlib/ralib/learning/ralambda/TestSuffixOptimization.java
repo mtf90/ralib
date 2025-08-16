@@ -19,9 +19,6 @@ import de.learnlib.ralib.CacheDataWordOracle;
 import de.learnlib.ralib.RaLibTestSuite;
 import de.learnlib.ralib.TestUtil;
 import de.learnlib.ralib.automata.RegisterAutomaton;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
 import de.learnlib.ralib.example.repeater.RepeaterSUL;
 import de.learnlib.ralib.learning.Hypothesis;
 import de.learnlib.ralib.learning.Measurements;
@@ -42,6 +39,9 @@ import de.learnlib.ralib.theory.Theory;
 import de.learnlib.ralib.tools.theories.DoubleInequalityTheory;
 import de.learnlib.ralib.tools.theories.IntegerEqualityTheory;
 import de.learnlib.ralib.words.PSymbolInstance;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 import net.automatalib.word.Word;
 
 public class TestSuffixOptimization extends RaLibTestSuite {

@@ -8,8 +8,6 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.Sets;
 
-import net.automatalib.data.Constants;
-import net.automatalib.data.DataType;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -34,6 +32,8 @@ import de.learnlib.ralib.theory.Theory;
 import de.learnlib.ralib.tools.theories.IntegerEqualityTheory;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
 import net.automatalib.word.Word;
 
 public class TestOutputSuffixes extends RaLibTestSuite {

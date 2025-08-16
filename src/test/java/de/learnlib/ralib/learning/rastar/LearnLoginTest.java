@@ -34,9 +34,6 @@ import org.testng.annotations.Test;
 import de.learnlib.query.DefaultQuery;
 import de.learnlib.ralib.RaLibTestSuite;
 import de.learnlib.ralib.automata.RegisterAutomaton;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
 import de.learnlib.ralib.oracles.DataWordOracle;
 import de.learnlib.ralib.oracles.SDTLogicOracle;
 import de.learnlib.ralib.oracles.SimulatorOracle;
@@ -47,6 +44,9 @@ import de.learnlib.ralib.smt.ConstraintSolver;
 import de.learnlib.ralib.theory.Theory;
 import de.learnlib.ralib.tools.theories.IntegerEqualityTheory;
 import de.learnlib.ralib.words.PSymbolInstance;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 import net.automatalib.word.Word;
 
 /**
@@ -86,7 +86,7 @@ public class LearnLoginTest extends RaLibTestSuite {
 
         Word<PSymbolInstance> ce = Word.fromSymbols(
                 new PSymbolInstance(I_REGISTER,
-                        new DataValue(T_UID, BigDecimal.ONE), new DataValue(T_PWD, BigDecimal.ONE)),
+                                    new DataValue(T_UID, BigDecimal.ONE), new DataValue(T_PWD, BigDecimal.ONE)),
                 new PSymbolInstance(I_LOGIN,
                         new DataValue(T_UID, BigDecimal.ONE), new DataValue(T_PWD, BigDecimal.ONE)));
 

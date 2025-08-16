@@ -12,12 +12,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import de.learnlib.ralib.data.SuffixValue;
-import net.automatalib.data.Constants;
-import net.automatalib.data.DataType;
 import org.apache.commons.lang3.tuple.Pair;
 
 import de.learnlib.ralib.data.Bijection;
+import de.learnlib.ralib.data.SuffixValue;
 import de.learnlib.ralib.data.util.SuffixValueGenerator;
 import de.learnlib.ralib.learning.LocationComponent;
 import de.learnlib.ralib.learning.SymbolicSuffix;
@@ -32,6 +30,8 @@ import de.learnlib.ralib.theory.SDTLeaf;
 import de.learnlib.ralib.words.OutputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
 import net.automatalib.word.Word;
 
 /**

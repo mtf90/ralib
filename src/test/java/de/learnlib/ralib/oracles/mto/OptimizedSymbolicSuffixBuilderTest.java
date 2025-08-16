@@ -12,12 +12,7 @@ import java.util.Set;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator;
+import de.learnlib.ralib.data.SuffixValue;
 import de.learnlib.ralib.data.util.SuffixValueGenerator;
 import de.learnlib.ralib.example.list.BoundedList;
 import de.learnlib.ralib.example.list.BoundedListDataWordOracle;
@@ -29,6 +24,12 @@ import de.learnlib.ralib.theory.equality.EqualRestriction;
 import de.learnlib.ralib.tools.theories.IntegerEqualityTheory;
 import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
+import gov.nasa.jpf.constraints.types.BuiltinTypes;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValueGenerator;
 import net.automatalib.word.Word;
 
 public class OptimizedSymbolicSuffixBuilderTest {
@@ -64,10 +65,10 @@ public class OptimizedSymbolicSuffixBuilderTest {
         SuffixValueGenerator svGen =
                 new SuffixValueGenerator();
 
-        SymbolicDataValue.SuffixValue s1 = svGen.next(INT_TYPE);
-        SymbolicDataValue.SuffixValue s2 = svGen.next(INT_TYPE);
-        SymbolicDataValue.SuffixValue s3 = svGen.next(INT_TYPE);
-        SymbolicDataValue.SuffixValue s4 = svGen.next(INT_TYPE);
+        SuffixValue s1 = svGen.next(INT_TYPE);
+        SuffixValue s2 = svGen.next(INT_TYPE);
+        SuffixValue s3 = svGen.next(INT_TYPE);
+        SuffixValue s4 = svGen.next(INT_TYPE);
 
         SymbolicDataValueGenerator.ConstantGenerator cGen =
                 new SymbolicDataValueGenerator.ConstantGenerator();
@@ -188,7 +189,7 @@ public class OptimizedSymbolicSuffixBuilderTest {
         Assert.assertEquals(actual1, expected1);
 
         SymbolicSuffix actual2 = builder.extendSuffix(word2.prefix(2), sdt2, suffix2);
-        Map<SymbolicDataValue.SuffixValue, SuffixValueRestriction> expectedRestr2 = new LinkedHashMap<>();
+        Map<SuffixValue, SuffixValueRestriction> expectedRestr2 = new LinkedHashMap<>();
         expectedRestr2.put(s1, new FreshSuffixValue(s1));
         expectedRestr2.put(s2, new FreshSuffixValue(s2));
         expectedRestr2.put(s3, new UnrestrictedSuffixValue(s3));
@@ -243,7 +244,7 @@ public class OptimizedSymbolicSuffixBuilderTest {
 
     @Test
     public void testExtendSuffix() {
-        DataType type = new DataType("int");
+        DataType type = new DataType("int", BuiltinTypes.DECIMAL);
 
         final Map<DataType, Theory> teachers = new LinkedHashMap<>();
         IntegerEqualityTheory dit = new IntegerEqualityTheory(type);
@@ -254,11 +255,11 @@ public class OptimizedSymbolicSuffixBuilderTest {
         InputSymbol C = new InputSymbol("c");
         SuffixValueGenerator sgen =
                 new SuffixValueGenerator();
-        SymbolicDataValue.SuffixValue s1 = sgen.next(type);
-        SymbolicDataValue.SuffixValue s2 = sgen.next(type);
-        SymbolicDataValue.SuffixValue s3 = sgen.next(type);
-        SymbolicDataValue.SuffixValue s4 = sgen.next(type);
-        SymbolicDataValue.SuffixValue s5 = sgen.next(type);
+        SuffixValue s1 = sgen.next(type);
+        SuffixValue s2 = sgen.next(type);
+        SuffixValue s3 = sgen.next(type);
+        SuffixValue s4 = sgen.next(type);
+        SuffixValue s5 = sgen.next(type);
 
         SymbolicDataValueGenerator.ConstantGenerator cGen =
                 new SymbolicDataValueGenerator.ConstantGenerator();
@@ -343,7 +344,7 @@ public class OptimizedSymbolicSuffixBuilderTest {
 
     @Test
     public void testBuildOptimizedSuffix() {
-        DataType type = new DataType("int");
+        DataType type = new DataType("int", BuiltinTypes.DECIMAL);
         InputSymbol a = new InputSymbol("a", type);
 
         final Map<DataType, Theory> teachers = new LinkedHashMap<>();
@@ -427,7 +428,7 @@ public class OptimizedSymbolicSuffixBuilderTest {
 
     @Test
     public void testExtendSuffixRevealingRegisters() {
-        DataType type = new DataType("int");
+        DataType type = new DataType("int", BuiltinTypes.DECIMAL);
         InputSymbol a = new InputSymbol("a", type);
         InputSymbol b = new InputSymbol("b", type, type);
 
@@ -502,7 +503,7 @@ public class OptimizedSymbolicSuffixBuilderTest {
 
     @Test
     private void testSDTPrune() {
-        DataType type = new DataType("int");
+        DataType type = new DataType("int", BuiltinTypes.DECIMAL);
 
         final Map<DataType, Theory> teachers = new LinkedHashMap<>();
         IntegerEqualityTheory dit = new IntegerEqualityTheory(type);
@@ -597,7 +598,7 @@ public class OptimizedSymbolicSuffixBuilderTest {
 
     @Test
     public void testCoalesce() {
-        DataType type = new DataType("int");
+        DataType type = new DataType("int", BuiltinTypes.DECIMAL);
         InputSymbol a = new InputSymbol("a", type);
 
         DataValue dv1 = new DataValue(type, BigDecimal.ZERO);

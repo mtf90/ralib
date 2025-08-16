@@ -11,10 +11,7 @@ import org.testng.annotations.Test;
 import de.learnlib.ralib.RaLibTestSuite;
 import de.learnlib.ralib.TestUtil;
 import de.learnlib.ralib.automata.xml.RegisterAutomatonImporter;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
+import de.learnlib.ralib.data.SuffixValue;
 import de.learnlib.ralib.oracles.mto.SymbolicSuffixRestrictionBuilder;
 import de.learnlib.ralib.theory.Theory;
 import de.learnlib.ralib.tools.classanalyzer.TypedTheory;
@@ -24,6 +21,9 @@ import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.OutputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 import net.automatalib.word.Word;
 
 public class SymbolicSuffixTest extends RaLibTestSuite {

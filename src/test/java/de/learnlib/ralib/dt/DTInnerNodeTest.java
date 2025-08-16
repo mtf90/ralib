@@ -14,9 +14,6 @@ import org.testng.annotations.Test;
 
 import de.learnlib.ralib.automata.RegisterAutomaton;
 import de.learnlib.ralib.data.Bijection;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.oracles.DataWordOracle;
 import de.learnlib.ralib.oracles.SimulatorOracle;
@@ -25,6 +22,9 @@ import de.learnlib.ralib.smt.ConstraintSolver;
 import de.learnlib.ralib.theory.Theory;
 import de.learnlib.ralib.tools.theories.IntegerEqualityTheory;
 import de.learnlib.ralib.words.PSymbolInstance;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 import net.automatalib.word.Word;
 
 public class DTInnerNodeTest {
@@ -40,7 +40,7 @@ public class DTInnerNodeTest {
         ConstraintSolver solver = new ConstraintSolver();
 
         MultiTheoryTreeOracle mto = new MultiTheoryTreeOracle(
-            dwOracle, teachers, new Constants(), solver);
+                dwOracle, teachers, new Constants(), solver);
 
         Word<PSymbolInstance> p1 = Word.fromSymbols(
             new PSymbolInstance(I_PUSH, new DataValue(T_INT, new BigDecimal(1))),

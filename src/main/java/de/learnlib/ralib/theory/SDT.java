@@ -16,6 +16,7 @@
  */
 package de.learnlib.ralib.theory;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -30,10 +31,12 @@ import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
 import net.automatalib.data.Constants;
 import net.automatalib.data.DataValue;
+import net.automatalib.data.GuardElement;
 import net.automatalib.data.Mapping;
 import net.automatalib.data.SymbolicDataValue;
 import net.automatalib.data.SymbolicDataValue.Register;
 import net.automatalib.data.SymbolicDataValueGenerator;
+import net.automatalib.data.Valuation;
 import net.automatalib.word.Word;
 
 /**
@@ -61,12 +64,12 @@ public class SDT {
     @Deprecated
     public Set<Register> getRegisters() {
         Set<DataValue> temp = new LinkedHashSet<>();
-        this.getVariables().stream().filter(SDTGuardElement::isDataValue).forEach((x) -> {
+        this.getVariables().stream().filter(DataValue.class::isInstance).forEach((x) -> {
             temp.add((DataValue) x);
         });
 
-        DataValue[] prefixValue = temp.toArray(new DataValue[] {});
-        Arrays.sort(prefixValue);
+        DataValue<BigDecimal>[] prefixValue = temp.toArray(new DataValue[] {});
+        Arrays.sort(prefixValue, Comparator.comparing(DataValue::getValue));
 
         Set<Register> registers = new LinkedHashSet<>();
         SymbolicDataValueGenerator.RegisterGenerator regGen =
@@ -80,7 +83,7 @@ public class SDT {
 
     public Set<DataValue> getDataValues() {
         return getVariables().stream()
-                .filter(SDTGuardElement::isDataValue)
+                .filter(DataValue.class::isInstance)
                 .map( d -> (DataValue) d )
                 .collect(Collectors.toSet());
     }
@@ -93,15 +96,15 @@ public class SDT {
         }
     }
 
-    public Set<SDTGuardElement> getVariables() {
-        Set<SDTGuardElement> variables = new LinkedHashSet<>();
+    public Set<GuardElement> getVariables() {
+        Set<GuardElement> variables = new LinkedHashSet<>();
         for (Entry<SDTGuard, SDT> e : children.entrySet()) {
             SDTGuard g = e.getKey();
             if (g instanceof SDTGuard.EqualityGuard eg) {
-                SDTGuardElement r = eg.register();
+                GuardElement r = eg.register();
                 variables.add(r);
             } else if (g instanceof SDTGuard.DisequalityGuard dg) {
-                SDTGuardElement r = dg.register();
+                GuardElement r = dg.register();
                 variables.add(r);
             } else if (g instanceof SDTGuard.SDTAndGuard ag) {
                 for (SDTGuard ifG : ag.conjuncts()) {
@@ -151,7 +154,7 @@ public class SDT {
     }
 
     public boolean isAccepting(Mapping<SymbolicDataValue<?>, DataValue<?>> vals, Constants consts) {
-    	Mapping<SymbolicDataValue<?>, DataValue<?>> mapping = new Mapping<>();
+    	Valuation<SymbolicDataValue<?>, DataValue<?>> mapping = new Valuation<>();
     	mapping.putAll(vals);
     	mapping.putAll(consts);
         Expression<Boolean> expr = getAcceptingPaths(consts);
@@ -224,7 +227,7 @@ public class SDT {
 
     public SDT toRegisterSDT(Word<PSymbolInstance> prefix, Constants consts) {
     	DataValue[] prefixVals = DataWords.valsOf(prefix);
-    	Mapping<SDTGuardElement, SDTGuardElement> regs = new Mapping<>();
+    	Mapping<GuardElement, GuardElement> regs = new Mapping<>();
     	for (int i = 0; i < prefixVals.length; i++) {
     		DataValue val = prefixVals[i];
     		if (regs.get(val) == null) {

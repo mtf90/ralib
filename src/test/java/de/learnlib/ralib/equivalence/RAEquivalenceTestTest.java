@@ -12,19 +12,10 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import de.learnlib.query.DefaultQuery;
-import de.learnlib.ralib.automata.Assignment;
 import de.learnlib.ralib.automata.InputTransition;
 import de.learnlib.ralib.automata.MutableRegisterAutomaton;
 import de.learnlib.ralib.automata.RALocation;
 import de.learnlib.ralib.automata.RegisterAutomaton;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.Parameter;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
-import de.learnlib.ralib.data.VarMapping;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.ParameterGenerator;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.RegisterGenerator;
 import de.learnlib.ralib.theory.Theory;
 import de.learnlib.ralib.tools.theories.IntegerEqualityTheory;
 import de.learnlib.ralib.words.PSymbolInstance;
@@ -32,6 +23,15 @@ import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.expressions.NumericBooleanExpression;
 import gov.nasa.jpf.constraints.expressions.NumericComparator;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.automaton.ra.Assignment;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.SymbolicDataValueGenerator.ParameterGenerator;
+import net.automatalib.data.SymbolicDataValueGenerator.RegisterGenerator;
+import net.automatalib.data.VarMapping;
 
 public class RAEquivalenceTestTest {
 	@Test
@@ -69,11 +69,11 @@ public class RAEquivalenceTestTest {
 		Expression<Boolean> trueGuard = ExpressionUtil.TRUE;
 
 		// assignments
-		VarMapping<Register, SymbolicDataValue> storeMapping = new VarMapping<Register, SymbolicDataValue>();
+		VarMapping<Register<?>, SymbolicDataValue<?>> storeMapping = new VarMapping<>();
 		storeMapping.put(rVal, pVal);
 
 
-        VarMapping<Register, SymbolicDataValue> copyMapping = new VarMapping<Register, SymbolicDataValue>();
+        VarMapping<Register<?>, SymbolicDataValue<?>> copyMapping = new VarMapping<>();
         copyMapping.put(rVal, rVal);
 
 		Assignment storeAssign = new Assignment(storeMapping);

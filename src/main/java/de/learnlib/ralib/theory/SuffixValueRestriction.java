@@ -12,6 +12,7 @@ import gov.nasa.jpf.constraints.api.Expression;
 import net.automatalib.data.Constants;
 import net.automatalib.data.DataType;
 import net.automatalib.data.DataValue;
+import net.automatalib.data.GuardElement;
 import net.automatalib.data.SymbolicDataValue;
 import net.automatalib.word.Word;
 
@@ -56,7 +57,7 @@ public abstract class SuffixValueRestriction {
 		DataValue[] suffixVals = DataWords.valsOf(suffix);
 		DataType[] prefixTypes = DataWords.typesOf(DataWords.actsOf(prefix));
 		DataType[] suffixTypes = DataWords.typesOf(DataWords.actsOf(suffix));
-		DataValue val = suffixVals[sv.getId()-1];
+		DataValue val = suffixVals[sv.getId() - 1];
 		int firstSymbolArity = suffix.length() > 0 ? suffix.getSymbol(0).getBaseSymbol().getArity() : 0;
 
 		boolean unrestricted = false;
@@ -124,7 +125,7 @@ public abstract class SuffixValueRestriction {
     		return new FreshSuffixValue(suffixValue);
     	// case equal to previous suffix value
     	} else if (guard instanceof SDTGuard.EqualityGuard) {
-    		SDTGuardElement param = ((SDTGuard.EqualityGuard) guard).register();
+    		GuardElement param = ((SDTGuard.EqualityGuard) guard).register();
     		if (param instanceof SuffixValue) {
     			SuffixValueRestriction restr = prior.get(param);
     			if (restr instanceof FreshSuffixValue) {

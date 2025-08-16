@@ -17,7 +17,6 @@ import org.testng.annotations.Test;
 import de.learnlib.query.DefaultQuery;
 import de.learnlib.ralib.RaLibTestSuite;
 import de.learnlib.ralib.TestUtil;
-import de.learnlib.ralib.automata.Assignment;
 import de.learnlib.ralib.automata.InputTransition;
 import de.learnlib.ralib.automata.MutableRegisterAutomaton;
 import de.learnlib.ralib.automata.RALocation;
@@ -25,13 +24,6 @@ import de.learnlib.ralib.automata.RegisterAutomaton;
 import de.learnlib.ralib.automata.output.OutputMapping;
 import de.learnlib.ralib.automata.output.OutputTransition;
 import de.learnlib.ralib.automata.xml.RegisterAutomatonImporter;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
-import de.learnlib.ralib.data.VarMapping;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator;
 import de.learnlib.ralib.oracles.SimulatorOracle;
 import de.learnlib.ralib.oracles.TreeOracleFactory;
 import de.learnlib.ralib.oracles.io.IOCache;
@@ -52,12 +44,21 @@ import de.learnlib.ralib.words.ParameterizedSymbol;
 import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.expressions.NumericBooleanExpression;
 import gov.nasa.jpf.constraints.expressions.NumericComparator;
+import gov.nasa.jpf.constraints.types.BuiltinTypes;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.automaton.ra.Assignment;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.SymbolicDataValueGenerator;
+import net.automatalib.data.VarMapping;
 import net.automatalib.word.Word;
 
 public class TestUnknownMemorable extends RaLibTestSuite {
 
-	private static final DataType T_INT = new DataType("int");
+	private static final DataType T_INT = new DataType("int", BuiltinTypes.DECIMAL);
 
 	private static final InputSymbol IPUT = new InputSymbol("put", T_INT);
 	private static final InputSymbol IQUERY = new InputSymbol("query");
@@ -106,11 +107,11 @@ public class TestUnknownMemorable extends RaLibTestSuite {
 		Expression<Boolean> trueGuard = ExpressionUtil.TRUE;
 
 		// assignments
-		VarMapping<SymbolicDataValue.Register, SymbolicDataValue> store = new VarMapping<SymbolicDataValue.Register, SymbolicDataValue>();
+		VarMapping<Register<?>, SymbolicDataValue<?>> store = new VarMapping<>();
         store.put(r1, p1);
-        VarMapping<Register, SymbolicDataValue> copy = new VarMapping<SymbolicDataValue.Register, SymbolicDataValue>();
+        VarMapping<Register<?>, SymbolicDataValue<?>> copy = new VarMapping<>();
         copy.put(r1, r1);
-        VarMapping<Register, SymbolicDataValue> noMapping = new VarMapping<SymbolicDataValue.Register, SymbolicDataValue>();
+        VarMapping<Register<?>, SymbolicDataValue<?>> noMapping = new VarMapping<>();
 
         Assignment storeAssign = new Assignment(store);
         Assignment copyAssign = new Assignment(copy);

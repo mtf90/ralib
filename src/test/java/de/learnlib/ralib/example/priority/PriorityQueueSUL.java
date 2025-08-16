@@ -19,18 +19,19 @@ package de.learnlib.ralib.example.priority;
 import java.math.BigDecimal;
 
 import de.learnlib.exception.SULException;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
 import de.learnlib.ralib.sul.DataWordSUL;
 import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.OutputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import gov.nasa.jpf.constraints.types.BuiltinTypes;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 
 public class PriorityQueueSUL extends DataWordSUL {
 
     public static final DataType DOUBLE_TYPE =
-            new DataType("DOUBLE");
+            new DataType("DOUBLE", BuiltinTypes.DECIMAL);
 
     public static final ParameterizedSymbol POLL =
             new InputSymbol("poll");

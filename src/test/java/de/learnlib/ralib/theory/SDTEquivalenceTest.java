@@ -8,14 +8,15 @@ import org.testng.annotations.Test;
 
 import de.learnlib.ralib.RaLibTestSuite;
 import de.learnlib.ralib.data.Bijection;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
+import de.learnlib.ralib.data.SuffixValue;
 import de.learnlib.ralib.smt.ConstraintSolver;
+import gov.nasa.jpf.constraints.types.BuiltinTypes;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 
 public class SDTEquivalenceTest extends RaLibTestSuite {
 
-	private static DataType DT = new DataType("int");
+	private static DataType DT = new DataType("int", BuiltinTypes.DECIMAL);
 
 	@Test
 	public void testEquivalence() {

@@ -2,7 +2,6 @@ package de.learnlib.ralib.oracles.mto;
 
 import java.util.*;
 
-import de.learnlib.ralib.data.SDTGuardElement;
 import de.learnlib.ralib.data.SDTRelabeling;
 import de.learnlib.ralib.data.SuffixValue;
 import de.learnlib.ralib.data.util.SuffixValueGenerator;
@@ -21,6 +20,7 @@ import gov.nasa.jpf.constraints.util.ExpressionUtil;
 import net.automatalib.data.Constants;
 import net.automatalib.data.DataType;
 import net.automatalib.data.DataValue;
+import net.automatalib.data.GuardElement;
 import net.automatalib.data.Mapping;
 import net.automatalib.data.SymbolicDataValue;
 import net.automatalib.word.Word;
@@ -108,7 +108,7 @@ public class OptimizedSymbolicSuffixBuilder {
         sdtPath.stream()
                 .map(SDTGuard::getRegisters)
                 .flatMap(Set::stream)
-                .filter(SDTGuardElement::isDataValue)
+                .filter(DataValue.class::isInstance)
                 .map( x -> (DataValue) x)
                 .distinct().forEach( d -> {
                     int dPos = subVals.indexOf(d);
@@ -178,7 +178,7 @@ public class OptimizedSymbolicSuffixBuilder {
         for (Map.Entry<SDTGuard, LabeledSDT> e : node.getChildren().entrySet()) {
             SDTGuard guard = e.getKey();
             LabeledSDT child = e.getValue();
-            Set<SDTGuardElement> comparands = SDTGuard.getComparands(guard,guard.getParameter());
+            Set<GuardElement> comparands = SDTGuard.getComparands(guard, guard.getParameter());
             for (DataValue sdv : registers) {
                 if (comparands.contains(sdv)) {
                     return true;

@@ -16,6 +16,7 @@ import net.automatalib.data.Mapping;
 import net.automatalib.data.SymbolicDataValue;
 import net.automatalib.data.SymbolicDataValue.Parameter;
 import net.automatalib.data.SymbolicDataValueGenerator.ParameterGenerator;
+import net.automatalib.data.Valuation;
 import net.automatalib.word.Word;
 
 public class EquivalenceClassFilter {
@@ -63,7 +64,7 @@ public class EquivalenceClassFilter {
 
 		Expression<Boolean> expr = restr.toGuardExpression(mapping.keySet());
 		for (DataValue ec : equivClasses) {
-			Mapping<SymbolicDataValue<?>, DataValue<?>> ecMapping = new Mapping<>();
+			Valuation<SymbolicDataValue<?>, DataValue<?>> ecMapping = new Valuation<>();
 			ecMapping.putAll(mapping);
 			ecMapping.put(restr.getParameter(), ec);
 			//System.out.println(" -- " + expr + "  - " + ecMapping);

@@ -12,8 +12,6 @@ import de.learnlib.ralib.RaLibTestSuite;
 import de.learnlib.ralib.TestUtil;
 import de.learnlib.ralib.automata.RegisterAutomaton;
 import de.learnlib.ralib.automata.xml.RegisterAutomatonImporter;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
 import de.learnlib.ralib.equivalence.IOEquivalenceTest;
 import de.learnlib.ralib.learning.Hypothesis;
 import de.learnlib.ralib.oracles.SimulatorOracle;
@@ -32,6 +30,8 @@ import de.learnlib.ralib.tools.classanalyzer.TypedTheory;
 import de.learnlib.ralib.tools.theories.IntegerEqualityTheory;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
 
 public class LearnPalindromeIOTest extends RaLibTestSuite {
 

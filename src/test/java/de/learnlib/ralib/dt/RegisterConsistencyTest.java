@@ -9,10 +9,6 @@ import org.testng.annotations.Test;
 
 import de.learnlib.ralib.RaLibTestSuite;
 import de.learnlib.ralib.data.*;
-import de.learnlib.ralib.data.SymbolicDataValue.Parameter;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.ParameterGenerator;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.RegisterGenerator;
 import de.learnlib.ralib.data.util.SuffixValueGenerator;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.oracles.Branching;
@@ -24,11 +20,18 @@ import de.learnlib.ralib.theory.SDTLeaf;
 import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import gov.nasa.jpf.constraints.types.BuiltinTypes;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValueGenerator.ParameterGenerator;
+import net.automatalib.data.SymbolicDataValueGenerator.RegisterGenerator;
 import net.automatalib.word.Word;
 
 public class RegisterConsistencyTest extends RaLibTestSuite {
 
-	private static final DataType T_INT = new DataType("int");
+	private static final DataType T_INT = new DataType("int", BuiltinTypes.DECIMAL);
 
 	private static final InputSymbol A = new InputSymbol("a", T_INT);
 

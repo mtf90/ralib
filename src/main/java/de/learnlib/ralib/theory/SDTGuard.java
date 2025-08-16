@@ -18,13 +18,14 @@ package de.learnlib.ralib.theory;
 
 import java.util.*;
 
-import de.learnlib.ralib.data.SDTGuardElement;
 import de.learnlib.ralib.data.SDTRelabeling;
 import de.learnlib.ralib.data.SuffixValue;
 import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.expressions.NumericBooleanExpression;
 import gov.nasa.jpf.constraints.expressions.NumericComparator;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.data.GuardElement;
+import net.automatalib.data.SymbolicDataValue;
 
 /**
  *
@@ -42,10 +43,10 @@ public sealed interface SDTGuard permits SDTGuard.DisequalityGuard, SDTGuard.Equ
         public SuffixValue getParameter() {return this.parameter; }
 
         @Override
-        public Set<SDTGuardElement> getRegisters() { return Set.of(); }
+        public Set<GuardElement> getRegisters() { return Set.of(); }
     }
 
-    record EqualityGuard(SuffixValue parameter, SDTGuardElement register) implements SDTGuard {
+    record EqualityGuard(SuffixValue parameter, net.automatalib.data.GuardElement register) implements SDTGuard {
         @Override
         public String toString() {
             return "(" + parameter + "=" + register + ")";
@@ -55,10 +56,10 @@ public sealed interface SDTGuard permits SDTGuard.DisequalityGuard, SDTGuard.Equ
         public SuffixValue getParameter() {return this.parameter; }
 
         @Override
-        public Set<SDTGuardElement> getRegisters() { return Set.of(register); }
+        public Set<GuardElement> getRegisters() { return Set.of(register); }
     }
 
-    record DisequalityGuard(SuffixValue parameter, SDTGuardElement register) implements SDTGuard {
+    record DisequalityGuard(SuffixValue parameter, net.automatalib.data.GuardElement register) implements SDTGuard {
         @Override
         public String toString() {
             return "(" + parameter + "!=" +register + ")";
@@ -68,14 +69,14 @@ public sealed interface SDTGuard permits SDTGuard.DisequalityGuard, SDTGuard.Equ
         public SuffixValue getParameter() {return this.parameter; }
 
         @Override
-        public Set<SDTGuardElement> getRegisters() { return Set.of(register); }
+        public Set<GuardElement> getRegisters() { return Set.of(register); }
     }
 
     record IntervalGuard(SuffixValue parameter,
-                         SDTGuardElement smallerElement, SDTGuardElement greaterElement,
+                         GuardElement smallerElement, net.automatalib.data.GuardElement greaterElement,
                          boolean smallerEqual, boolean greaterEqual) implements SDTGuard {
 
-        public IntervalGuard(SuffixValue param, SDTGuardElement smallerElement, SDTGuardElement greaterElement) {
+        public IntervalGuard(SuffixValue param, GuardElement smallerElement, GuardElement greaterElement) {
             this(param, smallerElement, greaterElement, false, false);
         }
 
@@ -102,8 +103,8 @@ public sealed interface SDTGuard permits SDTGuard.DisequalityGuard, SDTGuard.Equ
         public SuffixValue getParameter() {return this.parameter; }
 
         @Override
-        public Set<SDTGuardElement> getRegisters() {
-            Set<SDTGuardElement> regs = new LinkedHashSet<>();
+        public Set<net.automatalib.data.GuardElement> getRegisters() {
+            Set<net.automatalib.data.GuardElement> regs = new LinkedHashSet<>();
             if (smallerElement != null) regs.add(smallerElement);
             if (greaterElement != null) regs.add(greaterElement);
             return regs;
@@ -127,19 +128,19 @@ public sealed interface SDTGuard permits SDTGuard.DisequalityGuard, SDTGuard.Equ
             return greaterEqual;
         }
 
-        public static IntervalGuard lessGuard(SuffixValue param, SDTGuardElement r) {
+        public static IntervalGuard lessGuard(SuffixValue param, GuardElement r) {
             return new IntervalGuard(param, null, r, false, false);
         }
 
-        public static IntervalGuard lessOrEqualGuard(SuffixValue param, SDTGuardElement r) {
+        public static IntervalGuard lessOrEqualGuard(SuffixValue param, GuardElement r) {
             return new IntervalGuard(param, null, r, false, true);
         }
 
-        public static IntervalGuard greaterGuard(SuffixValue param, SDTGuardElement r) {
+        public static IntervalGuard greaterGuard(SuffixValue param, GuardElement r) {
             return new IntervalGuard(param, r, null, false, false);
         }
 
-        public static IntervalGuard greaterOrEqualGuard(SuffixValue param, SDTGuardElement r) {
+        public static IntervalGuard greaterOrEqualGuard(SuffixValue param, GuardElement r) {
             return new IntervalGuard(param, r, null, true, false);
         }
     }
@@ -158,8 +159,8 @@ public sealed interface SDTGuard permits SDTGuard.DisequalityGuard, SDTGuard.Equ
         public SuffixValue getParameter() {return this.parameter; }
 
         @Override
-        public Set<SDTGuardElement> getRegisters() {
-            Set<SDTGuardElement> ret = new HashSet<>();
+        public Set<GuardElement> getRegisters() {
+            Set<GuardElement> ret = new HashSet<>();
             conjuncts.stream().forEach( x -> ret.addAll(x.getRegisters() ));
             return ret;
         }
@@ -196,8 +197,8 @@ public sealed interface SDTGuard permits SDTGuard.DisequalityGuard, SDTGuard.Equ
         public SuffixValue getParameter() {return this.parameter; }
 
         @Override
-        public Set<SDTGuardElement> getRegisters() {
-            Set<SDTGuardElement> ret = new HashSet<>();
+        public Set<GuardElement> getRegisters() {
+            Set<GuardElement> ret = new HashSet<>();
             disjuncts.stream().forEach( x -> ret.addAll(x.getRegisters() ));
             return ret;
         }
@@ -227,10 +228,10 @@ public sealed interface SDTGuard permits SDTGuard.DisequalityGuard, SDTGuard.Equ
 
     SuffixValue getParameter();
 
-    Set<SDTGuardElement> getRegisters();
+    Set<net.automatalib.data.GuardElement> getRegisters();
 
-    static Set<SDTGuardElement> getComparands(SDTGuard in, SDTGuardElement dv) {
-        Set<SDTGuardElement> comparands = new LinkedHashSet<>();
+    static Set<GuardElement> getComparands(SDTGuard in, GuardElement dv) {
+        Set<net.automatalib.data.GuardElement> comparands = new LinkedHashSet<>();
         switch (in) {
             case SDTGuard.EqualityGuard g:
                 if (g.parameter.equals(dv)) comparands.add(g.register);
@@ -260,8 +261,8 @@ public sealed interface SDTGuard permits SDTGuard.DisequalityGuard, SDTGuard.Equ
         }
     }
 
-    private static <T extends SDTGuardElement> T newValueIfExists(SDTRelabeling relabelling, T oldValue) {
-        if (oldValue == null || SDTGuardElement.isConstant(oldValue)) return oldValue;
+    private static <T extends net.automatalib.data.GuardElement> T newValueIfExists(SDTRelabeling relabelling, T oldValue) {
+        if (oldValue == null || oldValue instanceof SymbolicDataValue.Constant<?>) return oldValue;
         T newValue = (T) relabelling.get(oldValue);
         return newValue != null ? newValue : oldValue;
     }
@@ -332,7 +333,7 @@ public sealed interface SDTGuard permits SDTGuard.DisequalityGuard, SDTGuard.Equ
             case SDTGuard.IntervalGuard g:
                 // FIXME: copied from old implementation but does not seem to make sense
                 assert !g.isIntervalGuard();
-                SDTGuardElement r = g.isSmallerGuard() ? g.greaterElement : g.smallerElement;
+                GuardElement r = g.isSmallerGuard() ? g.greaterElement : g.smallerElement;
                 return new DisequalityGuard(g.parameter,r);
             case SDTGuard.SDTAndGuard g:
                 throw new RuntimeException("not refactored yet");

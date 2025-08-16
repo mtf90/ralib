@@ -22,7 +22,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import net.automatalib.data.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +31,7 @@ import de.learnlib.ralib.oracles.TreeOracle;
 import de.learnlib.ralib.oracles.mto.SymbolicSuffixRestrictionBuilder;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.Constants;
 import net.automatalib.word.Word;
 
 /**

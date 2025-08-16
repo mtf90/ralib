@@ -20,9 +20,6 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import net.automatalib.data.DataValue;
-import net.automatalib.data.SymbolicDataValueGenerator;
-import net.automatalib.data.SymbolicDataValueGenerator.RegisterGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +34,9 @@ import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.OutputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.SymbolicDataValueGenerator;
+import net.automatalib.data.SymbolicDataValueGenerator.RegisterGenerator;
 import net.automatalib.word.Word;
 
 /**

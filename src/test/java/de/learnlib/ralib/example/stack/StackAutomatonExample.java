@@ -1,26 +1,29 @@
 package de.learnlib.ralib.example.stack;
 
-import de.learnlib.ralib.automata.Assignment;
+import java.math.BigDecimal;
+
 import de.learnlib.ralib.automata.InputTransition;
 import de.learnlib.ralib.automata.MutableRegisterAutomaton;
 import de.learnlib.ralib.automata.RALocation;
 import de.learnlib.ralib.automata.RegisterAutomaton;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.Parameter;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
-import de.learnlib.ralib.data.VarMapping;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.ParameterGenerator;
-import de.learnlib.ralib.data.util.SymbolicDataValueGenerator.RegisterGenerator;
 import de.learnlib.ralib.words.InputSymbol;
 import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.expressions.NumericBooleanExpression;
 import gov.nasa.jpf.constraints.expressions.NumericComparator;
+import gov.nasa.jpf.constraints.types.BuiltinTypes;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.automaton.ra.Assignment;
+import net.automatalib.data.DataType;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.SymbolicDataValueGenerator.ParameterGenerator;
+import net.automatalib.data.SymbolicDataValueGenerator.RegisterGenerator;
+import net.automatalib.data.VarMapping;
 
 public class StackAutomatonExample {
 
-    public static final DataType T_INT = new DataType("T_int");
+    public static final DataType<BigDecimal> T_INT = new DataType<>("T_int", BuiltinTypes.DECIMAL);
 
     public static final InputSymbol I_PUSH =
             new InputSymbol("push", T_INT);
@@ -57,16 +60,16 @@ public class StackAutomatonExample {
         Expression<Boolean> trueGuard   = ExpressionUtil.TRUE;
 
         // assignments
-        VarMapping<Register, SymbolicDataValue> copyMapping = new VarMapping<Register, SymbolicDataValue>();
+        VarMapping<Register<?>, SymbolicDataValue<?>> copyMapping = new VarMapping<>();
         copyMapping.put(rVal1, rVal1);
 
-        VarMapping<Register, SymbolicDataValue> storeMapping1 = new VarMapping<Register, SymbolicDataValue>();
+        VarMapping<Register<?>, SymbolicDataValue<?>> storeMapping1 = new VarMapping<>();
         storeMapping1.put(rVal1, pVal);
-        VarMapping<Register, SymbolicDataValue> storeMapping2 = new VarMapping<Register, SymbolicDataValue>();
+        VarMapping<Register<?>, SymbolicDataValue<?>> storeMapping2 = new VarMapping<>();
         storeMapping2.put(rVal1, rVal1);
         storeMapping2.put(rVal2, pVal);
 
-        VarMapping<Register, SymbolicDataValue> noMapping = new VarMapping<Register, SymbolicDataValue>();
+        VarMapping<Register<?>, SymbolicDataValue<?>> noMapping = new VarMapping<>();
 
         Assignment copyAssign   = new Assignment(copyMapping);
         Assignment storeAssign1 = new Assignment(storeMapping1);

@@ -3,44 +3,44 @@ package de.learnlib.ralib.example.sdts;
 import java.util.Collection;
 
 import de.learnlib.query.Query;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.Mapping;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
+import de.learnlib.ralib.data.SuffixValue;
 import de.learnlib.ralib.oracles.DataWordOracle;
 import de.learnlib.ralib.theory.SDT;
 import de.learnlib.ralib.words.DataWords;
 import de.learnlib.ralib.words.PSymbolInstance;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.Mapping;
+import net.automatalib.data.SymbolicDataValue;
 import net.automatalib.word.Word;
 
 public class SDTOracle implements DataWordOracle {
 
 	private SDT sdt = null;
-	private Mapping<SymbolicDataValue, DataValue> registerMapping = null;
+	private Mapping<SymbolicDataValue<?>, DataValue<?>> registerMapping = null;
 	private Constants consts = new Constants();
 
 	public SDTOracle() {
 	}
 
-	public SDTOracle(SDT sdt, Mapping<SymbolicDataValue, DataValue> registerMapping, Constants consts) {
+	public SDTOracle(SDT sdt, Mapping<SymbolicDataValue<?>, DataValue<?>> registerMapping, Constants consts) {
 		this.sdt = sdt;
 		this.registerMapping = registerMapping;
 		this.consts = consts;
 	}
 
-	public SDTOracle(SDT sdt, Mapping<SymbolicDataValue, DataValue> registerMapping) {
+	public SDTOracle(SDT sdt, Mapping<SymbolicDataValue<?>, DataValue<?>> registerMapping) {
 		this(sdt, registerMapping, new Constants());
 	}
 
-	public void changeSDT(SDT sdt, Mapping<SymbolicDataValue, DataValue> registerMapping, Constants consts) {
+	public void changeSDT(SDT sdt, Mapping<SymbolicDataValue<?>, DataValue<?>> registerMapping, Constants consts) {
 		this.sdt = sdt;
 		this.registerMapping = registerMapping;
 		this.consts = consts;
 	}
 
-	public void changeSDT(SDT sdt, Mapping<SymbolicDataValue, DataValue> registerMapping) {
+	public void changeSDT(SDT sdt, Mapping<SymbolicDataValue<?>, DataValue<?>> registerMapping) {
 		changeSDT(sdt, registerMapping, new Constants());
 	}
 
@@ -52,15 +52,15 @@ public class SDTOracle implements DataWordOracle {
 			}
 			else {
 				Word<PSymbolInstance> suffix = computeSuffix(query.getInput());
-				Mapping<SymbolicDataValue, DataValue> vals = computeMapping(suffix);
+				Mapping<SymbolicDataValue<?>, DataValue<?>> vals = computeMapping(suffix);
 				boolean answer = sdt.isAccepting(vals, consts);
 				query.answer(sdt.isAccepting(vals, consts));
 			}
 		}
 	}
 
-	private Mapping<SymbolicDataValue, DataValue> computeMapping(Word<PSymbolInstance> suffix) {
-		Mapping<SymbolicDataValue, DataValue> mapping = new Mapping<SymbolicDataValue, DataValue>();
+	private Mapping<SymbolicDataValue<?>, DataValue<?>> computeMapping(Word<PSymbolInstance> suffix) {
+		Mapping<SymbolicDataValue<?>, DataValue<?>> mapping = new Mapping<>();
 		int index = 1;
 		for (PSymbolInstance psi : suffix) {
 			DataType[] dts = psi.getBaseSymbol().getPtypes();

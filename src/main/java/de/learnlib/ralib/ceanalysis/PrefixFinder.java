@@ -2,15 +2,6 @@ package de.learnlib.ralib.ceanalysis;
 
 import java.util.*;
 
-import net.automatalib.data.Constants;
-import net.automatalib.data.DataType;
-import net.automatalib.data.DataValue;
-import net.automatalib.data.Mapping;
-import net.automatalib.data.ParameterValuation;
-import net.automatalib.data.SymbolicDataValue;
-import net.automatalib.data.SymbolicDataValue.Parameter;
-import net.automatalib.data.SymbolicDataValueGenerator.ParameterGenerator;
-import net.automatalib.data.VarMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +22,15 @@ import de.learnlib.ralib.words.PSymbolInstance;
 import de.learnlib.ralib.words.ParameterizedSymbol;
 import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
+import net.automatalib.data.ParameterValuation;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Parameter;
+import net.automatalib.data.SymbolicDataValueGenerator.ParameterGenerator;
+import net.automatalib.data.Valuation;
+import net.automatalib.data.VarMapping;
 import net.automatalib.word.Word;
 
 public class PrefixFinder {
@@ -255,7 +255,7 @@ public class PrefixFinder {
         	Expression<Boolean> exprR = SMTUtil.renameVars(expr, renaming);
 
         	ParameterValuation pars = new ParameterValuation(path);
-        	Mapping<SymbolicDataValue<?>, DataValue<?>> vals = new Mapping<>();
+        	Valuation<SymbolicDataValue<?>, DataValue<?>> vals = new Valuation<>();
         	vals.putAll(pars);
         	vals.putAll(consts);
 

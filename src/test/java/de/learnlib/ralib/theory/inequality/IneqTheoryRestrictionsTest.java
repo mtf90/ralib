@@ -8,10 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import de.learnlib.ralib.RaLibTestSuite;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.DataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.SuffixValue;
+import de.learnlib.ralib.data.SuffixValue;
 import de.learnlib.ralib.data.util.SuffixValueGenerator;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.oracles.mto.SymbolicSuffixRestrictionBuilder;
@@ -22,11 +19,15 @@ import de.learnlib.ralib.tools.theories.DoubleInequalityTheory;
 import de.learnlib.ralib.words.DataWords;
 import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
+import gov.nasa.jpf.constraints.types.BuiltinTypes;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.DataValue;
 import net.automatalib.word.Word;
 
 public class IneqTheoryRestrictionsTest extends RaLibTestSuite {
 
-    private final DataType D_TYPE = new DataType("double");
+    private final DataType D_TYPE = new DataType("double", BuiltinTypes.DECIMAL);
 
     private final InputSymbol A = new InputSymbol("a", D_TYPE);
 

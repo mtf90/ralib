@@ -8,16 +8,10 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import de.learnlib.query.DefaultQuery;
-import de.learnlib.ralib.automata.Assignment;
 import de.learnlib.ralib.automata.InputTransition;
 import de.learnlib.ralib.automata.MutableRegisterAutomaton;
 import de.learnlib.ralib.automata.RALocation;
 import de.learnlib.ralib.automata.RegisterAutomaton;
-import de.learnlib.ralib.data.Constants;
-import de.learnlib.ralib.data.DataType;
-import de.learnlib.ralib.data.SymbolicDataValue;
-import de.learnlib.ralib.data.SymbolicDataValue.Register;
-import de.learnlib.ralib.data.VarMapping;
 import de.learnlib.ralib.learning.SymbolicSuffix;
 import de.learnlib.ralib.oracles.DataWordOracle;
 import de.learnlib.ralib.oracles.SDTLogicOracle;
@@ -31,6 +25,12 @@ import de.learnlib.ralib.words.InputSymbol;
 import de.learnlib.ralib.words.PSymbolInstance;
 import gov.nasa.jpf.constraints.api.Expression;
 import gov.nasa.jpf.constraints.util.ExpressionUtil;
+import net.automatalib.automaton.ra.Assignment;
+import net.automatalib.data.Constants;
+import net.automatalib.data.DataType;
+import net.automatalib.data.SymbolicDataValue;
+import net.automatalib.data.SymbolicDataValue.Register;
+import net.automatalib.data.VarMapping;
 import net.automatalib.word.Word;
 
 public class TestDistinguishingSuffixOptimization {
@@ -50,7 +50,7 @@ public class TestDistinguishingSuffixOptimization {
 
 		Expression<Boolean> trueGuard = ExpressionUtil.TRUE;
 
-		VarMapping<Register, SymbolicDataValue> noMapping = new VarMapping<SymbolicDataValue.Register, SymbolicDataValue>();
+		VarMapping<Register<?>, SymbolicDataValue<?>> noMapping = new VarMapping<>();
         Assignment noAssign = new Assignment(noMapping);
 
         ra.addTransition(l0, A, new InputTransition(trueGuard, A, l0, l1, noAssign));
